@@ -1,0 +1,176 @@
+// ── 突っ張りアジャスター製品定義 ──
+export type AdjusterBrand = "diawall" | "labrico" | "labrico_strong" | "wallist";
+
+export interface AdjusterProduct {
+  id: AdjusterBrand;
+  name: string;
+  nameEn: string;
+  /** 天井高から引く長さ (mm) */
+  cutOffset: number;
+  /** アジャスター1セットの参考価格 (税込) */
+  priceYen: number;
+  /** 対応木材の規格リスト */
+  supportedLumber: string[];
+  /** 耐荷重 (kg) — 柱1本あたり */
+  maxLoadKg: number;
+  /** Amazon 検索キーワード */
+  amazonKeyword: string;
+  /** 特徴の一言説明 */
+  description: string;
+}
+
+// ── 木材規格 ──
+export interface LumberSpec {
+  id: string;
+  name: string;
+  /** 断面幅 (mm) — 広い面 */
+  widthMm: number;
+  /** 断面厚さ (mm) — 狭い面 */
+  depthMm: number;
+  /** 1本あたりの参考価格 (6フィート≒1820mm) */
+  pricePerUnit: number;
+  amazonKeyword: string;
+  /** 棚板としても使えるか */
+  usableAsShelf: boolean;
+  /** 棚板として使う場合のラベル */
+  shelfLabel?: string;
+}
+
+// ── 棚板の種類 ──
+export interface ShelfBoard {
+  id: string;
+  name: string;
+  /** 板の厚さ (mm) */
+  thicknessMm: number;
+  /** 板の奥行 (mm) — 固定の場合。0なら可変 */
+  fixedDepthMm: number;
+  /** 参考価格 (600mm幅あたり) */
+  pricePerUnit: number;
+  amazonKeyword: string;
+  /** 強度レベル: light=軽量物, medium=書籍など, heavy=重量物 */
+  strength: "light" | "medium" | "heavy";
+}
+
+// ── 棚受け金具 ──
+export interface BracketType {
+  id: string;
+  name: string;
+  /** 1組（左右）の参考価格 */
+  pricePerPair: number;
+  /** 耐荷重 (kg) */
+  maxLoadKg: number;
+  amazonKeyword: string;
+}
+
+// ── レイアウトタイプ ──
+export type LayoutType = "straight" | "corner" | "desk";
+
+// ── 柱の向き ──
+/** short: 短辺を壁側(奥行浅・正面幅広)  long: 長辺を壁側(奥行深・正面幅狭) */
+export type PillarOrientation = "short" | "long";
+
+// ── ユーザー入力パラメータ ──
+export interface DesignInput {
+  /** 天井高 (mm) */
+  ceilingHeight: number;
+  /** 選択アジャスター */
+  adjuster: AdjusterBrand;
+  /** 柱の木材規格 */
+  pillarLumber: string;
+  /** 柱の本数 (2本=1スパン棚, 3本=2スパン棚) */
+  pillarCount: number;
+  /** 棚板の枚数 */
+  shelfCount: number;
+  /** 棚板の幅 (mm) — 全体のデフォルト */
+  shelfWidth: number;
+  /** 棚板の奥行 (mm) */
+  shelfDepth: number;
+  /** 棚板ごとの個別幅 (mm)。未設定の棚は shelfWidth を使用 */
+  shelfWidths?: number[];
+  /** 棚板の材質ID */
+  shelfMaterial: string;
+  /** 棚間隔の配列 (mm) */
+  shelfSpacings: number[];
+  /** 柱の向き */
+  pillarOrientation: PillarOrientation;
+  /** レイアウトタイプ */
+  layout: LayoutType;
+  /** 天井まで突っ張るか (falseなら自立型) */
+  fullHeight: boolean;
+  /** 自立型の場合の棚の高さ (mm) */
+  unitHeight?: number;
+}
+
+// ── 計算結果 ──
+export interface DesignResult {
+  /** 柱の木材カット長 (mm) */
+  pillarLength: number;
+  /** 柱に使う木材規格 */
+  lumberSpec: LumberSpec;
+  /** アジャスター情報 */
+  adjuster: AdjusterProduct;
+  /** 部材リスト */
+  partsList: PartItem[];
+  /** 合計参考価格 */
+  totalEstimate: number;
+  /** 各棚の高さ (mm, 床からの距離) */
+  shelfHeights: number[];
+  /** 棚板の材質情報 */
+  shelfBoard: ShelfBoard;
+}
+
+export interface PartItem {
+  category: "adjuster" | "lumber" | "shelf" | "bracket" | "screw";
+  name: string;
+  quantity: number;
+  unitPrice: number;
+  subtotal: number;
+  amazonUrl: string;
+  note?: string;
+}
+
+// ── グリッドエディタ型 ──
+export interface GridPillar {
+  id: string;
+  /** 左端からの水平位置 (mm) */
+  x: number;
+  /** 柱の木材規格 */
+  lumber: string;
+  /** アジャスターブランド (null = アジャスターなし) */
+  adjuster: AdjusterBrand | null;
+}
+
+export interface GridShelf {
+  id: string;
+  /** 左側の柱ID */
+  leftPillarId: string;
+  /** 右側の柱ID */
+  rightPillarId: string;
+  /** 床からの高さ (mm) */
+  y: number;
+  /** 棚板の材質ID */
+  material: string;
+  /** 棚板の奥行 (mm) */
+  depth: number;
+}
+
+export interface GridDesign {
+  /** 天井高 (mm) */
+  ceilingHeight: number;
+  /** 配置された柱 */
+  pillars: GridPillar[];
+  /** 配置された棚板 */
+  shelves: GridShelf[];
+}
+
+// ── テンプレート ──
+export interface ShelfTemplate {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  /** デフォルト設定値 */
+  defaults: Partial<DesignInput>;
+  /** SEO用キーワード */
+  keywords: string[];
+}
