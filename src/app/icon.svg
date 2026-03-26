@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- 背景: amber系（木材の温かみ）-->
+  <rect width="32" height="32" rx="7" fill="#b45309"/>
+  <!-- 2x4柱（左）-->
+  <rect x="7" y="4" width="4" height="24" rx="1" fill="#fef3c7"/>
+  <!-- 2x4柱（右）-->
+  <rect x="21" y="4" width="4" height="24" rx="1" fill="#fef3c7"/>
+  <!-- 棚板（上）-->
+  <rect x="6" y="9" width="20" height="3" rx="1" fill="#ffffff"/>
+  <!-- 棚板（中）-->
+  <rect x="6" y="17" width="20" height="3" rx="1" fill="#ffffff"/>
+  <!-- 棚板（下）-->
+  <rect x="6" y="25" width="20" height="3" rx="1" fill="#ffffff"/>
+</svg>
