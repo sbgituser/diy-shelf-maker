@@ -1,15 +1,78 @@
 import DesignForm from "@/components/DesignForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title:
+    "棚レイアウト シミュレーション 無料 | DIY棚設計ツール - サイズ自動計算",
+  description:
+    "棚のレイアウトをブラウザで無料シミュレーション。天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、必要な部材リストと設計図を生成。賃貸DIYの棚設計に。",
+  keywords: [
+    "棚 レイアウト シミュレーション 無料",
+    "棚 設計 ツール",
+    "DIY 棚 サイズ 計算",
+    "ディアウォール 棚 設計",
+    "ラブリコ 棚 シミュレーター",
+    "2×4 棚 計算",
+    "賃貸 棚 DIY",
+    "壁面収納 設計",
+    "棚 設計図 自動生成",
+    "木材 カット 寸法 計算",
+  ],
+  openGraph: {
+    title: "棚レイアウト シミュレーション 無料 | DIY棚設計ツール",
+    description:
+      "天井高入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応の無料棚設計ツール。",
+    type: "website",
+    locale: "ja_JP",
+    url: "https://diy.kuras-plus.com",
+    siteName: "DIY棚シミュレーター by kuras-plus",
+  },
+  alternates: {
+    canonical: "https://diy.kuras-plus.com",
+  },
+};
+
+// JSON-LD 構造化データ
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "DIY棚シミュレーター",
+  description:
+    "天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算。必要な部材リストと設計図も自動生成する無料のDIY棚設計ツール。",
+  url: "https://diy.kuras-plus.com",
+  applicationCategory: "DesignApplication",
+  operatingSystem: "Web Browser",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "JPY",
+  },
+  featureList: [
+    "木材カット寸法の自動計算",
+    "部材リスト自動生成",
+    "設計図PDF出力",
+    "ディアウォール・ラブリコ・ウォリスト対応",
+    "2×4材・1×4材対応",
+  ],
+  inLanguage: "ja",
+};
 
 export default function Home() {
   return (
     <>
+      {/* JSON-LD 構造化データ */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* ヒーローセクション */}
       <section className="max-w-5xl mx-auto mb-10">
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 border border-amber-100">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 leading-tight">
-            賃貸でもOK！
+            棚レイアウト シミュレーション
             <br className="sm:hidden" />
-            DIY棚シミュレーター
+            <span className="text-amber-600">無料</span>DIY棚設計ツール
           </h1>
           <p className="mt-3 text-gray-600 leading-relaxed max-w-2xl">
             天井高を入力するだけで、ディアウォール・ラブリコの

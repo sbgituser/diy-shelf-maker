@@ -3,35 +3,37 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "DIY棚シミュレーター | 賃貸でもOK！ディアウォール・ラブリコ設計ツール",
+    default:
+      "DIY棚シミュレーター | 棚レイアウト設計・木材カット寸法を無料で自動計算",
     template: "%s | DIY棚シミュレーター",
   },
   description:
-    "天井高を入力するだけで、ディアウォール・ラブリコの木材カット寸法を自動計算。必要な部材リストと設計図も自動生成。賃貸でも壁を傷つけずにおしゃれな壁面収納をDIY。",
+    "棚のレイアウトを無料でシミュレーション。天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、部材リストと設計図を生成。賃貸でも壁を傷つけずにDIY。",
   keywords: [
+    "棚 レイアウト シミュレーション 無料",
+    "棚 設計 ツール",
+    "DIY 棚 サイズ 計算",
     "ディアウォール",
     "ラブリコ",
-    "DIY",
-    "棚",
-    "賃貸",
-    "壁面収納",
-    "2×4",
-    "設計",
-    "シミュレーター",
-    "木材カット",
+    "DIY 棚",
+    "賃貸 壁面収納",
+    "2×4 棚",
+    "木材カット 計算",
+    "棚 設計図",
   ],
   openGraph: {
-    title: "DIY棚シミュレーター | 賃貸OK！設計図自動生成",
+    title: "DIY棚シミュレーター | 棚レイアウト設計を無料で",
     description:
-      "天井高を入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応。",
+      "天井高を入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応の無料ツール。",
     type: "website",
     locale: "ja_JP",
     siteName: "DIY棚シミュレーター by kuras-plus",
   },
   twitter: {
     card: "summary_large_image",
-    title: "DIY棚シミュレーター",
-    description: "天井高入力で木材カット寸法を自動計算。賃貸DIYの必需品。",
+    title: "DIY棚シミュレーター | 棚設計を無料でシミュレーション",
+    description:
+      "天井高入力で木材カット寸法を自動計算。部材リストと設計図も生成。賃貸DIYに。",
   },
   metadataBase: new URL("https://diy.kuras-plus.com"),
 };
@@ -60,6 +62,12 @@ export default function RootLayout({
                 className="text-gray-600 hover:text-amber-600 transition-colors"
               >
                 設計ツール
+              </a>
+              <a
+                href="/templates"
+                className="text-gray-600 hover:text-amber-600 transition-colors"
+              >
+                テンプレート
               </a>
               <a
                 href="/guide"
