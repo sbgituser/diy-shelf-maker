@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import type {
   GridDesign,
   GridPillar,
   GridShelf,
   AdjusterBrand,
+  DesignInput,
 } from "@/types";
 import { ADJUSTERS, LUMBER_SPECS, SHELF_BOARDS } from "@/data/products";
+import { SHELF_TEMPLATES } from "@/data/templates";
 import { calculateGridParts } from "@/lib/grid-calculator";
 import { exportDesignPdf } from "@/lib/pdf-export";
 import PartsListTable from "./PartsListTable";
@@ -58,18 +61,90 @@ const INITIAL: GridDesign = {
   ],
 };
 
+/** テンプレートのdefaultsからGridDesignを生成 */
+function templateToGridDesign(defaults: Partial<DesignInput>): GridDesign {
+  const ceilingHeight = defaults.fullHeight !== false ? 2400 : (defaults.unitHeight ?? 1800);
+  const adjuster = (defaults.adjuster ?? "labrico") as AdjusterBrand;
+  const lumber = defaults.pillarLumber ?? "2x4";
+  const pillarCount = defaults.pillarCount ?? 2;
+  const shelfCount = defaults.shelfCount ?? 3;
+  const shelfWidth = defaults.shelfWidth ?? 500;
+  const shelfDepth = defaults.shelfDepth ?? 250;
+  const shelfMaterial = defaults.shelfMaterial ?? "pine-18";
+
+  // 柱の配置: 最初の柱をx=200に、間隔をshelfWidthに基づいて配置
+  const pillars: GridPillar[] = [];
+  for (let i = 0; i < pillarCount; i++) {
+    pillars.push({
+      id: `p-${i + 1}`,
+      x: 200 + i * shelfWidth,
+      lumber,
+      adjuster,
+    });
+  }
+
+  // 棚板を等間隔に配置（天井高の10%〜85%の範囲）
+  const shelves: GridShelf[] = [];
+  const minY = Math.round(ceilingHeight * 0.1);
+  const maxY = Math.round(ceilingHeight * 0.85);
+  const spacing = shelfCount > 1 ? (maxY - minY) / (shelfCount - 1) : 0;
+
+  let shelfIdx = 1;
+  // 各スパン（隣接する柱ペア）に棚を配置
+  for (let pi = 0; pi < pillarCount - 1; pi++) {
+    for (let si = 0; si < shelfCount; si++) {
+      const y = shelfCount === 1
+        ? Math.round(ceilingHeight * 0.5)
+        : Math.round(minY + spacing * si);
+      // SNAPに合わせる
+      const snappedY = Math.round(y / SNAP) * SNAP;
+      shelves.push({
+        id: `s-${shelfIdx}`,
+        leftPillarId: pillars[pi].id,
+        rightPillarId: pillars[pi + 1].id,
+        y: snappedY,
+        material: shelfMaterial,
+        depth: shelfDepth,
+      });
+      shelfIdx++;
+    }
+  }
+
+  return { ceilingHeight, pillars, shelves };
+}
+
 // ════════════════════════════════════════════════════
 // メインコンポーネント
 // ════════════════════════════════════════════════════
 export default function GridEditor() {
+  const searchParams = useSearchParams();
   const [design, setDesign] = useState<GridDesign>(INITIAL);
   const [mode, setMode] = useState<Mode>("select");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [hoverMm, setHoverMm] = useState<{ x: number; y: number } | null>(null);
   const [pdfExporting, setPdfExporting] = useState(false);
+  const [templateName, setTemplateName] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const nextId = useRef(10);
+  const templateApplied = useRef(false);
+
+  // テンプレートのクエリパラメータを読み取り、初期状態に適用
+  useEffect(() => {
+    if (templateApplied.current) return;
+    const templateId = searchParams.get("template");
+    if (templateId) {
+      const template = SHELF_TEMPLATES.find((t) => t.id === templateId);
+      if (template) {
+        const gridDesign = templateToGridDesign(template.defaults);
+        setDesign(gridDesign);
+        setSelectedId(null);
+        setTemplateName(template.name);
+        nextId.current = gridDesign.pillars.length + gridDesign.shelves.length + 10;
+        templateApplied.current = true;
+      }
+    }
+  }, [searchParams]);
 
   // ── ドラッグ状態 ──
   // mousedown位置を記録し、DRAG_THRESHOLD以上動いた場合にのみドラッグ開始
@@ -353,6 +428,21 @@ export default function GridEditor() {
 
   return (
     <div className="max-w-5xl mx-auto">
+      {/* ─── テンプレート適用通知 ─── */}
+      {templateName && (
+        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between">
+          <p className="text-sm text-amber-800">
+            <span className="font-bold">✓ テンプレート「{templateName}」</span>を適用しました。天井高や棚数は自由に変更できます。
+          </p>
+          <button
+            onClick={() => setTemplateName(null)}
+            className="text-amber-600 hover:text-amber-800 text-sm ml-3 flex-shrink-0"
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* ─── ツールバー ─── */}
       <div className="flex flex-wrap items-center gap-3 mb-4 p-3 bg-white rounded-xl border border-gray-200 shadow-sm">
         <div className="flex gap-1.5">

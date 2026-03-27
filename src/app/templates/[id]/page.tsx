@@ -374,7 +374,7 @@ export default async function TemplatePage({
           </p>
           <div className="mt-4">
             <Link
-              href="/"
+              href={`/?template=${template.id}`}
               className="inline-flex items-center px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors"
             >
               このテンプレートでシミュレーションする →
@@ -451,7 +451,7 @@ export default async function TemplatePage({
             天井高を入力するだけ。完全無料・登録不要。
           </p>
           <Link
-            href="/"
+            href={`/?template=${template.id}`}
             className="inline-flex items-center px-6 py-3 bg-white text-amber-600 font-bold rounded-lg hover:bg-amber-50 transition-colors"
           >
             シミュレーターを使う →
