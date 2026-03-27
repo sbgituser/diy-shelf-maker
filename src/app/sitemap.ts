@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SHELF_TEMPLATES } from "@/data/templates";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const dynamic = "force-static";
 
@@ -28,6 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       lastModified: now,
     },
+    {
+      url: `${BASE_URL}/howto`,
+      priority: 0.9,
+      changeFrequency: "weekly",
+      lastModified: now,
+    },
   ];
 
   // テンプレート個別ページ
@@ -38,5 +45,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
   }));
 
-  return [...staticPages, ...templatePages];
+  // How-to記事ページ
+  const howtoPages: MetadataRoute.Sitemap = HOWTO_ARTICLES.map((a) => ({
+    url: `${BASE_URL}/howto/${a.slug}`,
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+    lastModified: now,
+  }));
+
+  return [...staticPages, ...templatePages, ...howtoPages];
 }

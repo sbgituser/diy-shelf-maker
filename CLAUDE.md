@@ -30,7 +30,9 @@ src/
 │   ├── guide/page.tsx      # 使い方ガイド
 │   ├── templates/page.tsx  # テンプレート一覧ページ
 │   ├── templates/[id]/page.tsx  # テンプレート個別ページ（SSG, 12種）
-│   ├── sitemap.ts          # 動的sitemap.xml生成（全15ページ）
+│   ├── howto/page.tsx       # How-to記事一覧ページ
+│   ├── howto/[slug]/page.tsx # How-to記事個別ページ（SSG, 5記事）
+│   ├── sitemap.ts          # 動的sitemap.xml生成（全21ページ）
 │   ├── robots.ts           # robots.txt生成
 │   └── layout.tsx          # ルートレイアウト
 ├── components/
@@ -38,10 +40,13 @@ src/
 │   ├── DesignForm.tsx       # フォーム入力UI
 │   ├── PartsListTable.tsx   # 部材一覧テーブル
 │   ├── ShelfDiagram.tsx     # 棚の正面図ダイアグラム
-│   └── ShareButtons.tsx     # SNSシェアボタン（X, LINE, Facebook）
+│   ├── ShareButtons.tsx     # SNSシェアボタン（X, LINE, Facebook）
+│   ├── GoogleAnalytics.tsx  # GA4トラッキング（"use client"、next/script）
+│   └── AdSlot.tsx           # AdSense広告枠（ADSENSE_ENABLED=falseで待機）
 ├── data/
 │   ├── products.ts          # アジャスター・木材・棚板・金具の商品データ + Amazon URL生成
-│   └── templates.ts         # プリセットテンプレート
+│   ├── templates.ts         # プリセットテンプレート
+│   └── howto-articles.ts    # How-to記事データ（5記事）
 ├── lib/
 │   ├── calculator.ts        # フォーム入力→部材計算ロジック
 │   ├── grid-calculator.ts   # グリッドエディタ→部材計算ロジック

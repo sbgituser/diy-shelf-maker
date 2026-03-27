@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -46,6 +47,8 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className="bg-gray-50 text-gray-900 antialiased">
+        <GoogleAnalytics />
+
         {/* ヘッダー */}
         <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
           <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
@@ -68,6 +71,12 @@ export default function RootLayout({
                 className="text-gray-600 hover:text-amber-600 transition-colors"
               >
                 テンプレート
+              </a>
+              <a
+                href="/howto"
+                className="text-gray-600 hover:text-amber-600 transition-colors"
+              >
+                作り方ガイド
               </a>
               <a
                 href="/guide"
