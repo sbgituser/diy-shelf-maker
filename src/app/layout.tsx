@@ -90,7 +90,6 @@ export default function RootLayout({
                 DIY棚シミュレーター — 賃貸でもOK！ディアウォール・ラブリコ設計ツール
               </p>
               <p className="mt-1">
-                政府統計データに基づく信頼性の高い情報を提供 ·{" "}
                 <a
                   href="https://kuras-plus.com"
                   className="text-amber-600 hover:underline"

@@ -26,9 +26,12 @@ DIY突っ張り棚の設計・部材計算Webアプリ。ユーザーが天井�
 ```
 src/
 ├── app/                    # Next.js App Router ページ
-│   ├── page.tsx            # トップページ（グリッドエディタ）
+│   ├── page.tsx            # トップページ（グリッドエディタ + JSON-LD）
 │   ├── guide/page.tsx      # 使い方ガイド
-│   ├── sitemap.ts          # 動的sitemap.xml生成
+│   ├── templates/page.tsx  # テンプレート一覧ページ
+│   ├── templates/[id]/page.tsx  # テンプレート個別ページ（SSG, 12種）
+│   ├── sitemap.ts          # 動的sitemap.xml生成（全15ページ）
+│   ├── robots.ts           # robots.txt生成
 │   └── layout.tsx          # ルートレイアウト
 ├── components/
 │   ├── GridEditor.tsx       # メインのSVGグリッドエディタ（柱・棚の配置・編集）
@@ -73,15 +76,15 @@ src/
 
 ## ビルド & デプロイ
 
+### 自動デプロイ（標準運用）
+- **GitHubにpushすると、Cloudflare Pagesで自動ビルド＆デプロイが実行される**
+- 手動ビルド（`npm run build`）/ 手動デプロイ（`npx wrangler pages deploy`）は基本的に実施しない
+- デプロイ状況はCloudflareダッシュボードの Workers & Pages > diy-shelf-maker で確認可能
+
+### ローカル開発コマンド
 ```bash
 # 開発サーバー
 npm run dev
-
-# ビルド（静的エクスポート → out/ ディレクトリ）
-npm run build
-
-# Cloudflare Pagesへデプロイ
-npx wrangler pages deploy out --project-name=diy-shelf-maker
 
 # Lint
 npm run lint
@@ -103,6 +106,13 @@ npm run lint
 - ブランチ: `master`（mainではない）
 - リモート: `origin` → `https://github.com/sbgituser/diy-shelf-maker.git`
 - push時に403エラーが出たら: `cmdkey /delete:git:https://github.com` で認証情報をリセットしてからリトライ
+
+## 代表へのコマンド提示ルール
+
+- コマンド実行が必要な場合は **cmd（コマンドプロンプト）で実行できる形式** で提示すること
+- **一括コピー＆ペーストで実行できる形式** にまとめること（PowerShell形式は不可）
+- コマンド実行の際は必ず **実行結果をログファイルに出力** し、結果確認はログファイルを参照すること
+- コピー＆ペーストで実行結果を報告させることはしない
 
 ## コーディング規約
 
@@ -144,8 +154,12 @@ interface PartItem {
 
 ## 未対応・今後のタスク
 
-- Route 53にCNAMEレコード追加（`diy-shelf-maker.kuras-plus.com` → `diy-shelf-maker.pages.dev`）
-- GitHub自動デプロイ（GitHub Actions + wrangler pages deploy）の設定
-- SEO最適化（メタタグ、構造化データ）
 - Google Search Console登録
 - パフォーマンス最適化
+- Google AdSense導入
+
+## 対応済み
+
+- ~~Route 53にCNAMEレコード追加~~ → diy-shelf-maker.kuras-plus.com 設定済み
+- ~~GitHub自動デプロイ~~ → Cloudflare Pages GitHub連携で自動ビルド＆デプロイ設定済み
+- ~~SEO最適化（メタタグ、構造化データ）~~ → meta/JSON-LD/robots.txt/sitemap/テンプレートページ12種追加済み
