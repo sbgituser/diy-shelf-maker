@@ -14,6 +14,7 @@ import { SHELF_TEMPLATES } from "@/data/templates";
 import { calculateGridParts } from "@/lib/grid-calculator";
 import { exportDesignPdf } from "@/lib/pdf-export";
 import PartsListTable from "./PartsListTable";
+import RecommendedTools from "./RecommendedTools";
 import ShareButtons from "./ShareButtons";
 
 // ── 定数 ──
@@ -861,6 +862,9 @@ export default function GridEditor() {
           <PartsListTable parts={result.partsList} total={result.totalEstimate} />
         </section>
       )}
+
+      {/* ─── おすすめ工具 ─── */}
+      {result.partsList.length > 0 && <RecommendedTools />}
 
       {/* ─── PDF出力 & SNS共有 ─── */}
       {design.pillars.length > 0 && (

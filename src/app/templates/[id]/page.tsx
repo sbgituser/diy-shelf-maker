@@ -1,4 +1,5 @@
 import { SHELF_TEMPLATES } from "@/data/templates";
+import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -325,6 +326,29 @@ export default async function TemplatePage({
 
   const details = TEMPLATE_DETAILS[template.id];
 
+  // 材料名からAmazon検索キーワードへのマッピング
+  const materialKeywords: Record<string, string> = {
+    "2×4材": "2×4 木材 SPF ホワイトウッド",
+    "ラブリコ": "ラブリコ 2×4 アジャスター",
+    "ラブリコ強力": "ラブリコ 2×4 強力 アジャスター",
+    "ディアウォール": "ディアウォール 2×4 アジャスター",
+    "ウォリスト": "ウォリスト 2×4 アジャスター",
+    "パイン集成材": "パイン集成材 棚板 18mm",
+    "棚受け金具": "2×4 棚受け 金具 ラブリコ",
+    "アイアンブラケット": "アイアンブラケット 棚受け DIY",
+    "ビス": "木ネジ DIY 棚 セット",
+    "ワトコオイル": "ワトコオイル 木材 塗装 DIY",
+    "ブライワックス": "ブライワックス 木材 塗装",
+    "防水塗料": "防水塗料 木材 DIY",
+    "すのこ": "すのこ 棚板 DIY",
+  };
+  function getAmazonKeyword(material: string): string | null {
+    for (const [key, keyword] of Object.entries(materialKeywords)) {
+      if (material.includes(key)) return keyword;
+    }
+    return null;
+  }
+
   // テンプレートページ用JSON-LD
   const jsonLd = {
     "@context": "https://schema.org",
@@ -389,13 +413,31 @@ export default async function TemplatePage({
               {template.name}に必要な材料
             </h2>
             <div className="bg-white rounded-xl border border-gray-200 p-5">
-              <ul className="space-y-2">
-                {details.materials.map((m, i) => (
-                  <li key={i} className="flex items-start gap-2 text-gray-700">
-                    <span className="text-amber-500 mt-0.5">●</span>
-                    {m}
-                  </li>
-                ))}
+              <ul className="space-y-3">
+                {details.materials.map((m, i) => {
+                  const keyword = getAmazonKeyword(m);
+                  return (
+                    <li key={i} className="flex items-center justify-between gap-2 text-gray-700">
+                      <div className="flex items-start gap-2">
+                        <span className="text-amber-500 mt-0.5">●</span>
+                        <span>{m}</span>
+                      </div>
+                      {keyword && (
+                        <a
+                          href={buildAmazonUrl(keyword)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-200 transition-colors flex-shrink-0"
+                        >
+                          Amazon
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </section>

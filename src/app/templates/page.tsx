@@ -26,8 +26,31 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
+  description: "DIY棚の人気テンプレート12種類を紹介。本棚、壁面収納、キッチン棚、シューズラック、デスク棚など。",
+  url: "https://diy.kuras-plus.com/templates",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "DIY棚シミュレーター",
+    url: "https://diy.kuras-plus.com",
+  },
+  hasPart: SHELF_TEMPLATES.map((t) => ({
+    "@type": "HowTo",
+    name: `${t.name}の作り方`,
+    url: `https://diy.kuras-plus.com/templates/${t.id}`,
+  })),
+};
+
 export default function TemplatesPage() {
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
@@ -76,5 +99,6 @@ export default function TemplatesPage() {
         </Link>
       </div>
     </div>
+    </>
   );
 }

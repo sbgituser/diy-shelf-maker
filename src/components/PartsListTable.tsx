@@ -115,6 +115,33 @@ export default function PartsListTable({ parts, total }: Props) {
         </span>
       </div>
 
+      {/* まとめて購入CTA */}
+      {parts.length > 0 && (
+        <div className="px-4 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-t border-amber-200">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-gray-700">
+                必要な材料をAmazonでまとめて購入
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                各部材のAmazonボタンから個別に購入できます
+              </p>
+            </div>
+            <a
+              href={`https://www.amazon.co.jp/s?k=${encodeURIComponent("DIY 棚 2×4 ラブリコ セット")}&tag=kurasplus-22`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors shadow-sm whitespace-nowrap"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+              </svg>
+              Amazonで材料を探す
+            </a>
+          </div>
+        </div>
+      )}
+
       {/* 注意書き */}
       <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
         <p className="text-xs text-gray-500">
