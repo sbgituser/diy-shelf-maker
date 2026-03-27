@@ -3,6 +3,7 @@ import type {
   LumberSpec,
   ShelfBoard,
   BracketType,
+  AccessoryProduct,
 } from "@/types";
 
 // ── 突っ張りアジャスター ──────────────────────────
@@ -120,16 +121,8 @@ export const LUMBER_SPECS: Record<string, LumberSpec> = {
 };
 
 // ── 棚板 ──────────────────────────────────────
+// 2×4材・1×4材のみ。パイン集成材・桐・オーク材は候補から除外。
 export const SHELF_BOARDS: ShelfBoard[] = [
-  {
-    id: "pine-18",
-    name: "パイン集成材 (18mm厚)",
-    thicknessMm: 18,
-    fixedDepthMm: 0,
-    pricePerUnit: 1200,
-    amazonKeyword: "パイン集成材 棚板 18mm",
-    strength: "medium",
-  },
   {
     id: "2x4-shelf",
     name: "2×4材を棚板に (38mm厚)",
@@ -148,24 +141,6 @@ export const SHELF_BOARDS: ShelfBoard[] = [
     amazonKeyword: "1×4 木材 SPF ホワイトウッド",
     strength: "light",
   },
-  {
-    id: "paulownia-15",
-    name: "桐板 (15mm厚)",
-    thicknessMm: 15,
-    fixedDepthMm: 0,
-    pricePerUnit: 800,
-    amazonKeyword: "桐 棚板 15mm",
-    strength: "light",
-  },
-  {
-    id: "oak-20",
-    name: "オーク集成材 (20mm厚)",
-    thicknessMm: 20,
-    fixedDepthMm: 0,
-    pricePerUnit: 2500,
-    amazonKeyword: "オーク 集成材 棚板 20mm",
-    strength: "heavy",
-  },
 ];
 
 // ── 棚受け金具 ──────────────────────────────────
@@ -176,6 +151,8 @@ export const BRACKETS: BracketType[] = [
     pricePerPair: 400,
     maxLoadKg: 15,
     amazonKeyword: "L字金具 棚受け 2×4",
+    icon: "🔩",
+    description: "もっとも一般的な棚受け。軽量棚に最適。",
   },
   {
     id: "shelf-support",
@@ -183,6 +160,8 @@ export const BRACKETS: BracketType[] = [
     pricePerPair: 600,
     maxLoadKg: 20,
     amazonKeyword: "2×4 棚受け 金具 ラブリコ",
+    icon: "📐",
+    description: "2×4材にフィットする専用金具。安定感◎。",
   },
   {
     id: "channel-support",
@@ -190,8 +169,214 @@ export const BRACKETS: BracketType[] = [
     pricePerPair: 1200,
     maxLoadKg: 25,
     amazonKeyword: "チャンネルサポート 棚柱 可動棚",
+    icon: "📏",
+    description: "棚の高さを自由に変更可能。書籍収納に人気。",
+  },
+  {
+    id: "dadoed",
+    name: "ダボ受け (木ダボ)",
+    pricePerPair: 150,
+    maxLoadKg: 10,
+    amazonKeyword: "木ダボ 棚受け 8mm",
+    icon: "🪵",
+    description: "目立たず仕上がりがきれい。軽量棚向け。",
+  },
+  {
+    id: "iron-bracket",
+    name: "アイアンブラケット",
+    pricePerPair: 900,
+    maxLoadKg: 20,
+    amazonKeyword: "アイアン 棚受け ブラケット おしゃれ",
+    icon: "⚙️",
+    description: "インダストリアルな見た目。デザイン性重視。",
   },
 ];
+
+// ── 装飾品・アクセサリー ──────────────────────────
+export const ACCESSORIES: AccessoryProduct[] = [
+  // ── 仕切り・ディバイダー ──
+  {
+    id: "bookend-metal",
+    name: "金属ブックエンド",
+    category: "divider",
+    icon: "📚",
+    priceYen: 600,
+    amazonKeyword: "ブックエンド 金属 L字",
+    description: "本や書類を仕切る定番アイテム。",
+    tags: ["仕切り", "ブックエンド", "本立て", "書籍"],
+  },
+  {
+    id: "bookend-wood",
+    name: "木製ブックエンド",
+    category: "divider",
+    icon: "📖",
+    priceYen: 1200,
+    amazonKeyword: "ブックエンド 木製 おしゃれ",
+    description: "ナチュラルな雰囲気の木製仕切り。",
+    tags: ["仕切り", "ブックエンド", "木製", "ナチュラル"],
+  },
+  {
+    id: "partition-board",
+    name: "間仕切りボード",
+    category: "divider",
+    icon: "🗂️",
+    priceYen: 800,
+    amazonKeyword: "棚 間仕切り ボード 仕切り板",
+    description: "棚の区画を縦に分ける仕切り板。",
+    tags: ["間仕切り", "仕切り板", "パーテーション", "整理"],
+  },
+  // ── フック・掛け ──
+  {
+    id: "key-hook",
+    name: "キーフック (3連)",
+    category: "hook",
+    icon: "🔑",
+    priceYen: 500,
+    amazonKeyword: "キーフック 壁掛け 3連 木製",
+    description: "鍵や小物を掛けられる3連フック。",
+    tags: ["キーフック", "鍵掛け", "フック", "小物"],
+  },
+  {
+    id: "s-hook",
+    name: "Sフック (4個セット)",
+    category: "hook",
+    icon: "🪝",
+    priceYen: 400,
+    amazonKeyword: "Sフック ステンレス 棚用",
+    description: "棚板に引っ掛けるだけ。バッグやカップに。",
+    tags: ["Sフック", "吊り下げ", "カップ", "バッグ"],
+  },
+  {
+    id: "tool-hook",
+    name: "工具フック (有孔ボード用)",
+    category: "hook",
+    icon: "🔧",
+    priceYen: 600,
+    amazonKeyword: "有孔ボード フック 工具",
+    description: "工具をぶら下げて見せる収納に。",
+    tags: ["工具", "有孔ボード", "フック", "見せる収納"],
+  },
+  {
+    id: "hat-hook",
+    name: "帽子掛けフック",
+    category: "hook",
+    icon: "🧢",
+    priceYen: 700,
+    amazonKeyword: "帽子掛け フック 壁掛け",
+    description: "帽子やストールを掛けるフック。",
+    tags: ["帽子", "フック", "壁掛け", "ストール"],
+  },
+  // ── ホルダー・収納 ──
+  {
+    id: "wire-basket",
+    name: "ワイヤーバスケット",
+    category: "holder",
+    icon: "🧺",
+    priceYen: 900,
+    amazonKeyword: "ワイヤーバスケット 棚 収納",
+    description: "小物をまとめて収納。通気性良好。",
+    tags: ["バスケット", "ワイヤー", "収納", "小物入れ"],
+  },
+  {
+    id: "magazine-rack",
+    name: "マガジンラック",
+    category: "holder",
+    icon: "📰",
+    priceYen: 1100,
+    amazonKeyword: "マガジンラック 棚取り付け",
+    description: "雑誌やタブレットを立てかけるラック。",
+    tags: ["マガジン", "ラック", "雑誌", "タブレット"],
+  },
+  {
+    id: "spice-rack",
+    name: "スパイスラック",
+    category: "holder",
+    icon: "🫙",
+    priceYen: 800,
+    amazonKeyword: "スパイスラック 棚 木製",
+    description: "調味料を並べるミニラック。キッチン棚に。",
+    tags: ["スパイス", "調味料", "キッチン", "ラック"],
+  },
+  {
+    id: "plant-holder",
+    name: "プランターホルダー",
+    category: "holder",
+    icon: "🪴",
+    priceYen: 700,
+    amazonKeyword: "プランター ホルダー 棚 吊り下げ",
+    description: "小さな植物を飾るホルダー。",
+    tags: ["植物", "グリーン", "プランター", "インテリア"],
+  },
+  // ── トレー ──
+  {
+    id: "under-shelf-tray",
+    name: "吊り下げトレー",
+    category: "tray",
+    icon: "🗃️",
+    priceYen: 800,
+    amazonKeyword: "棚下 トレー 収納 吊り下げ",
+    description: "棚板の下に取り付ける収納トレー。",
+    tags: ["トレー", "吊り下げ", "棚下", "収納"],
+  },
+  {
+    id: "desk-tray",
+    name: "デスクトレー (A4)",
+    category: "tray",
+    icon: "📋",
+    priceYen: 600,
+    amazonKeyword: "デスクトレー A4 書類 レターケース",
+    description: "書類やノートを整理するA4トレー。",
+    tags: ["トレー", "書類", "A4", "デスク"],
+  },
+  // ── 照明 ──
+  {
+    id: "led-strip",
+    name: "LEDテープライト",
+    category: "lighting",
+    icon: "💡",
+    priceYen: 1500,
+    amazonKeyword: "LED テープライト 棚 間接照明",
+    description: "棚板の裏に貼る間接照明。USB給電。",
+    tags: ["LED", "照明", "間接照明", "テープライト"],
+  },
+  {
+    id: "spot-light",
+    name: "クリップスポットライト",
+    category: "lighting",
+    icon: "🔦",
+    priceYen: 1800,
+    amazonKeyword: "クリップライト スポット LED",
+    description: "棚に挟んで使うスポットライト。",
+    tags: ["スポットライト", "クリップ", "照明", "ディスプレイ"],
+  },
+  // ── その他 ──
+  {
+    id: "cable-clip",
+    name: "ケーブルクリップ (6個)",
+    category: "other",
+    icon: "🔌",
+    priceYen: 400,
+    amazonKeyword: "ケーブルクリップ 配線整理 棚",
+    description: "充電ケーブルをすっきり整理。",
+    tags: ["ケーブル", "配線", "整理", "クリップ"],
+  },
+  {
+    id: "label-holder",
+    name: "ラベルホルダー (10枚)",
+    category: "other",
+    icon: "🏷️",
+    priceYen: 500,
+    amazonKeyword: "ラベルホルダー 棚 収納 分類",
+    description: "棚の中身を分類するラベルホルダー。",
+    tags: ["ラベル", "分類", "整理", "ホルダー"],
+  },
+];
+
+/** アクセサリーIDから製品を取得 */
+export const ACCESSORY_MAP = new Map(ACCESSORIES.map((a) => [a.id, a]));
+
+/** 棚受けIDから製品を取得 */
+export const BRACKET_MAP = new Map(BRACKETS.map((b) => [b.id, b]));
 
 // ── Amazon アフィリエイトタグ ──
 export const AMAZON_ASSOCIATE_TAG = "kurasplus-22";

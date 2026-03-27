@@ -60,6 +60,43 @@ export interface BracketType {
   /** 耐荷重 (kg) */
   maxLoadKg: number;
   amazonKeyword: string;
+  /** 設計図に表示するアイコン (SVG path or emoji) */
+  icon?: string;
+  /** 補足説明 */
+  description?: string;
+}
+
+// ── 装飾品・アクセサリー ──
+export type AccessoryCategory = "divider" | "hook" | "holder" | "tray" | "lighting" | "other";
+
+export interface AccessoryProduct {
+  id: string;
+  name: string;
+  /** カテゴリ */
+  category: AccessoryCategory;
+  /** 設計図に表示するアイコン文字 (emoji) */
+  icon: string;
+  /** 参考価格 (税込) */
+  priceYen: number;
+  /** Amazon 検索キーワード */
+  amazonKeyword: string;
+  /** 概要説明 */
+  description: string;
+  /** 検索用タグ */
+  tags: string[];
+}
+
+// ── グリッドに配置された装飾品 ──
+export interface GridAccessory {
+  id: string;
+  /** 装飾品の製品ID */
+  productId: string;
+  /** 取り付け先の棚板ID */
+  shelfId: string;
+  /** 棚板の上に配置するか下に配置するか */
+  placement: "above" | "below";
+  /** 棚板の左端からの水平オフセット (mm) */
+  offsetX: number;
 }
 
 // ── レイアウトタイプ ──
@@ -120,7 +157,7 @@ export interface DesignResult {
 }
 
 export interface PartItem {
-  category: "adjuster" | "lumber" | "shelf" | "bracket" | "screw";
+  category: "adjuster" | "lumber" | "shelf" | "bracket" | "screw" | "accessory";
   name: string;
   quantity: number;
   unitPrice: number;
@@ -152,6 +189,8 @@ export interface GridShelf {
   material: string;
   /** 棚板の奥行 (mm) */
   depth: number;
+  /** 棚受け金具ID (未指定時はデフォルト) */
+  bracketId?: string;
 }
 
 export interface GridDesign {
@@ -161,6 +200,10 @@ export interface GridDesign {
   pillars: GridPillar[];
   /** 配置された棚板 */
   shelves: GridShelf[];
+  /** 配置された装飾品 */
+  accessories: GridAccessory[];
+  /** 全棚板共通の棚受け金具ID (個別指定がない場合に使用) */
+  defaultBracketId: string;
 }
 
 // ── テンプレート ──

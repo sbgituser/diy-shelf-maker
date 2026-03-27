@@ -5,6 +5,8 @@ import {
   SHELF_BOARDS,
   BRACKETS,
   buildAmazonUrl,
+  ACCESSORY_MAP,
+  BRACKET_MAP,
 } from "@/data/products";
 
 /** アジャスター解決 — 1x4 バリアントを優先 */
@@ -161,19 +163,28 @@ export function calculateGridParts(design: GridDesign): {
 
   // ── 棚受け金具 + ネジ ──
   if (design.shelves.length > 0) {
-    const bracket = BRACKETS[1];
-    const qty = design.shelves.length;
-    parts.push({
-      category: "bracket",
-      name: bracket.name,
-      quantity: qty,
-      unitPrice: bracket.pricePerPair,
-      subtotal: bracket.pricePerPair * qty,
-      amazonUrl: buildAmazonUrl(bracket.amazonKeyword),
-      note: `棚板${qty}枚分`,
-    });
+    // 棚受けをID別にグルーピング
+    const bracketGroups = new Map<string, { bracket: (typeof BRACKETS)[0]; count: number }>();
+    for (const s of design.shelves) {
+      const bid = s.bracketId ?? design.defaultBracketId;
+      const bracket = BRACKET_MAP.get(bid) ?? BRACKETS[0];
+      const g = bracketGroups.get(bracket.id);
+      if (g) g.count++;
+      else bracketGroups.set(bracket.id, { bracket, count: 1 });
+    }
+    for (const [, g] of bracketGroups) {
+      parts.push({
+        category: "bracket",
+        name: g.bracket.name,
+        quantity: g.count,
+        unitPrice: g.bracket.pricePerPair,
+        subtotal: g.bracket.pricePerPair * g.count,
+        amazonUrl: buildAmazonUrl(g.bracket.amazonKeyword),
+        note: `棚板${g.count}枚分`,
+      });
+    }
 
-    const screws = Math.ceil(qty * 4 * 1.2);
+    const screws = Math.ceil(design.shelves.length * 4 * 1.2);
     parts.push({
       category: "screw",
       name: "木ネジセット (3.8×32mm)",
@@ -183,6 +194,28 @@ export function calculateGridParts(design: GridDesign): {
       amazonUrl: buildAmazonUrl("木ネジ 3.8×32 ステンレス"),
       note: `約${screws}本使用`,
     });
+  }
+
+  // ── 装飾品 ──
+  if (design.accessories && design.accessories.length > 0) {
+    const accGroups = new Map<string, { product: NonNullable<ReturnType<typeof ACCESSORY_MAP.get>>; count: number }>();
+    for (const acc of design.accessories) {
+      const product = ACCESSORY_MAP.get(acc.productId);
+      if (!product) continue;
+      const g = accGroups.get(product.id);
+      if (g) g.count++;
+      else accGroups.set(product.id, { product, count: 1 });
+    }
+    for (const [, g] of accGroups) {
+      parts.push({
+        category: "accessory",
+        name: `${g.product.icon} ${g.product.name}`,
+        quantity: g.count,
+        unitPrice: g.product.priceYen,
+        subtotal: g.product.priceYen * g.count,
+        amazonUrl: buildAmazonUrl(g.product.amazonKeyword),
+      });
+    }
   }
 
   const totalEstimate = parts.reduce((s, p) => s + p.subtotal, 0);

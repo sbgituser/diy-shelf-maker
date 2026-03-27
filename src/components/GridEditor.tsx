@@ -9,7 +9,10 @@ import type {
   AdjusterBrand,
   DesignInput,
 } from "@/types";
-import { ADJUSTERS, LUMBER_SPECS, SHELF_BOARDS } from "@/data/products";
+import type { GridAccessory, AccessoryProduct, BracketType } from "@/types";
+import { ADJUSTERS, LUMBER_SPECS, SHELF_BOARDS, ACCESSORY_MAP, BRACKET_MAP, BRACKETS } from "@/data/products";
+import AccessoryModal from "./AccessoryModal";
+import BracketModal from "./BracketModal";
 import { SHELF_TEMPLATES } from "@/data/templates";
 import { calculateGridParts } from "@/lib/grid-calculator";
 import { exportDesignPdf } from "@/lib/pdf-export";
@@ -56,10 +59,12 @@ const INITIAL: GridDesign = {
     { id: "p-2", x: 800, lumber: "2x4", adjuster: "labrico" },
   ],
   shelves: [
-    { id: "s-1", leftPillarId: "p-1", rightPillarId: "p-2", y: 400, material: "pine-18", depth: 250 },
-    { id: "s-2", leftPillarId: "p-1", rightPillarId: "p-2", y: 900, material: "pine-18", depth: 250 },
-    { id: "s-3", leftPillarId: "p-1", rightPillarId: "p-2", y: 1400, material: "pine-18", depth: 250 },
+    { id: "s-1", leftPillarId: "p-1", rightPillarId: "p-2", y: 400, material: "2x4-shelf", depth: 250 },
+    { id: "s-2", leftPillarId: "p-1", rightPillarId: "p-2", y: 900, material: "2x4-shelf", depth: 250 },
+    { id: "s-3", leftPillarId: "p-1", rightPillarId: "p-2", y: 1400, material: "2x4-shelf", depth: 250 },
   ],
+  accessories: [],
+  defaultBracketId: "shelf-support",
 };
 
 /** テンプレートのdefaultsからGridDesignを生成 */
@@ -71,7 +76,7 @@ function templateToGridDesign(defaults: Partial<DesignInput>): GridDesign {
   const shelfCount = defaults.shelfCount ?? 3;
   const shelfWidth = defaults.shelfWidth ?? 500;
   const shelfDepth = defaults.shelfDepth ?? 250;
-  const shelfMaterial = defaults.shelfMaterial ?? "pine-18";
+  const shelfMaterial = defaults.shelfMaterial ?? "2x4-shelf";
 
   // 柱の配置: 最初の柱をx=200に、間隔をshelfWidthに基づいて配置
   const pillars: GridPillar[] = [];
@@ -111,7 +116,7 @@ function templateToGridDesign(defaults: Partial<DesignInput>): GridDesign {
     }
   }
 
-  return { ceilingHeight, pillars, shelves };
+  return { ceilingHeight, pillars, shelves, accessories: [], defaultBracketId: "shelf-support" };
 }
 
 // ════════════════════════════════════════════════════
@@ -126,6 +131,10 @@ export default function GridEditor() {
   const [hoverMm, setHoverMm] = useState<{ x: number; y: number } | null>(null);
   const [pdfExporting, setPdfExporting] = useState(false);
   const [templateName, setTemplateName] = useState<string | null>(null);
+  const [accessoryModalOpen, setAccessoryModalOpen] = useState(false);
+  const [accessoryTargetShelf, setAccessoryTargetShelf] = useState<{ shelfId: string; placement: "above" | "below" } | null>(null);
+  const [bracketModalOpen, setBracketModalOpen] = useState(false);
+  const [bracketTargetShelfId, setBracketTargetShelfId] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const nextId = useRef(10);
   const templateApplied = useRef(false);
@@ -257,7 +266,7 @@ export default function GridEditor() {
         ...prev,
         shelves: [
           ...prev.shelves,
-          { id, leftPillarId: pair.left.id, rightPillarId: pair.right.id, y, material: "pine-18", depth: 250 },
+          { id, leftPillarId: pair.left.id, rightPillarId: pair.right.id, y, material: "2x4-shelf", depth: 250 },
         ],
       }));
       setSelectedId(id);
@@ -306,6 +315,55 @@ export default function GridEditor() {
     setDesign((prev) => ({
       ...prev,
       shelves: prev.shelves.map((s) => ({ ...s, material: materialId })),
+    }));
+  }, []);
+
+  /** 装飾品を追加 */
+  const addAccessory = useCallback((product: AccessoryProduct) => {
+    if (!accessoryTargetShelf) return;
+    const id = `a-${nextId.current++}`;
+    setDesign((prev) => ({
+      ...prev,
+      accessories: [
+        ...prev.accessories,
+        {
+          id,
+          productId: product.id,
+          shelfId: accessoryTargetShelf.shelfId,
+          placement: accessoryTargetShelf.placement,
+          offsetX: 100,
+        },
+      ],
+    }));
+    setAccessoryTargetShelf(null);
+  }, [accessoryTargetShelf]);
+
+  /** 装飾品を削除 */
+  const deleteAccessory = useCallback((accId: string) => {
+    setDesign((prev) => ({
+      ...prev,
+      accessories: prev.accessories.filter((a) => a.id !== accId),
+    }));
+  }, []);
+
+  /** 棚受けを個別変更 */
+  const changeBracket = useCallback((bracket: BracketType) => {
+    if (!bracketTargetShelfId) return;
+    setDesign((prev) => ({
+      ...prev,
+      shelves: prev.shelves.map((s) =>
+        s.id === bracketTargetShelfId ? { ...s, bracketId: bracket.id } : s,
+      ),
+    }));
+    setBracketTargetShelfId(null);
+  }, [bracketTargetShelfId]);
+
+  /** 全棚受けを一括変更 */
+  const bulkChangeBracket = useCallback((bracket: BracketType) => {
+    setDesign((prev) => ({
+      ...prev,
+      defaultBracketId: bracket.id,
+      shelves: prev.shelves.map((s) => ({ ...s, bracketId: bracket.id })),
     }));
   }, []);
 
@@ -679,6 +737,54 @@ export default function GridEditor() {
               );
             })}
 
+            {/* 装飾品アイコン */}
+            {design.accessories.map((acc) => {
+              const product = ACCESSORY_MAP.get(acc.productId);
+              const shelf = design.shelves.find((s) => s.id === acc.shelfId);
+              if (!product || !shelf) return null;
+              const lp = pillarMap.get(shelf.leftPillarId);
+              const rp = pillarMap.get(shelf.rightPillarId);
+              if (!lp || !rp) return null;
+              const shelfSx = toSvgX(Math.min(lp.x, rp.x));
+              const accSvgX = shelfSx + (acc.offsetX / Math.abs(rp.x - lp.x)) * (toSvgX(Math.max(lp.x, rp.x)) - shelfSx);
+              const board = SHELF_BOARDS.find((b) => b.id === shelf.material);
+              const thPx = Math.max((board?.thicknessMm ?? 18) * (DH / design.ceilingHeight), 4);
+              const accSvgY = acc.placement === "above"
+                ? toSvgY(shelf.y) - thPx / 2 - 14
+                : toSvgY(shelf.y) + thPx / 2 + 4;
+              const isAccSel = selectedId === acc.id;
+              return (
+                <g
+                  key={acc.id}
+                  onClick={(e) => { e.stopPropagation(); setSelectedId(acc.id); }}
+                  style={{ cursor: "pointer" }}
+                >
+                  {isAccSel && (
+                    <rect
+                      x={accSvgX - 10}
+                      y={accSvgY - 2}
+                      width={20}
+                      height={16}
+                      fill="none"
+                      stroke={C.selected}
+                      strokeWidth="2"
+                      rx="3"
+                      opacity="0.5"
+                    />
+                  )}
+                  <text
+                    x={accSvgX}
+                    y={accSvgY + 10}
+                    textAnchor="middle"
+                    fontSize="12"
+                    style={{ userSelect: "none" }}
+                  >
+                    {product.icon}
+                  </text>
+                </g>
+              );
+            })}
+
             {/* 柱 */}
             {design.pillars.map((pillar) => {
               const px = toSvgX(pillar.x) - PILLAR_PX / 2;
@@ -827,8 +933,63 @@ export default function GridEditor() {
               pMap={pillarMap}
               onUpdate={(u) => updateShelf(selectedElement.data.id, u)}
               onDelete={deleteSelected}
+              onOpenBracketModal={() => {
+                setBracketTargetShelfId(selectedElement.data.id);
+                setBracketModalOpen(true);
+              }}
+              onOpenAccessoryModal={(placement) => {
+                setAccessoryTargetShelf({ shelfId: selectedElement.data.id, placement });
+                setAccessoryModalOpen(true);
+              }}
+              currentBracketId={selectedElement.data.bracketId ?? design.defaultBracketId}
             />
           )}
+          {(() => {
+            const selAcc = design.accessories.find((a) => a.id === selectedId);
+            if (!selAcc) return null;
+            const product = ACCESSORY_MAP.get(selAcc.productId);
+            if (!product) return null;
+            return (
+              <div className="bg-white rounded-xl border-2 border-amber-300 p-4 space-y-3 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
+                    <span className="text-lg">{product.icon}</span>
+                    装飾品の設定
+                  </h3>
+                  <button
+                    onClick={() => deleteAccessory(selAcc.id)}
+                    className="text-xs text-red-500 hover:text-red-700 px-2 py-1 rounded hover:bg-red-50 transition-colors"
+                  >
+                    削除
+                  </button>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">{product.name}</p>
+                  <p className="text-xs text-gray-500">{product.description}</p>
+                  <p className="text-xs font-medium text-amber-600 mt-1">¥{product.priceYen.toLocaleString()}</p>
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">配置</label>
+                  <select
+                    value={selAcc.placement}
+                    onChange={(e) => {
+                      const placement = e.target.value as "above" | "below";
+                      setDesign((prev) => ({
+                        ...prev,
+                        accessories: prev.accessories.map((a) =>
+                          a.id === selAcc.id ? { ...a, placement } : a,
+                        ),
+                      }));
+                    }}
+                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+                  >
+                    <option value="above">棚板の上</option>
+                    <option value="below">棚板の下</option>
+                  </select>
+                </div>
+              </div>
+            );
+          })()}
           {!selectedElement && (
             <div className="bg-white rounded-xl border border-gray-200 p-4 text-sm text-gray-500">
               <p className="font-medium text-gray-700 mb-2">操作ガイド</p>
@@ -906,6 +1067,20 @@ export default function GridEditor() {
           </div>
         </section>
       )}
+
+      {/* Modals */}
+      <AccessoryModal
+        open={accessoryModalOpen}
+        onClose={() => { setAccessoryModalOpen(false); setAccessoryTargetShelf(null); }}
+        onSelect={addAccessory}
+      />
+      <BracketModal
+        open={bracketModalOpen}
+        onClose={() => { setBracketModalOpen(false); setBracketTargetShelfId(null); }}
+        onSelect={changeBracket}
+        onBulkApply={bulkChangeBracket}
+        currentBracketId={bracketTargetShelfId ? (design.shelves.find((s) => s.id === bracketTargetShelfId)?.bracketId ?? design.defaultBracketId) : design.defaultBracketId}
+      />
     </div>
   );
 }
@@ -1035,11 +1210,17 @@ function ShelfProps({
   pMap,
   onUpdate,
   onDelete,
+  onOpenBracketModal,
+  onOpenAccessoryModal,
+  currentBracketId,
 }: {
   shelf: GridShelf;
   pMap: Map<string, GridPillar>;
   onUpdate: (u: Partial<GridShelf>) => void;
   onDelete: () => void;
+  onOpenBracketModal: () => void;
+  onOpenAccessoryModal: (placement: "above" | "below") => void;
+  currentBracketId: string;
 }) {
   const lp = pMap.get(shelf.leftPillarId);
   const rp = pMap.get(shelf.rightPillarId);
@@ -1106,6 +1287,37 @@ function ShelfProps({
           />
         </div>
       )}
+
+      {/* 棚受け金具 */}
+      <div>
+        <label className="text-xs text-gray-500 mb-1 block">棚受け金具</label>
+        <button
+          onClick={onOpenBracketModal}
+          className="w-full text-left px-3 py-2 border border-gray-300 rounded-lg text-sm hover:border-amber-400 hover:bg-amber-50 transition-all flex items-center justify-between"
+        >
+          <span>{(BRACKET_MAP.get(currentBracketId) ?? BRACKETS[0]).icon} {(BRACKET_MAP.get(currentBracketId) ?? BRACKETS[0]).name}</span>
+          <span className="text-gray-400 text-xs">変更</span>
+        </button>
+      </div>
+
+      {/* 装飾品追加 */}
+      <div>
+        <label className="text-xs text-gray-500 mb-1 block">装飾品</label>
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            onClick={() => onOpenAccessoryModal("above")}
+            className="px-3 py-2 border border-gray-200 rounded-lg text-xs text-gray-600 hover:border-amber-300 hover:bg-amber-50 transition-all"
+          >
+            ⬆ 棚板の上に追加
+          </button>
+          <button
+            onClick={() => onOpenAccessoryModal("below")}
+            className="px-3 py-2 border border-gray-200 rounded-lg text-xs text-gray-600 hover:border-amber-300 hover:bg-amber-50 transition-all"
+          >
+            ⬇ 棚板の下に追加
+          </button>
+        </div>
+      </div>
 
       <div className="pt-2 border-t border-gray-100 text-xs text-gray-400">
         {board.name} / {width}x{board.fixedDepthMm || shelf.depth}x{board.thicknessMm}mm
