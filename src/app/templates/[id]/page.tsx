@@ -18,7 +18,7 @@ export async function generateMetadata({
   const template = SHELF_TEMPLATES.find((t) => t.id === id);
   if (!template) return {};
 
-  const title = `${template.name}の設計図・材料リスト | DIY棚シミュレーター`;
+  const title = `${template.name}の設計図・材料リスト`;
   const description = `${template.name}をDIYで作る方法。${template.description} 天井高を入力するだけで木材カット寸法・必要な部材リスト・設計図を自動生成。無料の棚設計ツール。`;
 
   return {

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "棚テンプレート一覧 | 人気のDIY棚デザイン12選",
+  title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
   description:
     "DIY棚の人気テンプレート12種類を紹介。本棚、壁面収納、キッチン棚、シューズラック、デスク棚など。テンプレートを選ぶだけで設計図と材料リストを自動生成。",
   keywords: [
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "本棚 設計図 無料",
   ],
   openGraph: {
-    title: "棚テンプレート一覧 | 人気のDIY棚デザイン12選",
+    title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
     description:
       "DIY棚の人気テンプレート12種類。テンプレートを選んでシミュレーションするだけ。",
     type: "website",
