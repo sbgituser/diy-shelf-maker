@@ -13,6 +13,10 @@ export interface HowtoArticle {
   sections: ArticleSection[];
   faq: { q: string; a: string }[];
   relatedTemplates: string[]; // template IDs
+  /** CTA用の推奨テンプレートID（シミュレーターにこのテンプレートを適用して遷移） */
+  primaryTemplate: string;
+  /** CTA用の推奨テンプレート説明（例: "漫画200冊収納の本棚" ） */
+  primaryCta: string;
 }
 
 export interface ArticleSection {
@@ -119,6 +123,8 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
       },
     ],
     relatedTemplates: ["bookshelf", "labrico-wall-storage", "wallist-heavy-shelf"],
+    primaryTemplate: "bookshelf",
+    primaryCta: "ラブリコで本棚を設計してみる",
   },
   {
     slug: "rental-wall-storage-guide",
@@ -210,6 +216,8 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
       },
     ],
     relatedTemplates: ["labrico-wall-storage", "rental-kitchen-rack", "closet-shelf"],
+    primaryTemplate: "labrico-wall-storage",
+    primaryCta: "賃貸OK壁面収納を設計してみる",
   },
   {
     slug: "2x4-bookshelf-diy",
@@ -310,6 +318,8 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
       },
     ],
     relatedTemplates: ["bookshelf", "diawall-bookshelf", "2x4-basic-shelf"],
+    primaryTemplate: "bookshelf",
+    primaryCta: "2×4材の本棚を設計してみる",
   },
   {
     slug: "shelf-wood-cutting-calculator",
@@ -411,6 +421,8 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
       },
     ],
     relatedTemplates: ["2x4-basic-shelf", "bookshelf", "wall-shelf"],
+    primaryTemplate: "2x4-basic-shelf",
+    primaryCta: "カット寸法を自動計算してみる",
   },
   {
     slug: "beginner-diy-shelf-design",
@@ -506,5 +518,7 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
       },
     ],
     relatedTemplates: ["2x4-basic-shelf", "bookshelf", "labrico-wall-storage"],
+    primaryTemplate: "2x4-basic-shelf",
+    primaryCta: "初めての棚を設計してみる",
   },
 ];

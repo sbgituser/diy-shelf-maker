@@ -217,40 +217,43 @@ export default async function HowtoArticlePage({
         </section>
       </article>
 
-      {/* CTA */}
-      <div className="mt-12 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-8 text-center border border-amber-200">
-        <h2 className="text-lg font-bold text-gray-900">
-          棚のサイズ、自動計算しませんか？
+      {/* メインCTA — 記事の推奨テンプレートでシミュレーターに直結 */}
+      <div className="mt-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-8 text-center text-white">
+        <h2 className="text-xl font-bold">
+          この記事の内容を、すぐ試してみませんか？
         </h2>
-        <p className="mt-2 text-gray-600 text-sm">
-          天井高を入力するだけで、カット寸法・材料リスト・設計図が無料で生成されます
+        <p className="mt-2 text-amber-100 text-sm">
+          天井高を入力するだけ。カット寸法・材料リスト・設計図を無料で自動生成。
         </p>
         <Link
-          href="/"
-          className="inline-block mt-4 bg-amber-500 text-white font-bold px-6 py-3 rounded-lg hover:bg-amber-600 transition-colors shadow-sm"
+          href={`/?template=${article.primaryTemplate}`}
+          className="inline-block mt-5 bg-white text-amber-600 font-bold px-7 py-3.5 rounded-lg hover:bg-amber-50 transition-colors shadow-sm text-base"
         >
-          無料シミュレーターを試す →
+          {article.primaryCta} →
         </Link>
       </div>
 
-      {/* 関連テンプレート */}
+      {/* 用途別シミュレーターリンク */}
       {relatedTemplates.length > 0 && (
         <div className="mt-10">
           <h2 className="text-lg font-bold text-gray-900 mb-4">
-            関連する棚テンプレート
+            この記事に関連する設計を試す
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {relatedTemplates.map((t) => (
               <Link
                 key={t.id}
-                href={`/templates/${t.id}`}
-                className="group block bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 hover:shadow-sm transition-all"
+                href={`/?template=${t.id}`}
+                className="group block bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 hover:shadow-md transition-all"
               >
                 <span className="text-2xl">{t.icon}</span>
                 <h3 className="mt-2 font-semibold text-gray-800 text-sm group-hover:text-amber-600 transition-colors">
-                  {t.name}
+                  {t.name}を設計する
                 </h3>
                 <p className="mt-1 text-xs text-gray-500">{t.description}</p>
+                <span className="mt-2 inline-block text-xs text-amber-600 font-medium">
+                  シミュレーターで開く →
+                </span>
               </Link>
             ))}
           </div>
