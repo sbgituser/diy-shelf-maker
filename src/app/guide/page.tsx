@@ -20,11 +20,11 @@ export const metadata: Metadata = {
     description: "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
     type: "website",
     locale: "ja_JP",
-    url: "https://diy.kuras-plus.com/guide",
+    url: "https://diy-shelf-maker.kuras-plus.com/guide",
     siteName: "DIY棚シミュレーター by kuras-plus",
   },
   alternates: {
-    canonical: "https://diy.kuras-plus.com/guide",
+    canonical: "https://diy-shelf-maker.kuras-plus.com/guide",
   },
 };
 

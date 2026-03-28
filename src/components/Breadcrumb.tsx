@@ -13,7 +13,7 @@ export default function Breadcrumb({ items }: { items: BreadcrumbItem[] }) {
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      ...(item.href ? { item: `https://diy.kuras-plus.com${item.href}` } : {}),
+      ...(item.href ? { item: `https://diy-shelf-maker.kuras-plus.com${item.href}` } : {}),
     })),
   };
 

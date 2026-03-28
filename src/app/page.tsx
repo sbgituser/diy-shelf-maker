@@ -24,11 +24,11 @@ export const metadata: Metadata = {
       "天井高入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応の無料棚設計ツール。",
     type: "website",
     locale: "ja_JP",
-    url: "https://diy.kuras-plus.com",
+    url: "https://diy-shelf-maker.kuras-plus.com",
     siteName: "DIY棚シミュレーター by kuras-plus",
   },
   alternates: {
-    canonical: "https://diy.kuras-plus.com",
+    canonical: "https://diy-shelf-maker.kuras-plus.com",
   },
 };
 
@@ -39,7 +39,7 @@ const jsonLd = {
   name: "DIY棚シミュレーター",
   description:
     "天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算。必要な部材リストと設計図も自動生成する無料のDIY棚設計ツール。",
-  url: "https://diy.kuras-plus.com",
+  url: "https://diy-shelf-maker.kuras-plus.com",
   applicationCategory: "DesignApplication",
   operatingSystem: "Web Browser",
   offers: {

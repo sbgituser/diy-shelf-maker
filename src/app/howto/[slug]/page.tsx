@@ -31,11 +31,11 @@ export async function generateMetadata({
       type: "article",
       locale: "ja_JP",
       publishedTime: article.publishedAt,
-      url: `https://diy.kuras-plus.com/howto/${article.slug}`,
+      url: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
       siteName: "DIY棚シミュレーター by kuras-plus",
     },
     alternates: {
-      canonical: `https://diy.kuras-plus.com/howto/${article.slug}`,
+      canonical: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
     },
   };
 }

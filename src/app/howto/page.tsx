@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     locale: "ja_JP",
   },
   alternates: {
-    canonical: "https://diy.kuras-plus.com/howto",
+    canonical: "https://diy-shelf-maker.kuras-plus.com/howto",
   },
 };
 

@@ -10,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://diy.kuras-plus.com/sitemap.xml",
+    sitemap: "https://diy-shelf-maker.kuras-plus.com/sitemap.xml",
   };
 }

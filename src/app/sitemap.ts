@@ -4,7 +4,7 @@ import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const dynamic = "force-static";
 
-const BASE_URL = "https://diy.kuras-plus.com";
+const BASE_URL = "https://diy-shelf-maker.kuras-plus.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();

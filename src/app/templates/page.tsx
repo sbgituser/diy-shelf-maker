@@ -21,10 +21,10 @@ export const metadata: Metadata = {
       "DIY棚の人気テンプレート12種類。テンプレートを選んでシミュレーションするだけ。",
     type: "website",
     locale: "ja_JP",
-    url: "https://diy.kuras-plus.com/templates",
+    url: "https://diy-shelf-maker.kuras-plus.com/templates",
   },
   alternates: {
-    canonical: "https://diy.kuras-plus.com/templates",
+    canonical: "https://diy-shelf-maker.kuras-plus.com/templates",
   },
 };
 
@@ -33,16 +33,16 @@ const jsonLd = {
   "@type": "CollectionPage",
   name: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
   description: "DIY棚の人気テンプレート12種類を紹介。本棚、壁面収納、キッチン棚、シューズラック、デスク棚など。",
-  url: "https://diy.kuras-plus.com/templates",
+  url: "https://diy-shelf-maker.kuras-plus.com/templates",
   isPartOf: {
     "@type": "WebSite",
     name: "DIY棚シミュレーター",
-    url: "https://diy.kuras-plus.com",
+    url: "https://diy-shelf-maker.kuras-plus.com",
   },
   hasPart: SHELF_TEMPLATES.map((t) => ({
     "@type": "HowTo",
     name: `${t.name}の作り方`,
-    url: `https://diy.kuras-plus.com/templates/${t.id}`,
+    url: `https://diy-shelf-maker.kuras-plus.com/templates/${t.id}`,
   })),
 };
 

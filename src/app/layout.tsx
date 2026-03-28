@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     description:
       "天井高入力で木材カット寸法を自動計算。部材リストと設計図も生成。賃貸DIYに。",
   },
-  metadataBase: new URL("https://diy.kuras-plus.com"),
+  metadataBase: new URL("https://diy-shelf-maker.kuras-plus.com"),
 };
 
 export default function RootLayout({
