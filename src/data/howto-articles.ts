@@ -3,6 +3,11 @@
  * SEOロングテール拡大のためのコンテンツ記事
  */
 
+export interface AmazonLink {
+  keyword: string;
+  label: string;
+}
+
 export interface HowtoArticle {
   slug: string;
   title: string;
@@ -17,6 +22,8 @@ export interface HowtoArticle {
   primaryTemplate: string;
   /** CTA用の推奨テンプレート説明（例: "漫画200冊収納の本棚" ） */
   primaryCta: string;
+  /** 記事に関連する材料・工具のAmazonリンク */
+  amazonLinks?: AmazonLink[];
 }
 
 export interface ArticleSection {
@@ -125,6 +132,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["bookshelf", "labrico-wall-storage", "wallist-heavy-shelf"],
     primaryTemplate: "bookshelf",
     primaryCta: "ラブリコで本棚を設計してみる",
+    amazonLinks: [
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "ディアウォール 2×4", label: "ディアウォール 2×4" },
+      { keyword: "ラブリコ 2×4 強力 アジャスター", label: "ラブリコ強力タイプ" },
+      { keyword: "ウォリスト 2×4 アジャスター", label: "ウォリスト 2×4アジャスター" },
+    ],
   },
   {
     slug: "rental-wall-storage-guide",
@@ -218,6 +231,14 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["labrico-wall-storage", "rental-kitchen-rack", "closet-shelf"],
     primaryTemplate: "labrico-wall-storage",
     primaryCta: "賃貸OK壁面収納を設計してみる",
+    amazonLinks: [
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "ディアウォール 2×4", label: "ディアウォール 2×4" },
+      { keyword: "2×4 木材 SPF ホワイトウッド", label: "2×4材（SPF）" },
+      { keyword: "パイン集成材 棚板 18mm", label: "パイン集成材 棚板" },
+      { keyword: "棚受け 金具 L字", label: "棚受け L字金具" },
+      { keyword: "コンベックス メジャー 5.5m DIY", label: "メジャー（5.5m）" },
+    ],
   },
   {
     slug: "2x4-bookshelf-diy",
@@ -320,6 +341,15 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["bookshelf", "diawall-bookshelf", "2x4-basic-shelf"],
     primaryTemplate: "bookshelf",
     primaryCta: "2×4材の本棚を設計してみる",
+    amazonLinks: [
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "2×4 木材 SPF ホワイトウッド", label: "2×4材（SPF）" },
+      { keyword: "パイン集成材 棚板 18mm", label: "パイン集成材 棚板 18mm" },
+      { keyword: "棚受け 金具 2×4", label: "棚受け金具" },
+      { keyword: "木ネジ ステンレス DIY", label: "木ネジ（ステンレス）" },
+      { keyword: "サンドペーパー 木工 セット", label: "サンドペーパーセット" },
+      { keyword: "木材 ワックス アンティーク DIY", label: "木材ワックス" },
+    ],
   },
   {
     slug: "shelf-wood-cutting-calculator",
@@ -423,6 +453,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["2x4-basic-shelf", "bookshelf", "wall-shelf"],
     primaryTemplate: "2x4-basic-shelf",
     primaryCta: "カット寸法を自動計算してみる",
+    amazonLinks: [
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "ディアウォール 2×4", label: "ディアウォール 2×4" },
+      { keyword: "コンベックス メジャー 5.5m DIY", label: "コンベックス（5.5m）" },
+      { keyword: "ソーガイド 木材カット DIY", label: "ソーガイド（直角カット治具）" },
+    ],
   },
   {
     slug: "beginner-diy-shelf-design",
@@ -520,6 +556,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["2x4-basic-shelf", "bookshelf", "labrico-wall-storage"],
     primaryTemplate: "2x4-basic-shelf",
     primaryCta: "初めての棚を設計してみる",
+    amazonLinks: [
+      { keyword: "電動ドライバー コードレス DIY 初心者", label: "電動ドライバー（コードレス）" },
+      { keyword: "ラブリコ セット 棚 2×4", label: "ラブリコ スターターセット" },
+      { keyword: "コンベックス メジャー 5.5m DIY", label: "コンベックス（5.5m）" },
+      { keyword: "サンドペーパー 木工 セット", label: "サンドペーパーセット" },
+    ],
   },
   {
     slug: "pegboard-wall-storage",
@@ -616,6 +658,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["wall-shelf", "labrico-wall-storage", "2x4-basic-shelf"],
     primaryTemplate: "wall-shelf",
     primaryCta: "壁面収納を設計してみる",
+    amazonLinks: [
+      { keyword: "有孔ボード パンチングボード 木製", label: "有孔ボード（木製）" },
+      { keyword: "有孔ボード フック セット", label: "有孔ボード専用フックセット" },
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "L字ブラケット 棚 固定 金具", label: "L字ブラケット" },
+    ],
   },
   {
     slug: "100yen-shop-shelf-diy",
@@ -705,6 +753,11 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["2x4-basic-shelf", "sunoko-shelf", "bookshelf"],
     primaryTemplate: "2x4-basic-shelf",
     primaryCta: "本格的な棚の設計に挑戦",
+    amazonLinks: [
+      { keyword: "L字金具 棚 補強 DIY", label: "L字金具（補強用）" },
+      { keyword: "電動ドライバー 小型 充電式 DIY", label: "電動ドライバー（小型）" },
+      { keyword: "木工用ボンド DIY 速乾", label: "木工用ボンド" },
+    ],
   },
   {
     slug: "no-hole-wall-storage",
@@ -811,6 +864,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["labrico-wall-storage", "wall-shelf", "sunoko-shelf"],
     primaryTemplate: "labrico-wall-storage",
     primaryCta: "賃貸向け壁面収納を設計する",
+    amazonLinks: [
+      { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4アジャスター" },
+      { keyword: "ディアウォール 2×4", label: "ディアウォール 2×4" },
+      { keyword: "突っ張り棒 壁面収納 強力", label: "突っ張り棒（強力タイプ）" },
+      { keyword: "壁掛け フック 穴あけ不要 賃貸", label: "穴あけ不要 壁掛けフック" },
+    ],
   },
   {
     slug: "stylish-bookshelf-diy",
@@ -909,6 +968,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["bookshelf", "labrico-wall-storage", "sunoko-shelf"],
     primaryTemplate: "bookshelf",
     primaryCta: "オリジナル本棚を設計する",
+    amazonLinks: [
+      { keyword: "木材 ワックス アンティーク DIY", label: "木材ワックス（アンティーク仕上げ）" },
+      { keyword: "棚受け アイアン おしゃれ ブラック", label: "アイアン棚受け（おしゃれ）" },
+      { keyword: "オイルステイン 水性 DIY 木材", label: "オイルステイン（水性）" },
+      { keyword: "サンドペーパー 木工 セット", label: "サンドペーパーセット" },
+    ],
   },
   {
     slug: "beginner-tools-guide",
@@ -1012,5 +1077,12 @@ export const HOWTO_ARTICLES: HowtoArticle[] = [
     relatedTemplates: ["2x4-basic-shelf", "bookshelf", "labrico-wall-storage"],
     primaryTemplate: "2x4-basic-shelf",
     primaryCta: "工具を揃えたら棚を設計してみる",
+    amazonLinks: [
+      { keyword: "電動ドライバー DIY 初心者 おすすめ コードレス", label: "電動ドライバー（初心者向け）" },
+      { keyword: "コンベックス メジャー 5.5m DIY", label: "コンベックス（5.5m）" },
+      { keyword: "水平器 マグネット DIY 棚", label: "水平器（マグネット付き）" },
+      { keyword: "F型クランプ 木工 DIY", label: "Fクランプ" },
+      { keyword: "紙やすり セット 木工 DIY", label: "サンドペーパーセット" },
+    ],
   },
 ];

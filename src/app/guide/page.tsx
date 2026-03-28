@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { buildAmazonUrl } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "使い方ガイド",
@@ -234,6 +235,32 @@ export default function GuidePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Amazon材料リンク */}
+      <section className="mb-8">
+        <p className="text-sm text-gray-600 mb-3">
+          棚作りに必要な材料・工具をAmazonで探す:
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ" },
+            { keyword: "ディアウォール 2×4", label: "ディアウォール" },
+            { keyword: "2×4 木材 SPF ホワイトウッド", label: "2×4材" },
+            { keyword: "電動ドライバー コードレス DIY 初心者", label: "電動ドライバー" },
+          ].map((item) => (
+            <a
+              key={item.keyword}
+              href={buildAmazonUrl(item.keyword)}
+              target="_blank"
+              rel="noopener noreferrer nofollow sponsored"
+              className="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 text-sm rounded-lg hover:bg-amber-100 transition-colors"
+            >
+              🛒 {item.label}
+            </a>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
       </section>
 
       {/* CTA */}

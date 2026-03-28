@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import { buildAmazonUrl } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "DIY棚の作り方ガイド一覧",
@@ -72,8 +73,37 @@ export default function HowtoListPage() {
         ))}
       </div>
 
+      {/* Amazon材料CTA */}
+      <div className="mt-10 bg-stone-50 border border-stone-200 rounded-xl p-6">
+        <h2 className="text-base font-bold text-gray-800 mb-3">
+          🛒 DIY棚の材料・工具をAmazonで揃える
+        </h2>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {[
+            { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ 2×4" },
+            { keyword: "ディアウォール 2×4", label: "ディアウォール 2×4" },
+            { keyword: "DIY 棚 材料 セット 2×4", label: "DIY棚 材料セット" },
+            { keyword: "2×4 木材 SPF ホワイトウッド", label: "2×4材（SPF）" },
+            { keyword: "電動ドライバー コードレス DIY 初心者", label: "電動ドライバー" },
+            { keyword: "棚受け 金具 L字 DIY", label: "棚受け金具" },
+          ].map((item) => (
+            <a
+              key={item.keyword}
+              href={buildAmazonUrl(item.keyword)}
+              target="_blank"
+              rel="noopener noreferrer nofollow sponsored"
+              className="flex items-center gap-1.5 bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-gray-700 hover:border-amber-300 hover:text-amber-700 transition-all"
+            >
+              <span className="flex-shrink-0 text-amber-400">▸</span>
+              {item.label}
+            </a>
+          ))}
+        </div>
+        <p className="mt-3 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
+      </div>
+
       {/* CTA */}
-      <div className="mt-12 text-center bg-amber-50 rounded-xl p-8">
+      <div className="mt-8 text-center bg-amber-50 rounded-xl p-8">
         <h2 className="text-lg font-bold text-gray-900">
           読んだら、すぐ設計してみよう
         </h2>

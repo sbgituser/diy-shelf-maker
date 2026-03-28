@@ -1,4 +1,5 @@
 import { SHELF_TEMPLATES } from "@/data/templates";
+import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -97,6 +98,30 @@ export default function TemplatesPage() {
         >
           シミュレーターを使う →
         </Link>
+      </div>
+
+      {/* Amazon材料リンク */}
+      <div className="mt-8 text-center text-sm text-gray-500">
+        <p className="mb-2">テンプレートを選んで設計図を生成 → 材料をまとめてAmazonで購入:</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {[
+            { keyword: "ラブリコ 2×4 アジャスター", label: "ラブリコ" },
+            { keyword: "ディアウォール 2×4", label: "ディアウォール" },
+            { keyword: "2×4 木材 SPF ホワイトウッド", label: "2×4材" },
+            { keyword: "パイン集成材 棚板 18mm", label: "棚板" },
+          ].map((item) => (
+            <a
+              key={item.keyword}
+              href={buildAmazonUrl(item.keyword)}
+              target="_blank"
+              rel="noopener noreferrer nofollow sponsored"
+              className="inline-flex items-center gap-1 px-3 py-1.5 bg-stone-50 border border-stone-200 text-stone-600 text-xs rounded-lg hover:border-amber-300 hover:text-amber-700 transition-colors"
+            >
+              🛒 {item.label}
+            </a>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
       </div>
     </div>
     </>
