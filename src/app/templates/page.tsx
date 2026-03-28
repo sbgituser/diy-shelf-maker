@@ -2,6 +2,7 @@ import { SHELF_TEMPLATES } from "@/data/templates";
 import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
@@ -53,6 +54,13 @@ export default function TemplatesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
     <div className="max-w-4xl mx-auto">
+        <Breadcrumb
+        items={[
+          { name: "ホーム", href: "/" },
+          { name: "テンプレート一覧" },
+        ]}
+      />
+
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
           DIY棚テンプレート一覧

@@ -4,6 +4,7 @@ import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 // SSGで全記事ページを事前生成
 export function generateStaticParams() {
@@ -96,17 +97,13 @@ export default async function HowtoArticlePage({
       />
 
       {/* パンくずリスト */}
-      <nav className="text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-amber-600">
-          トップ
-        </Link>
-        <span className="mx-2">›</span>
-        <Link href="/howto" className="hover:text-amber-600">
-          作り方ガイド
-        </Link>
-        <span className="mx-2">›</span>
-        <span className="text-gray-700">{article.title}</span>
-      </nav>
+      <Breadcrumb
+        items={[
+          { name: "ホーム", href: "/" },
+          { name: "作り方ガイド", href: "/howto" },
+          { name: article.title },
+        ]}
+      />
 
       {/* 記事ヘッダー */}
       <header className="mb-8">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
 import { buildAmazonUrl } from "@/data/products";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "DIY棚の作り方ガイド一覧",
@@ -29,6 +30,14 @@ export const metadata: Metadata = {
 export default function HowtoListPage() {
   return (
     <div className="max-w-4xl mx-auto">
+      {/* パンくずリスト */}
+      <Breadcrumb
+        items={[
+          { name: "ホーム", href: "/" },
+          { name: "作り方ガイド" },
+        ]}
+      />
+
       {/* ページヘッダー */}
       <div className="text-center mb-10">
         <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">

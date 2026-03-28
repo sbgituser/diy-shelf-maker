@@ -3,6 +3,7 @@ import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 // SSGで全テンプレートページを事前生成
 export function generateStaticParams() {
@@ -379,6 +380,15 @@ export default async function TemplatePage({
       />
 
       <article className="max-w-3xl mx-auto">
+        {/* パンくずリスト */}
+        <Breadcrumb
+          items={[
+            { name: "ホーム", href: "/" },
+            { name: "テンプレート一覧", href: "/templates" },
+            { name: `${template.name}の設計図・材料リスト` },
+          ]}
+        />
+
         {/* ヘッダー */}
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 border border-amber-100 mb-8">
           <div className="flex items-center gap-3 mb-3">

@@ -1,11 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { buildAmazonUrl } from "@/data/products";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "使い方ガイド",
-  description:
-    "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
+  description: "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
+  keywords: [
+    "DIY棚 使い方",
+    "ディアウォール 使い方",
+    "ラブリコ 使い方",
+    "突っ張り棚 DIY 初心者",
+    "天井高 測り方",
+    "木材カット 注意点",
+    "2×4 アジャスター 選び方",
+  ],
+  openGraph: {
+    title: "使い方ガイド",
+    description: "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
+    type: "website",
+    locale: "ja_JP",
+    url: "https://diy.kuras-plus.com/guide",
+    siteName: "DIY棚シミュレーター by kuras-plus",
+  },
+  alternates: {
+    canonical: "https://diy.kuras-plus.com/guide",
+  },
 };
 
 const ADJUSTERS = [
@@ -61,9 +81,73 @@ const FAQ = [
   },
 ];
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
+
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "DIY棚シミュレーターの使い方",
+  description: "DIY棚シミュレーターで棚を設計する4ステップ",
+  step: [
+    {
+      "@type": "HowToStep",
+      position: 1,
+      name: "天井高を測る",
+      text: "設置場所の天井高をメジャーで測りましょう。天井と床の間を垂直に測定します。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 2,
+      name: "アジャスターを選ぶ",
+      text: "ディアウォール・ラブリコ・ラブリコ強力・ウォリストの4種類から用途に合わせて選びます。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 3,
+      name: "棚のサイズを設定",
+      text: "テンプレートを選ぶか、手動で柱の本数・棚板の枚数・幅・奥行を指定します。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 4,
+      name: "部材を購入",
+      text: "部材リストの各アイテムのAmazonボタンからまとめて購入できます。",
+    },
+  ],
+};
+
 export default function GuidePage() {
   return (
     <div className="max-w-3xl mx-auto">
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
+
+      {/* パンくずリスト */}
+      <Breadcrumb
+        items={[
+          { name: "ホーム", href: "/" },
+          { name: "使い方ガイド" },
+        ]}
+      />
+
       {/* ヘッダー */}
       <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 border border-amber-100 mb-10">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
