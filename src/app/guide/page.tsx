@@ -348,6 +348,35 @@ export default function GuidePage() {
         <p className="mt-2 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
       </section>
 
+      {/* 関連ガイド・テンプレートへの導線 */}
+      <section className="mb-8 bg-gray-50 rounded-xl border border-gray-200 p-5">
+        <h2 className="text-base font-bold text-gray-800 mb-3">
+          もっと詳しく学ぶ
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Link
+            href="/howto"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">📖</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">作り方ガイド一覧</div>
+              <div className="text-xs text-gray-500 mt-0.5">ラブリコ比較・賃貸DIY・本棚の作り方など</div>
+            </div>
+          </Link>
+          <Link
+            href="/templates"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">📐</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">テンプレート一覧</div>
+              <div className="text-xs text-gray-500 mt-0.5">本棚・キッチン棚・シューズラックなど12種</div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-6 sm:p-8 text-white text-center mb-8">
         <h2 className="text-xl font-bold mb-2">

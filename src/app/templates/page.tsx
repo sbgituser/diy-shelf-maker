@@ -3,6 +3,7 @@ import { buildAmazonUrl } from "@/data/products";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const metadata: Metadata = {
   title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
@@ -72,6 +73,45 @@ export default function TemplatesPage() {
         </p>
       </div>
 
+      {/* 人気のテンプレート */}
+      {(() => {
+        const refCount = new Map<string, number>();
+        for (const a of HOWTO_ARTICLES) {
+          for (const tid of a.relatedTemplates) {
+            refCount.set(tid, (refCount.get(tid) ?? 0) + 1);
+          }
+        }
+        const top3 = SHELF_TEMPLATES
+          .slice()
+          .sort((a, b) => (refCount.get(b.id) ?? 0) - (refCount.get(a.id) ?? 0))
+          .slice(0, 3);
+        return (
+          <div className="mb-8">
+            <h2 className="text-sm font-bold text-amber-700 mb-3 flex items-center gap-1">
+              <span>★</span> 人気のテンプレート
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {top3.map((template) => (
+                <Link
+                  key={template.id}
+                  href={`/templates/${template.id}`}
+                  className="block bg-amber-50 rounded-xl border border-amber-200 p-5 hover:border-amber-400 hover:shadow-md transition-all group"
+                >
+                  <div className="text-3xl mb-2">{template.icon}</div>
+                  <h3 className="font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+                    {template.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-500 leading-relaxed">
+                    {template.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
+      <h2 className="text-sm font-bold text-gray-600 mb-3">すべてのテンプレート</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {SHELF_TEMPLATES.map((template) => (
           <Link

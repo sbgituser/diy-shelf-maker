@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import { HOWTO_ARTICLES, type HowtoArticle } from "@/data/howto-articles";
 import { buildAmazonUrl } from "@/data/products";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -28,7 +28,51 @@ export const metadata: Metadata = {
   },
 };
 
+function getCategory(article: HowtoArticle): string {
+  const text = [article.slug, article.title, ...article.keywords].join(" ");
+  if (/beginner|初心者|入門/.test(text)) return "初心者向け";
+  if (/比較|vs-diawall|labrico-vs/.test(text)) return "アジャスター選び";
+  if (/kitchen|キッチン|調味料/.test(text)) return "キッチン";
+  if (/shoe|シューズ|靴|entrance|玄関/.test(text)) return "玄関";
+  if (/desk|デスク/.test(text)) return "デスク・書斎";
+  if (/closet|クローゼット|押入れ/.test(text)) return "クローゼット";
+  if (/laundry|ランドリー|洗濯|洗面/.test(text)) return "洗面所・ランドリー";
+  if (/kids|子供|絵本|cat|猫/.test(text)) return "子供部屋・ペット";
+  if (/garage|ガレージ|物置/.test(text)) return "ガレージ・物置";
+  if (/balcony|ベランダ|plant|グリーン/.test(text)) return "ベランダ・屋外";
+  if (/賃貸|rental|no-hole|pegboard|wall-storage|収納/.test(text)) return "収納・壁面";
+  return "DIYノウハウ";
+}
+
+const CATEGORY_ORDER = [
+  "初心者向け",
+  "アジャスター選び",
+  "収納・壁面",
+  "キッチン",
+  "玄関",
+  "デスク・書斎",
+  "クローゼット",
+  "洗面所・ランドリー",
+  "子供部屋・ペット",
+  "ベランダ・屋外",
+  "ガレージ・物置",
+  "DIYノウハウ",
+];
+
 export default function HowtoListPage() {
+  // カテゴリ別グルーピング
+  const grouped = new Map<string, HowtoArticle[]>();
+  for (const article of HOWTO_ARTICLES) {
+    const cat = getCategory(article);
+    if (!grouped.has(cat)) grouped.set(cat, []);
+    grouped.get(cat)!.push(article);
+  }
+  // 定義順で並べ、残りは末尾
+  const orderedCategories = [
+    ...CATEGORY_ORDER.filter((c) => grouped.has(c)),
+    ...[...grouped.keys()].filter((c) => !CATEGORY_ORDER.includes(c)),
+  ];
+
   return (
     <div className="max-w-4xl mx-auto">
       {/* パンくずリスト */}
@@ -50,37 +94,49 @@ export default function HowtoListPage() {
         </p>
       </div>
 
-      {/* 記事一覧 */}
-      <div className="grid gap-6 sm:grid-cols-2">
-        {HOWTO_ARTICLES.map((article) => (
-          <Link
-            key={article.slug}
-            href={`/howto/${article.slug}`}
-            className="group block bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md hover:border-amber-300 transition-all"
-          >
-            <div className="flex items-start gap-4">
-              <span className="text-3xl flex-shrink-0">{article.icon}</span>
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
-                  {article.title}
-                </h2>
-                <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                  {article.description}
-                </p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {article.keywords.slice(0, 3).map((kw) => (
-                    <span
-                      key={kw}
-                      className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full"
-                    >
-                      {kw}
-                    </span>
-                  ))}
-                </div>
+      {/* カテゴリ別記事一覧 */}
+      <div className="space-y-10">
+        {orderedCategories.map((category) => {
+          const articles = grouped.get(category)!;
+          return (
+            <section key={category}>
+              <h2 className="text-base font-bold text-gray-700 mb-4 pb-2 border-b border-gray-200">
+                {category}
+              </h2>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {articles.map((article) => (
+                  <Link
+                    key={article.slug}
+                    href={`/howto/${article.slug}`}
+                    className="group block bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:border-amber-300 transition-all"
+                  >
+                    <div className="flex items-start gap-4">
+                      <span className="text-3xl flex-shrink-0">{article.icon}</span>
+                      <div>
+                        <h3 className="text-base font-semibold text-gray-900 group-hover:text-amber-600 transition-colors">
+                          {article.title}
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                          {article.description}
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {article.keywords.slice(0, 3).map((kw) => (
+                            <span
+                              key={kw}
+                              className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full"
+                            >
+                              {kw}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            </div>
-          </Link>
-        ))}
+            </section>
+          );
+        })}
       </div>
 
       {/* Amazon材料CTA */}

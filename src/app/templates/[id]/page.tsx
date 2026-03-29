@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 // SSGで全テンプレートページを事前生成
 export function generateStaticParams() {
@@ -391,6 +392,11 @@ export default async function TemplatePage({
 
   const details = TEMPLATE_DETAILS[template.id];
 
+  // 逆引き: 当テンプレートを参照しているhowto記事を最大5件取得
+  const relatedArticles = HOWTO_ARTICLES.filter((a) =>
+    a.relatedTemplates.includes(template.id)
+  ).slice(0, 5);
+
   // 材料名からAmazon検索キーワードへのマッピング
   const materialKeywords: Record<string, string> = {
     "2×4材": "2×4 木材 SPF ホワイトウッド",
@@ -615,6 +621,34 @@ export default async function TemplatePage({
             シミュレーターを使う →
           </Link>
         </section>
+
+        {/* 関連DIYガイド */}
+        {relatedArticles.length > 0 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              関連DIYガイド
+            </h2>
+            <div className="space-y-3">
+              {relatedArticles.map((a) => (
+                <Link
+                  key={a.slug}
+                  href={`/howto/${a.slug}`}
+                  className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+                >
+                  <span className="text-2xl flex-shrink-0">{a.icon}</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">
+                      {a.title}
+                    </h3>
+                    <p className="mt-1 text-xs text-gray-500 leading-relaxed">
+                      {a.description}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 関連テンプレートへの内部リンク */}
         <section className="mb-8">

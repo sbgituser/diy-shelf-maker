@@ -286,15 +286,20 @@ export default async function HowtoArticlePage({
         </div>
       )}
 
-      {/* 他のガイド記事 */}
+      {/* あわせて読みたい */}
       <div className="mt-10 mb-4">
         <h2 className="text-lg font-bold text-gray-900 mb-4">
-          他のガイド記事
+          あわせて読みたい
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {HOWTO_ARTICLES.filter((a) => a.slug !== article.slug)
+            .map((a) => ({
+              article: a,
+              score: a.keywords.filter((k) => article.keywords.includes(k)).length,
+            }))
+            .sort((x, y) => y.score - x.score)
             .slice(0, 4)
-            .map((a) => (
+            .map(({ article: a }) => (
               <Link
                 key={a.slug}
                 href={`/howto/${a.slug}`}

@@ -25,13 +25,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${BASE_URL}/templates`,
-      priority: 0.9,
+      priority: 0.8,
       changeFrequency: "weekly",
       lastModified: now,
     },
     {
       url: `${BASE_URL}/howto`,
-      priority: 0.9,
+      priority: 0.8,
       changeFrequency: "weekly",
       lastModified: now,
     },
@@ -48,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // How-to記事ページ
   const howtoPages: MetadataRoute.Sitemap = HOWTO_ARTICLES.map((a) => ({
     url: `${BASE_URL}/howto/${a.slug}`,
-    priority: 0.8,
+    priority: 0.7,
     changeFrequency: "monthly" as const,
     lastModified: now,
   }));
