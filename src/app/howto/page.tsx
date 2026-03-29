@@ -21,6 +21,7 @@ export const metadata: Metadata = {
       "棚作りに役立つHow-to記事まとめ。ラブリコ・ディアウォール比較、賃貸OK壁面収納、木材カット計算方法など。",
     type: "website",
     locale: "ja_JP",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
   },
   alternates: {
     canonical: "https://diy-shelf-maker.kuras-plus.com/howto",

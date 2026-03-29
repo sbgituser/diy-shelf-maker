@@ -29,6 +29,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     siteName: "DIY棚シミュレーター by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",

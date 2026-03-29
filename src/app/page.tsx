@@ -26,6 +26,7 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com",
     siteName: "DIY棚シミュレーター by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
   },
   alternates: {
     canonical: "https://diy-shelf-maker.kuras-plus.com",

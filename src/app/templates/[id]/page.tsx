@@ -34,6 +34,7 @@ export async function generateMetadata({
       locale: "ja_JP",
       url: `https://diy-shelf-maker.kuras-plus.com/templates/${template.id}`,
       siteName: "DIY棚シミュレーター by kuras-plus",
+      images: [{ url: `/ogp/templates/${template.id}.png`, width: 1200, height: 630 }],
     },
     alternates: {
       canonical: `https://diy-shelf-maker.kuras-plus.com/templates/${template.id}`,
