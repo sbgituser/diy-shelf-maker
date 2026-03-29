@@ -36,6 +36,7 @@ export const metadata: Metadata = {
     title: "DIY棚シミュレーター | 棚設計を無料でシミュレーション",
     description:
       "天井高入力で木材カット寸法を自動計算。部材リストと設計図も生成。賃貸DIYに。",
+    images: ["/ogp/default-ogp.png"],
   },
   metadataBase: new URL("https://diy-shelf-maker.kuras-plus.com"),
 };

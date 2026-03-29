@@ -35,6 +35,10 @@ export async function generateMetadata({
       siteName: "DIY棚シミュレーター by kuras-plus",
       images: [{ url: `/ogp/howto/${article.slug}.png`, width: 1200, height: 630 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      images: [`/ogp/howto/${article.slug}.png`],
+    },
     alternates: {
       canonical: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
     },

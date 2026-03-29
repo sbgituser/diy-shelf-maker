@@ -23,7 +23,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/templates",
-    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+    images: [{ url: "/ogp/templates-list.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/templates-list.png"],
   },
   alternates: {
     canonical: "https://diy-shelf-maker.kuras-plus.com/templates",

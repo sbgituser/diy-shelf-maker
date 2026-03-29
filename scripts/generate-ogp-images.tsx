@@ -317,6 +317,39 @@ async function generateDefaultImage(fontData: ArrayBuffer): Promise<void> {
   console.log("  ✅ default-ogp.png");
 }
 
+async function generateGuideImage(fontData: ArrayBuffer): Promise<void> {
+  const element = buildOgElement(
+    "DIY棚シミュレーター 使い方ガイド",
+    "使い方ガイド",
+    "#059669",
+    "4ステップで棚設計完了"
+  );
+  await renderToPng(element, fontData, path.join(OUTPUT_DIR, "guide.png"));
+  console.log("  ✅ guide.png");
+}
+
+async function generateHowtoListImage(fontData: ArrayBuffer): Promise<void> {
+  const element = buildOgElement(
+    "DIY棚の作り方ガイド一覧",
+    "作り方ガイド",
+    "#0891b2",
+    "初心者から経験者まで使える実践ガイド"
+  );
+  await renderToPng(element, fontData, path.join(OUTPUT_DIR, "howto-list.png"));
+  console.log("  ✅ howto-list.png");
+}
+
+async function generateTemplatesListImage(fontData: ArrayBuffer): Promise<void> {
+  const element = buildOgElement(
+    "棚テンプレート一覧 - 人気のDIY棚デザイン",
+    "テンプレート",
+    "#d97706",
+    "テンプレートを選ぶだけで設計図を自動生成"
+  );
+  await renderToPng(element, fontData, path.join(OUTPUT_DIR, "templates-list.png"));
+  console.log("  ✅ templates-list.png");
+}
+
 async function generateHowtoImages(fontData: ArrayBuffer): Promise<number> {
   let count = 0;
   for (const article of HOWTO_ARTICLES) {
@@ -376,6 +409,14 @@ async function main(): Promise<void> {
 
   console.log("\n🔖 デフォルトOGP画像を生成中...");
   await generateDefaultImage(fontData);
+  totalCount += 1;
+
+  console.log("\n📋 ガイド・リストページのOGP画像を生成中...");
+  await generateGuideImage(fontData);
+  totalCount += 1;
+  await generateHowtoListImage(fontData);
+  totalCount += 1;
+  await generateTemplatesListImage(fontData);
   totalCount += 1;
 
   console.log("\n📖 作り方ガイドのOGP画像を生成中...");
