@@ -86,6 +86,12 @@ export default function RootLayout({
               >
                 使い方ガイド
               </a>
+              <a
+                href="/parts"
+                className="text-gray-600 hover:text-amber-600 transition-colors"
+              >
+                パーツ辞典
+              </a>
             </nav>
           </div>
         </header>

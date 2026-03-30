@@ -104,6 +104,30 @@ export default function Home() {
       {/* メインツール */}
       <DesignForm />
 
+      {/* パーツ辞典へのリンクセクション */}
+      <section className="max-w-5xl mx-auto mt-12 mb-4">
+        <a
+          href="/parts"
+          className="block bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100 hover:border-amber-300 hover:shadow-sm transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">📚</span>
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+                DIYパーツ辞典
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                ラブリコ・ディアウォール・2×4材・棚板・棚受け金具・工具など、突っ張り棚DIYに必要な
+                8カテゴリ・37パーツを徹底解説。選び方・使い方・FAQ付き。
+              </p>
+            </div>
+            <span className="ml-auto text-amber-600 font-medium text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+              見る →
+            </span>
+          </div>
+        </a>
+      </section>
+
       {/* SEO用テキストコンテンツ */}
       <section className="max-w-3xl mx-auto mt-16 space-y-8 text-gray-700 leading-relaxed text-sm">
         <h2 className="text-xl font-bold text-gray-800">

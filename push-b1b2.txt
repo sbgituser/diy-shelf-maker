@@ -1,0 +1,10 @@
+warning: in the working copy of 'src/app/templates/[id]/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/app/templates/page.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/GridEditor.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/PartsListTable.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/components/RecommendedTools.tsx', LF will be replaced by CRLF the next time Git touches it
+[master 6324c11] 収益化: Amazonアフィリエイト導線強化（おすすめ工具・まとめ購入CTA・テンプレ材料リンク）+ 構造化データ追加
+ 5 files changed, 221 insertions(+), 7 deletions(-)
+ create mode 100644 src/components/RecommendedTools.tsx
+remote: Permission to sbgituser/diy-shelf-maker.git denied to sbgituser.
+fatal: unable to access 'https://github.com/sbgituser/diy-shelf-maker.git/': The requested URL returned error: 403

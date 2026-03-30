@@ -401,6 +401,26 @@ export default async function TemplatePage({
     a.relatedTemplates.includes(template.id)
   ).slice(0, 5);
 
+  // 材料名からパーツ辞典IDへのマッピング
+  const materialPartsDictMap: Record<string, string> = {
+    "ラブリコ強力": "labrico_strong",
+    "ラブリコ": "labrico",
+    "ディアウォール": "diawall",
+    "ウォリスト": "wallist",
+    "2×4材": "spf_2x4",
+    "棚受け金具": "l_bracket",
+    "アイアンブラケット": "iron_bracket",
+    "ビス": "course_thread",
+    "ワトコオイル": "watco_oil",
+    "ブライワックス": "briwax",
+  };
+  function getPartsDictId(material: string): string | null {
+    for (const [key, partId] of Object.entries(materialPartsDictMap)) {
+      if (material.includes(key)) return partId;
+    }
+    return null;
+  }
+
   // 材料名からAmazon検索キーワードへのマッピング
   const materialKeywords: Record<string, string> = {
     "2×4材": "2×4 木材 SPF ホワイトウッド",
@@ -519,25 +539,36 @@ export default async function TemplatePage({
               <ul className="space-y-3">
                 {details.materials.map((m, i) => {
                   const keyword = getAmazonKeyword(m);
+                  const partId = getPartsDictId(m);
                   return (
                     <li key={i} className="flex items-center justify-between gap-2 text-gray-700">
                       <div className="flex items-start gap-2">
                         <span className="text-amber-500 mt-0.5">●</span>
                         <span>{m}</span>
                       </div>
-                      {keyword && (
-                        <a
-                          href={buildAmazonUrl(keyword)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-200 transition-colors flex-shrink-0"
-                        >
-                          Amazon
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
-                      )}
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {partId && (
+                          <Link
+                            href={`/parts/${partId}`}
+                            className="inline-flex items-center gap-1 px-2 py-1 bg-orange-50 text-orange-700 border border-orange-200 rounded-md text-xs font-medium hover:bg-orange-100 transition-colors"
+                          >
+                            辞典
+                          </Link>
+                        )}
+                        {keyword && (
+                          <a
+                            href={buildAmazonUrl(keyword)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-200 transition-colors"
+                          >
+                            Amazon
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        )}
+                      </div>
                     </li>
                   );
                 })}

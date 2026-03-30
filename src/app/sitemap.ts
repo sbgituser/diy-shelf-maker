@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { SHELF_TEMPLATES } from "@/data/templates";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import { PART_CATEGORIES } from "@/data/part-categories";
+import { PARTS_DICTIONARY } from "@/data/parts-dictionary";
 
 export const dynamic = "force-static";
 
@@ -53,5 +55,38 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: now,
   }));
 
-  return [...staticPages, ...templatePages, ...howtoPages];
+  // パーツ辞典トップ
+  const partsTopPage: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/parts`,
+      priority: 0.8,
+      changeFrequency: "monthly" as const,
+      lastModified: now,
+    },
+  ];
+
+  // パーツ辞典カテゴリページ
+  const partsCategoryPages: MetadataRoute.Sitemap = PART_CATEGORIES.map((cat) => ({
+    url: `${BASE_URL}/parts/category/${cat.slug}`,
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+    lastModified: now,
+  }));
+
+  // パーツ辞典個別ページ
+  const partsDetailPages: MetadataRoute.Sitemap = PARTS_DICTIONARY.map((p) => ({
+    url: `${BASE_URL}/parts/${p.id}`,
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+    lastModified: now,
+  }));
+
+  return [
+    ...staticPages,
+    ...templatePages,
+    ...howtoPages,
+    ...partsTopPage,
+    ...partsCategoryPages,
+    ...partsDetailPages,
+  ];
 }
