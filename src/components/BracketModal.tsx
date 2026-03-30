@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import type { BracketType } from "@/types";
 import { BRACKETS } from "@/data/products";
 
@@ -21,6 +22,17 @@ export default function BracketModal({
   onBulkApply,
   currentBracketId,
 }: Props) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
@@ -29,7 +41,7 @@ export default function BracketModal({
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md">
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
           <h2 className="text-lg font-bold text-gray-800">棚受け金具を選択</h2>
@@ -42,7 +54,7 @@ export default function BracketModal({
         </div>
 
         {/* List */}
-        <div className="p-5 space-y-2">
+        <div className="p-5 space-y-2 overflow-y-auto flex-1 min-h-0">
           {BRACKETS.map((bracket) => {
             const isActive = currentBracketId === bracket.id;
             return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { AccessoryProduct, AccessoryCategory } from "@/types";
 import { ACCESSORIES } from "@/data/products";
 
@@ -22,6 +22,17 @@ const CATEGORY_LABELS: Record<AccessoryCategory, { label: string; icon: string }
 export default function AccessoryModal({ open, onClose, onSelect }: Props) {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<AccessoryCategory | "all">("all");
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   const filtered = useMemo(() => {
     let items = ACCESSORIES;
