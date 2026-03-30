@@ -206,6 +206,37 @@ export interface GridDesign {
   defaultBracketId: string;
 }
 
+// ── パーツ辞典 ──
+export type PartCategory =
+  | "adjuster" | "lumber" | "board" | "bracket"
+  | "fastener" | "finish" | "tool" | "accessory";
+
+export interface DictionaryPart {
+  id: string;
+  name: string;
+  nameEn: string;
+  category: PartCategory;
+  description: string;      // 80-120字
+  details: string;           // 200-350字
+  specs: { label: string; value: string }[];  // 3-4個
+  useCases: string[];        // 3個
+  tips: string[];            // 2個
+  relatedParts: string[];    // 2-3個
+  amazonKeyword: string;
+  priceRange: string;
+  difficulty: "beginner" | "intermediate" | "advanced";
+  faq: { question: string; answer: string }[];  // 2問
+}
+
+export interface PartCategoryInfo {
+  id: PartCategory;
+  name: string;
+  nameEn: string;
+  description: string;  // 100-200字
+  icon: string;
+  slug: string;
+}
+
 // ── テンプレート ──
 export interface ShelfTemplate {
   id: string;
