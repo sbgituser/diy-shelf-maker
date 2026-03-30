@@ -65,6 +65,18 @@ export default async function HowtoArticlePage({
     "@type": "HowTo",
     name: article.title,
     description: article.description,
+    datePublished: article.publishedAt,
+    dateModified: article.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+    },
     step: article.sections
       .filter((s) => s.heading.startsWith("Step"))
       .map((s, i) => ({
