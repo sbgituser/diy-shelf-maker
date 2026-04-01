@@ -11,6 +11,12 @@ const BASE_URL = "https://diy-shelf-maker.kuras-plus.com";
 // コンテンツ初回公開日（テンプレート・パーツ辞典は日付フィールド未保持のためサイト開設日を使用）
 const CONTENT_LAUNCH_DATE = new Date("2026-03-27");
 
+// How-to記事の最終更新日（トップページのlastmodに使用。ビルド時刻ではなく実際の更新日を反映）
+const LATEST_HOWTO_DATE = HOWTO_ARTICLES.reduce(
+  (max, a) => new Date(a.publishedAt) > max ? new Date(a.publishedAt) : max,
+  CONTENT_LAUNCH_DATE
+);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   // 固定ページ
   const staticPages: MetadataRoute.Sitemap = [
@@ -18,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: BASE_URL,
       priority: 1.0,
       changeFrequency: "weekly",
-      lastModified: new Date(),
+      lastModified: LATEST_HOWTO_DATE,
     },
     {
       url: `${BASE_URL}/guide`,
