@@ -102,6 +102,13 @@ export default function RootLayout({
         {/* フッター */}
         <footer className="bg-white border-t border-gray-200 mt-16">
           <div className="max-w-5xl mx-auto px-4 py-8">
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6 text-sm">
+              <a href="/" className="text-gray-600 hover:text-amber-600 transition-colors">設計ツール</a>
+              <a href="/templates" className="text-gray-600 hover:text-amber-600 transition-colors">テンプレート一覧</a>
+              <a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド</a>
+              <a href="/guide" className="text-gray-600 hover:text-amber-600 transition-colors">使い方ガイド</a>
+              <a href="/parts" className="text-gray-600 hover:text-amber-600 transition-colors">パーツ辞典</a>
+            </nav>
             <div className="text-center text-sm text-gray-500">
               <p>
                 DIY棚シミュレーター — 賃貸でもOK！ディアウォール・ラブリコ設計ツール

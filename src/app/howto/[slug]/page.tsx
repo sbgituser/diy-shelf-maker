@@ -101,6 +101,17 @@ export default async function HowtoArticlePage({
     })),
   };
 
+  // BreadcrumbList JSON-LD
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://diy-shelf-maker.kuras-plus.com/" },
+      { "@type": "ListItem", position: 2, name: "作り方ガイド", item: "https://diy-shelf-maker.kuras-plus.com/howto" },
+      { "@type": "ListItem", position: 3, name: article.title, item: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}` },
+    ],
+  };
+
   return (
     <div className="max-w-3xl mx-auto">
       {/* JSON-LD */}
@@ -111,6 +122,10 @@ export default async function HowtoArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       {/* パンくずリスト */}
