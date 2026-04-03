@@ -44,6 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       lastModified: CONTENT_LAUNCH_DATE,
     },
+    {
+      url: `${BASE_URL}/tools/shelf-load-calc`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: CONTENT_LAUNCH_DATE,
+    },
   ];
 
   // テンプレート個別ページ

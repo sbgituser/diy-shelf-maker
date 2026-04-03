@@ -92,6 +92,12 @@ export default function RootLayout({
               >
                 パーツ辞典
               </a>
+              <a
+                href="/tools/shelf-load-calc"
+                className="text-gray-600 hover:text-amber-600 transition-colors"
+              >
+                📐 耐荷重計算
+              </a>
             </nav>
           </div>
         </header>
@@ -108,6 +114,7 @@ export default function RootLayout({
               <a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド</a>
               <a href="/guide" className="text-gray-600 hover:text-amber-600 transition-colors">使い方ガイド</a>
               <a href="/parts" className="text-gray-600 hover:text-amber-600 transition-colors">パーツ辞典</a>
+              <a href="/tools/shelf-load-calc" className="text-gray-600 hover:text-amber-600 transition-colors">耐荷重計算</a>
             </nav>
             <div className="text-center text-sm text-gray-500">
               <p>
