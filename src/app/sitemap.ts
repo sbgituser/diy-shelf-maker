@@ -62,6 +62,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       lastModified: CONTENT_LAUNCH_DATE,
     },
+    {
+      url: `${BASE_URL}/tools/shelf-planner-quiz`,
+      priority: 0.9,
+      changeFrequency: "monthly",
+      lastModified: CONTENT_LAUNCH_DATE,
+    },
   ];
 
   // テンプレート個別ページ
