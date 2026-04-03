@@ -50,6 +50,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       lastModified: CONTENT_LAUNCH_DATE,
     },
+    {
+      url: `${BASE_URL}/tools/material-cost-estimator`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: CONTENT_LAUNCH_DATE,
+    },
   ];
 
   // テンプレート個別ページ
