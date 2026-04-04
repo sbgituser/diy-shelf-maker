@@ -25,9 +25,19 @@ function categoryLabel(cat: PartItem["category"]): string {
  * GridDesign から PDF を生成してダウンロードする
  */
 export async function exportDesignPdf(design: GridDesign): Promise<void> {
+  if (!design || !design.pillars || design.pillars.length === 0) {
+    throw new Error("設計データが空です。柱を追加してからPDFを出力してください。");
+  }
+
   // 動的インポート（ブラウザのみ）
-  const { default: jsPDF } = await import("jspdf");
-  await import("jspdf-autotable");
+  let jsPDF: typeof import("jspdf").default;
+  try {
+    const mod = await import("jspdf");
+    jsPDF = mod.default;
+    await import("jspdf-autotable");
+  } catch {
+    throw new Error("PDFライブラリの読み込みに失敗しました。ページを再読み込みしてお試しください。");
+  }
 
   const { partsList, totalEstimate } = calculateGridParts(design);
   const pillarMap = new Map(design.pillars.map((p) => [p.id, p]));

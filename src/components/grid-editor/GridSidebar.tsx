@@ -47,6 +47,7 @@ export default function GridSidebar({
         <ShelfEditModal
           shelf={selectedElement.data as GridShelf}
           pMap={pillarMap}
+          ceilingHeight={design.ceilingHeight}
           onUpdate={(u) => onUpdateShelf((selectedElement.data as GridShelf).id, u)}
           onDelete={onDeleteSelected}
           onOpenBracketModal={() => onOpenBracketModal((selectedElement.data as GridShelf).id)}

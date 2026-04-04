@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import type { GridShelf, GridPillar } from "@/types";
 import { SHELF_BOARDS, BRACKET_MAP, BRACKETS } from "@/data/products";
 
 interface ShelfEditModalProps {
   shelf: GridShelf;
   pMap: Map<string, GridPillar>;
+  ceilingHeight: number;
   onUpdate: (u: Partial<GridShelf>) => void;
   onDelete: () => void;
   onOpenBracketModal: () => void;
@@ -14,13 +16,30 @@ interface ShelfEditModalProps {
 }
 
 export default function ShelfEditModal({
-  shelf, pMap, onUpdate, onDelete,
+  shelf, pMap, ceilingHeight, onUpdate, onDelete,
   onOpenBracketModal, onOpenAccessoryModal, currentBracketId,
 }: ShelfEditModalProps) {
   const lp = pMap.get(shelf.leftPillarId);
   const rp = pMap.get(shelf.rightPillarId);
   const width = lp && rp ? Math.abs(rp.x - lp.x) : 0;
   const board = SHELF_BOARDS.find((b) => b.id === shelf.material) ?? SHELF_BOARDS[0];
+
+  const [heightError, setHeightError] = useState<string | null>(null);
+  const [depthError, setDepthError] = useState<string | null>(null);
+
+  const validateHeight = (val: number): string | null => {
+    if (isNaN(val) || val <= 0) return "高さには正の数値を入力してください";
+    if (val < 100) return "高さは100mm以上で入力してください";
+    if (val > ceilingHeight - 100) return `高さは${ceilingHeight - 100}mm以下で入力してください`;
+    return null;
+  };
+
+  const validateDepth = (val: number): string | null => {
+    if (isNaN(val) || val <= 0) return "奥行には正の数値を入力してください";
+    if (val < 50) return "奥行は50mm以上で入力してください";
+    if (val > 450) return "奥行は450mm以下で入力してください";
+    return null;
+  };
 
   return (
     <div className="bg-white rounded-xl border-2 border-amber-300 p-4 space-y-3 shadow-sm">
@@ -40,15 +59,32 @@ export default function ShelfEditModal({
           <p className="font-mono font-medium">{width}mm</p>
         </div>
         <div>
-          <label className="text-xs text-gray-500">床からの高さ</label>
+          <label htmlFor="shelf-height-input" className="text-xs text-gray-500">床からの高さ</label>
           <input
+            id="shelf-height-input"
             type="number"
             value={shelf.y}
-            onChange={(e) => onUpdate({ y: Math.max(100, Number(e.target.value) || 400) })}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              const err = validateHeight(val);
+              setHeightError(err);
+              if (!err) onUpdate({ y: val });
+            }}
+            onBlur={() => setHeightError(null)}
             min={100}
+            max={ceilingHeight - 100}
             step={50}
-            className="w-full px-2 py-1 border border-gray-300 rounded text-sm font-mono focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+            aria-invalid={heightError ? "true" : undefined}
+            aria-describedby={heightError ? "shelf-height-error" : undefined}
+            className={`w-full px-2 py-1 border rounded text-sm font-mono focus:ring-2 ${
+              heightError
+                ? "border-red-500 focus:ring-red-400 focus:border-red-400"
+                : "border-gray-300 focus:ring-amber-400 focus:border-amber-400"
+            }`}
           />
+          {heightError && (
+            <p id="shelf-height-error" className="text-xs text-red-600 mt-0.5" role="alert">{heightError}</p>
+          )}
         </div>
       </div>
 
@@ -70,16 +106,32 @@ export default function ShelfEditModal({
 
       {board.fixedDepthMm === 0 && (
         <div>
-          <label className="text-xs text-gray-500 mb-1 block">奥行 (mm)</label>
+          <label htmlFor="shelf-depth-input" className="text-xs text-gray-500 mb-1 block">奥行 (mm)</label>
           <input
+            id="shelf-depth-input"
             type="number"
             value={shelf.depth}
-            onChange={(e) => onUpdate({ depth: Math.max(50, Number(e.target.value) || 250) })}
+            onChange={(e) => {
+              const val = Number(e.target.value);
+              const err = validateDepth(val);
+              setDepthError(err);
+              if (!err) onUpdate({ depth: val });
+            }}
+            onBlur={() => setDepthError(null)}
             min={50}
             max={450}
             step={10}
-            className="w-full px-2 py-1.5 border border-gray-300 rounded-lg text-sm font-mono focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+            aria-invalid={depthError ? "true" : undefined}
+            aria-describedby={depthError ? "shelf-depth-error" : undefined}
+            className={`w-full px-2 py-1.5 border rounded-lg text-sm font-mono focus:ring-2 ${
+              depthError
+                ? "border-red-500 focus:ring-red-400 focus:border-red-400"
+                : "border-gray-300 focus:ring-amber-400 focus:border-amber-400"
+            }`}
           />
+          {depthError && (
+            <p id="shelf-depth-error" className="text-xs text-red-600 mt-0.5" role="alert">{depthError}</p>
+          )}
         </div>
       )}
 

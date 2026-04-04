@@ -13,8 +13,9 @@ import { resolveAdjuster as resolveAdj } from "./resolvers";
 
 /** 木材サイズ選定 */
 function lumberSize(mm: number) {
-  if (mm <= 1820) return { label: "6ft (1820mm)", mult: 1.0 };
-  if (mm <= 2438) return { label: "8ft (2438mm)", mult: 1.4 };
+  const v = Number(mm) || 0;
+  if (v <= 1820) return { label: "6ft (1820mm)", mult: 1.0 };
+  if (v <= 2438) return { label: "8ft (2438mm)", mult: 1.4 };
   return { label: "10ft (3050mm)", mult: 1.8 };
 }
 
@@ -25,6 +26,11 @@ export function calculateGridParts(design: GridDesign): {
   partsList: PartItem[];
   totalEstimate: number;
 } {
+  if (!design || !design.pillars || !design.shelves) {
+    return { partsList: [], totalEstimate: 0 };
+  }
+  const ceilingHeight = Number(design.ceilingHeight) || 2400;
+
   const parts: PartItem[] = [];
   const pMap = new Map(design.pillars.map((p) => [p.id, p]));
 
@@ -73,8 +79,8 @@ export function calculateGridParts(design: GridDesign): {
     const spec = LUMBER_SPECS[p.lumber] ?? LUMBER_SPECS["2x4"];
     const adj = p.adjuster ? resolveAdj(p.adjuster, p.lumber) : null;
     const cut = adj
-      ? design.ceilingHeight - adj.cutOffset
-      : design.ceilingHeight;
+      ? Math.max(0, ceilingHeight - adj.cutOffset)
+      : ceilingHeight;
     const k = `${p.lumber}-${cut}`;
     const g = lumGroups.get(k);
     if (g) g.count++;
@@ -141,6 +147,7 @@ export function calculateGridParts(design: GridDesign): {
       for (const w of g.widths) {
         sub += Math.round(g.board.pricePerUnit * (w / 600) * (g.depth / 250));
       }
+      sub = Math.max(0, sub);
       const avg = g.count > 0 ? Math.round(sub / g.count) : 0;
       parts.push({
         category: "shelf",

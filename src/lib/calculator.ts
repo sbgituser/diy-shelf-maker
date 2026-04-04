@@ -22,8 +22,10 @@ export function calcPillarLength(
   adjuster: AdjusterProduct,
   fullHeight: boolean
 ): number {
-  if (!fullHeight) return heightMm; // 自立型はそのまま
-  return heightMm - adjuster.cutOffset;
+  const h = Number(heightMm) || 0;
+  if (!fullHeight) return Math.max(0, h);
+  const offset = adjuster?.cutOffset ?? 0;
+  return Math.max(0, h - offset);
 }
 
 /**
@@ -33,8 +35,11 @@ export function calcDefaultSpacings(
   totalHeightMm: number,
   shelfCount: number
 ): number[] {
-  const usableHeight = totalHeightMm - 50;
-  const sections = shelfCount + 1;
+  const total = Number(totalHeightMm) || 0;
+  const count = Math.max(0, Math.floor(Number(shelfCount) || 0));
+  if (count === 0) return [Math.max(100, total)];
+  const usableHeight = Math.max(0, total - 50);
+  const sections = count + 1;
   const baseSpacing = Math.floor(usableHeight / sections);
   const remainder = usableHeight - baseSpacing * sections;
 

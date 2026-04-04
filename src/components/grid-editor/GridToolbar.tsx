@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { GridDesign } from "@/types";
 import { SHELF_BOARDS } from "@/data/products";
 import type { Mode } from "@/constants/grid";
@@ -24,6 +25,7 @@ export default function GridToolbar({
   onSetCeilingHeight, onBulkChangeShelfMaterial,
   onSetHoverMm, onDismissTemplate,
 }: GridToolbarProps) {
+  const [ceilingError, setCeilingError] = useState<string | null>(null);
   return (
     <>
       {/* テンプレート適用通知 */}
@@ -83,22 +85,39 @@ export default function GridToolbar({
 
         <div className="h-8 w-px bg-gray-200" />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 relative">
           <label htmlFor="ceiling-height-input" className="text-sm text-gray-600 whitespace-nowrap">天井高</label>
           <input
             id="ceiling-height-input"
             type="number"
             value={design.ceilingHeight}
-            onChange={(e) =>
-              onSetCeilingHeight(Math.max(1500, Math.min(4000, Number(e.target.value) || 2400)))
-            }
+            onChange={(e) => {
+              const raw = Number(e.target.value);
+              if (isNaN(raw) || raw < 1500 || raw > 4000) {
+                setCeilingError("天井高は1500mm〜4000mmの範囲で入力してください");
+              } else {
+                setCeilingError(null);
+              }
+              onSetCeilingHeight(Math.max(1500, Math.min(4000, raw || 2400)));
+            }}
+            onBlur={() => setCeilingError(null)}
             min={1500}
             max={4000}
             step={10}
-            aria-describedby="ceiling-height-unit"
-            className="w-20 px-2 py-1.5 border border-gray-300 rounded-lg text-sm text-center focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
+            aria-invalid={ceilingError ? "true" : undefined}
+            aria-describedby={ceilingError ? "ceiling-height-error" : "ceiling-height-unit"}
+            className={`w-20 px-2 py-1.5 border rounded-lg text-sm text-center focus:ring-2 ${
+              ceilingError
+                ? "border-red-500 focus:ring-red-400 focus:border-red-400"
+                : "border-gray-300 focus:ring-amber-400 focus:border-amber-400"
+            }`}
           />
           <span id="ceiling-height-unit" className="text-xs text-gray-500">mm</span>
+          {ceilingError && (
+            <p id="ceiling-height-error" className="absolute top-full left-0 mt-1 text-xs text-red-600 whitespace-nowrap" role="alert">
+              {ceilingError}
+            </p>
+          )}
         </div>
 
         {/* 棚板素材の一括変更 */}

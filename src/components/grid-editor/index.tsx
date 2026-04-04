@@ -583,7 +583,8 @@ export default function GridEditor() {
                     showToast("success", "PDFをダウンロードしました");
                   } catch (err) {
                     console.error("PDF export failed:", err);
-                    showToast("error", "PDF出力に失敗しました。もう一度お試しください。");
+                    const msg = err instanceof Error ? err.message : "PDF出力に失敗しました。もう一度お試しください。";
+                    showToast("error", msg);
                   } finally {
                     setPdfExporting(false);
                   }
@@ -597,7 +598,15 @@ export default function GridEditor() {
                   <line x1="12" y1="18" x2="12" y2="12" />
                   <polyline points="9 15 12 18 15 15" />
                 </svg>
-                {pdfExporting ? "PDF生成中..." : "PDFダウンロード"}
+                {pdfExporting ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    PDF生成中...
+                  </>
+                ) : "PDFダウンロード"}
               </button>
               <p className="text-xs text-gray-400 mt-1.5">設計図・部材リスト・寸法をA4サイズで出力</p>
             </div>
