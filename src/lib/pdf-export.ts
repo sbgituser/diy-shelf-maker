@@ -1,19 +1,13 @@
 import type { GridDesign, PartItem } from "@/types";
-import { ADJUSTERS, LUMBER_SPECS, SHELF_BOARDS } from "@/data/products";
+import { LUMBER_SPECS, SHELF_BOARDS } from "@/data/products";
 import { calculateGridParts } from "./grid-calculator";
 
 // ─────────────────────────────────────────
 // jsPDF を動的インポート（SSG 対応）
 // ─────────────────────────────────────────
 
-/** アジャスター解決 */
-function resolveAdj(key: string, lumber: string) {
-  if (lumber === "1x4") {
-    const v = ADJUSTERS[`${key}_1x4`];
-    if (v) return v;
-  }
-  return ADJUSTERS[key] ?? ADJUSTERS["labrico"];
-}
+// resolveAdj は src/lib/resolvers.ts に統合済み
+import { resolveAdjuster as resolveAdj } from "./resolvers";
 
 /** カテゴリ日本語名 */
 function categoryLabel(cat: PartItem["category"]): string {

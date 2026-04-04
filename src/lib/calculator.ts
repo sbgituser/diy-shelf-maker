@@ -7,7 +7,6 @@ import type {
   ShelfBoard,
 } from "@/types";
 import {
-  ADJUSTERS,
   LUMBER_SPECS,
   SHELF_BOARDS,
   BRACKETS,
@@ -66,20 +65,8 @@ function selectLumberSize(lengthMm: number): {
   }
 }
 
-/**
- * アジャスターキーを解決する
- * pillarLumber が 1x4 の場合は _1x4 バリアントを探す
- */
-function resolveAdjuster(
-  adjusterKey: string,
-  pillarLumber: string
-): AdjusterProduct {
-  if (pillarLumber === "1x4") {
-    const variant = ADJUSTERS[`${adjusterKey}_1x4`];
-    if (variant) return variant;
-  }
-  return ADJUSTERS[adjusterKey] ?? ADJUSTERS["labrico"];
-}
+// resolveAdjuster は src/lib/resolvers.ts に統合済み
+import { resolveAdjuster } from "./resolvers";
 
 /**
  * 棚板を解決する

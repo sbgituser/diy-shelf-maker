@@ -1,6 +1,5 @@
 import type { GridDesign, PartItem } from "@/types";
 import {
-  ADJUSTERS,
   LUMBER_SPECS,
   SHELF_BOARDS,
   BRACKETS,
@@ -9,14 +8,8 @@ import {
   BRACKET_MAP,
 } from "@/data/products";
 
-/** アジャスター解決 — 1x4 バリアントを優先 */
-function resolveAdj(key: string, lumber: string) {
-  if (lumber === "1x4") {
-    const v = ADJUSTERS[`${key}_1x4`];
-    if (v) return v;
-  }
-  return ADJUSTERS[key] ?? ADJUSTERS["labrico"];
-}
+// resolveAdj は src/lib/resolvers.ts に統合済み
+import { resolveAdjuster as resolveAdj } from "./resolvers";
 
 /** 木材サイズ選定 */
 function lumberSize(mm: number) {

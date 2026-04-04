@@ -1,6 +1,7 @@
 "use client";
 
 import type { DesignInput, DesignResult } from "@/types";
+import { DIAGRAM_COLORS as C } from "@/constants/colors";
 
 interface Props {
   input: DesignInput;
@@ -10,22 +11,6 @@ interface Props {
   /** 棚板クリック時のコールバック */
   onShelfClick?: (index: number) => void;
 }
-
-const C = {
-  pillar: "#C4A46A",
-  pillarStroke: "#8B6914",
-  shelf: "#D4A76A",
-  shelfStroke: "#9B7530",
-  shelfSelected: "#F59E0B",
-  shelfSelectedStroke: "#D97706",
-  adjuster: "#666",
-  bracket: "#888",
-  dimension: "#E74C3C",
-  dimText: "#C0392B",
-  line: "#888",
-  bg: "#FAFAF7",
-  wall: "#ddd",
-};
 
 export default function ShelfDiagram({ input, result, selectedShelf = -1, onShelfClick }: Props) {
   const isLong = input.pillarOrientation === "long";
