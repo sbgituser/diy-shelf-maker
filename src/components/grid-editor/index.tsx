@@ -20,6 +20,7 @@ import PartsListTable from "../PartsListTable";
 import RecommendedTools from "../RecommendedTools";
 import ShareButtons from "../ShareButtons";
 
+import { showToast } from "../Toast";
 import { SNAP, SVG_W, SVG_H, M, DW, DH, DRAG_THRESHOLD } from "@/constants/grid";
 import type { Mode } from "@/constants/grid";
 
@@ -200,7 +201,15 @@ export default function GridEditor() {
     () => new Map(design.pillars.map((p) => [p.id, p])),
     [design.pillars],
   );
-  const result = useMemo(() => calculateGridParts(design), [design]);
+  const result = useMemo(() => {
+    try {
+      return calculateGridParts(design);
+    } catch (err) {
+      console.error("calculateGridParts failed:", err);
+      showToast("error", "部材リストの計算でエラーが発生しました");
+      return { partsList: [], totalEstimate: 0 };
+    }
+  }, [design]);
 
   const selectedElement = useMemo(() => {
     if (!selectedId) return null;
@@ -296,6 +305,24 @@ export default function GridEditor() {
     setDesign((prev) => ({
       ...prev,
       shelves: prev.shelves.map((s) => ({ ...s, material: materialId })),
+    }));
+  }, []);
+
+  const movePillar = useCallback((id: string, dx: number) => {
+    setDesign((prev) => ({
+      ...prev,
+      pillars: prev.pillars.map((p) =>
+        p.id === id ? { ...p, x: Math.max(50, p.x + dx) } : p,
+      ),
+    }));
+  }, []);
+
+  const moveShelf = useCallback((id: string, dy: number) => {
+    setDesign((prev) => ({
+      ...prev,
+      shelves: prev.shelves.map((s) =>
+        s.id === id ? { ...s, y: Math.max(100, Math.min(s.y + dy, prev.ceilingHeight - 100)) } : s,
+      ),
     }));
   }, []);
 
@@ -503,6 +530,9 @@ export default function GridEditor() {
           onElementMouseDown={handleElementMouseDown}
           onElementClick={handleElementClick}
           onSetHoveredId={setHoveredId}
+          onMovePillar={movePillar}
+          onMoveShelf={moveShelf}
+          onDeselectAll={() => setSelectedId(null)}
         />
 
         <GridSidebar
@@ -550,8 +580,10 @@ export default function GridEditor() {
                   setPdfExporting(true);
                   try {
                     await exportDesignPdf(design);
+                    showToast("success", "PDFをダウンロードしました");
                   } catch (err) {
                     console.error("PDF export failed:", err);
+                    showToast("error", "PDF出力に失敗しました。もう一度お試しください。");
                   } finally {
                     setPdfExporting(false);
                   }

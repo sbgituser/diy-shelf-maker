@@ -84,19 +84,21 @@ export default function GridToolbar({
         <div className="h-8 w-px bg-gray-200" />
 
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600 whitespace-nowrap">天井高</label>
+          <label htmlFor="ceiling-height-input" className="text-sm text-gray-600 whitespace-nowrap">天井高</label>
           <input
+            id="ceiling-height-input"
             type="number"
             value={design.ceilingHeight}
             onChange={(e) =>
-              onSetCeilingHeight(Math.max(1800, Math.min(3200, Number(e.target.value) || 2400)))
+              onSetCeilingHeight(Math.max(1500, Math.min(4000, Number(e.target.value) || 2400)))
             }
-            min={1800}
-            max={3200}
+            min={1500}
+            max={4000}
             step={10}
+            aria-describedby="ceiling-height-unit"
             className="w-20 px-2 py-1.5 border border-gray-300 rounded-lg text-sm text-center focus:ring-2 focus:ring-amber-400 focus:border-amber-400"
           />
-          <span className="text-xs text-gray-500">mm</span>
+          <span id="ceiling-height-unit" className="text-xs text-gray-500">mm</span>
         </div>
 
         {/* 棚板素材の一括変更 */}
@@ -104,8 +106,10 @@ export default function GridToolbar({
           <>
             <div className="h-8 w-px bg-gray-200" />
             <div className="flex items-center gap-2">
-              <label className="text-sm text-gray-600 whitespace-nowrap">棚板素材</label>
+              <label htmlFor="shelf-material-bulk" className="text-sm text-gray-600 whitespace-nowrap">棚板素材</label>
               <select
+                id="shelf-material-bulk"
+                aria-label="棚板素材の一括変更"
                 onChange={(e) => {
                   if (e.target.value) onBulkChangeShelfMaterial(e.target.value);
                   e.target.value = "";

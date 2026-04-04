@@ -1,4 +1,5 @@
 import DesignForm from "@/components/DesignForm";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -102,7 +103,9 @@ export default function Home() {
       </section>
 
       {/* メインツール */}
-      <DesignForm />
+      <ErrorBoundary>
+        <DesignForm />
+      </ErrorBoundary>
 
       {/* パーツ辞典へのリンクセクション */}
       <section className="max-w-5xl mx-auto mt-12 mb-4">

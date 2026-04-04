@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import DesktopNav from "@/components/DesktopNav";
+import MobileMenu from "@/components/MobileMenu";
+import ToastContainer from "@/components/Toast";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -61,67 +64,15 @@ export default function RootLayout({
                 by kuras-plus
               </span>
             </a>
-            <nav className="flex items-center gap-4 text-sm">
-              <a
-                href="/"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                設計ツール
-              </a>
-              <a
-                href="/templates"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                テンプレート
-              </a>
-              <a
-                href="/howto"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                作り方ガイド
-              </a>
-              <a
-                href="/guide"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                使い方ガイド
-              </a>
-              <a
-                href="/parts"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                パーツ辞典
-              </a>
-              <a
-                href="/tools/shelf-load-calc"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                📐 耐荷重計算
-              </a>
-              <a
-                href="/tools/material-cost-estimator"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                💰 費用見積もり
-              </a>
-              <a
-                href="/tools/support-system-picker"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                🔧 支柱比較
-              </a>
-              <a
-                href="/tools/shelf-planner-quiz"
-                className="text-gray-600 hover:text-amber-600 transition-colors"
-              >
-                🧩 棚診断
-              </a>
-            </nav>
+            <DesktopNav />
+            <MobileMenu />
           </div>
         </header>
 
         {/* メインコンテンツ */}
         <main className="px-4 py-8">{children}</main>
+
+        <ToastContainer />
 
         {/* フッター */}
         <footer className="bg-white border-t border-gray-200 mt-16">

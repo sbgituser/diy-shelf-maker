@@ -9,7 +9,7 @@ import {
 } from "@/constants/colors";
 import {
   SVG_W, SVG_H, M, DW, DH,
-  PILLAR_PX, GRID_VISUAL,
+  PILLAR_PX, GRID_VISUAL, SNAP,
 } from "@/constants/grid";
 
 // ── 個別SVG要素をReact.memoでラップ ──
@@ -32,14 +32,18 @@ const PillarSvg = React.memo(function PillarSvg({
   pillar, px, isSel, isHov, isDragging, mode,
   onMouseDown, onClick, onMouseEnter, onMouseLeave, toSvgX,
 }: PillarSvgProps) {
+  const adjLabel = pillar.adjuster ? ` ${pillar.adjuster}` : "";
   return (
     <g
       onClick={(e) => onClick(pillar.id, e)}
       onMouseDown={(e) => onMouseDown(pillar.id, "pillar", e)}
       onMouseEnter={() => onMouseEnter(pillar.id)}
       onMouseLeave={() => onMouseLeave(pillar.id)}
+      role="graphics-symbol"
+      aria-label={`柱 ${pillar.x}mm ${pillar.lumber}${adjLabel}`}
       style={{ cursor: mode === "select" ? (isDragging ? "grabbing" : isSel ? "grab" : "pointer") : "default" }}
     >
+      <title>柱 - {pillar.lumber}{adjLabel} ({pillar.x}mm)</title>
       <rect x={px - 8} y={M.top} width={PILLAR_PX + 16} height={DH} fill="transparent" />
       {isSel && (
         <rect
@@ -110,8 +114,11 @@ const ShelfSvg = React.memo(function ShelfSvg({
       onMouseDown={(e) => onMouseDown(shelf.id, "shelf", e)}
       onMouseEnter={() => onMouseEnter(shelf.id)}
       onMouseLeave={() => onMouseLeave(shelf.id)}
+      role="graphics-symbol"
+      aria-label={`棚板 高さ${shelf.y}mm ${shelf.material}`}
       style={{ cursor: mode === "select" ? (isDragging ? "grabbing" : isSel ? "grab" : "pointer") : "default" }}
     >
+      <title>棚板 - {shelf.material} (高さ{shelf.y}mm)</title>
       <rect x={sx} y={sy - hitH / 2} width={ex - sx} height={hitH} fill="transparent" />
       {isSel && (
         <rect
@@ -160,6 +167,9 @@ interface GridCanvasProps {
   onElementMouseDown: (id: string, type: "pillar" | "shelf", e: React.MouseEvent) => void;
   onElementClick: (id: string, e: React.MouseEvent) => void;
   onSetHoveredId: (id: string | null) => void;
+  onMovePillar?: (id: string, dx: number) => void;
+  onMoveShelf?: (id: string, dy: number) => void;
+  onDeselectAll?: () => void;
 }
 
 export default function GridCanvas({
@@ -169,6 +179,7 @@ export default function GridCanvas({
   ghostPillarX, ghostShelfPair,
   onCanvasClick, onCanvasMove, onCanvasMouseUp, onCanvasLeave,
   onElementMouseDown, onElementClick, onSetHoveredId,
+  onMovePillar, onMoveShelf, onDeselectAll,
 }: GridCanvasProps) {
   const xLines = useMemo(() => {
     const a: number[] = [];
@@ -185,8 +196,54 @@ export default function GridCanvas({
   const handleMouseEnter = (id: string) => {
     if (mode === "select") onSetHoveredId(id);
   };
-  const handleMouseLeave = (id: string) => {
+  const handleMouseLeave = (_id: string) => {
     onSetHoveredId(null);
+  };
+
+  // キーボードナビゲーション
+  const allElements = useMemo(() => {
+    const items: { id: string; type: "pillar" | "shelf" }[] = [];
+    for (const p of design.pillars) items.push({ id: p.id, type: "pillar" });
+    for (const s of design.shelves) items.push({ id: s.id, type: "shelf" });
+    return items;
+  }, [design.pillars, design.shelves]);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onDeselectAll?.();
+      return;
+    }
+    if (e.key === "Tab") return; // allow normal tab
+
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if (!selectedId && allElements.length > 0) {
+        onElementClick(allElements[0].id, e as unknown as React.MouseEvent);
+      }
+      return;
+    }
+
+    if (selectedId) {
+      const sel = allElements.find((el) => el.id === selectedId);
+      if (!sel) return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        if (sel.type === "pillar") {
+          e.preventDefault();
+          const dx = e.key === "ArrowLeft" ? -SNAP : SNAP;
+          onMovePillar?.(sel.id, dx);
+        }
+        return;
+      }
+      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        if (sel.type === "shelf") {
+          e.preventDefault();
+          const dy = e.key === "ArrowUp" ? SNAP : -SNAP;
+          onMoveShelf?.(sel.id, dy);
+        }
+        return;
+      }
+    }
   };
 
   return (
@@ -195,15 +252,23 @@ export default function GridCanvas({
         ref={svgRef}
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
         className="w-full"
+        role="img"
+        aria-label="棚レイアウト設計キャンバス"
+        tabIndex={0}
+        onKeyDown={handleKeyDown}
         style={{
           cursor: isDragging ? "grabbing" : mode === "select" ? "default" : "crosshair",
           fontFamily: "'Noto Sans JP', sans-serif",
+          outline: "none",
         }}
         onClick={onCanvasClick}
         onMouseMove={onCanvasMove}
         onMouseUp={onCanvasMouseUp}
         onMouseLeave={onCanvasLeave}
+        onFocus={() => {}}
       >
+        <title>棚レイアウト設計キャンバス</title>
+        <desc>柱{design.pillars.length}本、棚板{design.shelves.length}枚の棚レイアウト</desc>
         <defs>
           <filter id="glow-sel" x="-30%" y="-30%" width="160%" height="160%">
             <feGaussianBlur stdDeviation="3" result="blur" />

@@ -19,23 +19,24 @@ export default function PartsListTable({ parts, total }: Props) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
       {/* テーブル */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" role="region" aria-label="必要な部材リスト" tabIndex={0}>
         <table className="w-full text-sm">
+          <caption className="sr-only">棚設計に必要な部材リスト（部材名・数量・単価・小計・購入リンク）</caption>
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="px-4 py-3 text-left text-gray-600 font-medium">
+              <th scope="col" className="px-4 py-3 text-left text-gray-600 font-medium">
                 部材
               </th>
-              <th className="px-4 py-3 text-center text-gray-600 font-medium w-16">
+              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-16">
                 数量
               </th>
-              <th className="px-4 py-3 text-right text-gray-600 font-medium w-24">
+              <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
                 単価
               </th>
-              <th className="px-4 py-3 text-right text-gray-600 font-medium w-24">
+              <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
                 小計
               </th>
-              <th className="px-4 py-3 text-center text-gray-600 font-medium w-20">
+              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-20">
                 購入
               </th>
             </tr>

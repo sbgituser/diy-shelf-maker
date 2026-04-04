@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import type { AccessoryProduct, AccessoryCategory } from "@/types";
 import { ACCESSORIES } from "@/data/products";
+import { useFocusTrap } from "./useFocusTrap";
 
 interface Props {
   open: boolean;
@@ -22,6 +23,7 @@ const CATEGORY_LABELS: Record<AccessoryCategory, { label: string; icon: string }
 export default function AccessoryModal({ open, onClose, onSelect }: Props) {
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<AccessoryCategory | "all">("all");
+  const focusTrapRef = useFocusTrap(open);
 
   useEffect(() => {
     if (open) {
@@ -33,6 +35,15 @@ export default function AccessoryModal({ open, onClose, onSelect }: Props) {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
 
   const filtered = useMemo(() => {
     let items = ACCESSORIES;
@@ -54,7 +65,7 @@ export default function AccessoryModal({ open, onClose, onSelect }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="accessory-modal-title" ref={focusTrapRef}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
@@ -62,7 +73,7 @@ export default function AccessoryModal({ open, onClose, onSelect }: Props) {
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800">装飾品を追加</h2>
+          <h2 id="accessory-modal-title" className="text-lg font-bold text-gray-800">装飾品を追加</h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import type { BracketType } from "@/types";
 import { BRACKETS } from "@/data/products";
+import { useFocusTrap } from "./useFocusTrap";
 
 interface Props {
   open: boolean;
@@ -22,6 +23,8 @@ export default function BracketModal({
   onBulkApply,
   currentBracketId,
 }: Props) {
+  const focusTrapRef = useFocusTrap(open);
+
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -33,10 +36,19 @@ export default function BracketModal({
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open, onClose]);
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="bracket-modal-title" ref={focusTrapRef}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40" onClick={onClose} />
 
@@ -44,7 +56,7 @@ export default function BracketModal({
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800">棚受け金具を選択</h2>
+          <h2 id="bracket-modal-title" className="text-lg font-bold text-gray-800">棚受け金具を選択</h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
