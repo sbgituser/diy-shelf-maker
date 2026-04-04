@@ -44,6 +44,16 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://diy-shelf-maker.kuras-plus.com"),
 };
 
+// サイト共通 Organization JSON-LD
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "kuras-plus",
+  url: "https://kuras-plus.com",
+  logo: "https://diy-shelf-maker.kuras-plus.com/ogp/default-ogp.png",
+  sameAs: [],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -53,6 +63,10 @@ export default function RootLayout({
     <html lang="ja">
       <body className="bg-gray-50 text-gray-900 antialiased">
         <GoogleAnalytics />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
 
         {/* ヘッダー */}
         <header className="bg-white border-b border-gray-200 sticky top-0 z-50">

@@ -73,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // テンプレート個別ページ
   const templatePages: MetadataRoute.Sitemap = SHELF_TEMPLATES.map((t) => ({
     url: `${BASE_URL}/templates/${t.id}`,
-    priority: 0.7,
+    priority: 0.8,
     changeFrequency: "monthly" as const,
     lastModified: CONTENT_LAUNCH_DATE,
   }));

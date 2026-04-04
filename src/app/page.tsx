@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
 };
 
-// JSON-LD 構造化データ
+// JSON-LD 構造化データ（SoftwareApplication）
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -61,6 +61,60 @@ const jsonLd = {
     "2×4材・1×4材対応",
   ],
   inLanguage: "ja",
+  author: {
+    "@type": "Organization",
+    name: "kuras-plus",
+    url: "https://kuras-plus.com",
+  },
+  datePublished: "2026-03-27",
+  dateModified: "2026-04-05",
+  isAccessibleForFree: true,
+};
+
+// HowTo JSON-LD（棚設計の手順）
+const howToJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name: "DIYで突っ張り棚を設計・作成する方法",
+  description:
+    "ディアウォール・ラブリコを使った突っ張り棚のDIY手順。天井高の測定からカット寸法の計算、部材の購入、組み立てまでを解説。",
+  step: [
+    {
+      "@type": "HowToStep",
+      position: 1,
+      name: "天井高を測定する",
+      text: "設置場所の天井高をメジャーで正確に測定します。場所によって数mm異なることがあるため、複数箇所を測りましょう。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 2,
+      name: "アジャスターを選択する",
+      text: "ディアウォール・ラブリコ・ウォリストなど、用途に応じたアジャスターを選びます。シミュレーターで比較できます。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 3,
+      name: "木材カット寸法を計算する",
+      text: "シミュレーターに天井高を入力し、アジャスターに応じたカット寸法と必要な部材リストを自動生成します。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 4,
+      name: "部材を購入・カットする",
+      text: "生成された部材リストをもとに、ホームセンターで2×4材と金具を購入。カットサービスを利用すると正確です。",
+    },
+    {
+      "@type": "HowToStep",
+      position: 5,
+      name: "柱を立てて棚を組み立てる",
+      text: "アジャスターを取り付けた柱を設置し、棚受け金具で棚板を固定します。水平器で水平を確認して完成。",
+    },
+  ],
+  tool: [
+    { "@type": "HowToTool", name: "メジャー" },
+    { "@type": "HowToTool", name: "電動ドライバー" },
+    { "@type": "HowToTool", name: "水平器" },
+  ],
 };
 
 export default function Home() {
@@ -70,6 +124,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
 
       {/* ヒーローセクション */}

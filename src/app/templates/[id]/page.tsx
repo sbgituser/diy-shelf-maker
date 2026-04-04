@@ -450,6 +450,18 @@ export default async function TemplatePage({
     "@type": "HowTo",
     name: `${template.name}の作り方 - DIY設計ガイド`,
     description: `${template.name}をDIYで作る方法。${template.description}`,
+    datePublished: "2026-03-27",
+    dateModified: "2026-04-05",
+    author: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+    },
     step: details?.steps.map((step, i) => ({
       "@type": "HowToStep",
       position: i + 1,

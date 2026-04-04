@@ -101,6 +101,36 @@ export default async function HowtoArticlePage({
     })),
   };
 
+  // Article JSON-LD
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    datePublished: article.publishedAt,
+    dateModified: article.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "DIY棚シミュレーター | kuras-plus",
+      url: "https://diy-shelf-maker.kuras-plus.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://diy-shelf-maker.kuras-plus.com/ogp/default-ogp.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
+    },
+    image: `https://diy-shelf-maker.kuras-plus.com/ogp/howto/${article.slug}.png`,
+    inLanguage: "ja",
+  };
+
   // BreadcrumbList JSON-LD
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
@@ -126,6 +156,10 @@ export default async function HowtoArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
       {/* パンくずリスト */}

@@ -68,12 +68,22 @@ const jsonLd = [
     description:
       "5つの質問に答えるだけで最適なDIY棚の設計プラン・材料リスト・費用目安を提案する診断ツール。",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/shelf-planner-quiz",
-    applicationCategory: "UtilityApplication",
-    operatingSystem: "All",
+    applicationCategory: "DesignApplication",
+    operatingSystem: "Web",
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "JPY",
+    },
+    author: {
+      "@type": "Organization",
+      name: "kuras-plus",
+      url: "https://kuras-plus.com",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "kuras-plus",
+      url: "https://kuras-plus.com",
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -189,6 +199,33 @@ export default function ShelfPlannerQuizPage() {
               <p className="mt-1 text-xs text-gray-500">
                 材料費を詳しくシミュレーション
               </p>
+            </a>
+          </div>
+        </section>
+
+        {/* 関連する作り方ガイド */}
+        <section className="mb-10">
+          <h2 className="text-xl font-bold text-gray-800 mb-5">関連する作り方ガイド</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a
+              href="/howto/labrico-vs-diawall"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+            >
+              <span className="text-xl flex-shrink-0">⚖️</span>
+              <div>
+                <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">ラブリコ vs ディアウォール徹底比較</h3>
+                <p className="mt-1 text-xs text-gray-500">固定方式・耐荷重・価格の違いを解説</p>
+              </div>
+            </a>
+            <a
+              href="/howto/rental-wall-storage-guide"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+            >
+              <span className="text-xl flex-shrink-0">🏠</span>
+              <div>
+                <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">賃貸でもできる壁面収納ガイド</h3>
+                <p className="mt-1 text-xs text-gray-500">賃貸OK・原状回復できるDIY棚の作り方</p>
+              </div>
             </a>
           </div>
         </section>
