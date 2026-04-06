@@ -4,25 +4,25 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title:
-    "棚レイアウト シミュレーション 無料 | DIY棚設計ツール - サイズ自動計算",
+    "DIY棚設計シミュレーター【無料】つっぱり棚の設計図・部材リストを自動作成",
   description:
-    "棚のレイアウトをブラウザで無料シミュレーション。天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、必要な部材リストと設計図を生成。賃貸DIYの棚設計に。",
+    "ラブリコ・ディアウォールを使ったDIY棚の設計ツール。天井高を入力するだけで木材カット寸法、必要な部材リスト、費用概算を自動計算。賃貸OKの壁面収納を無料で設計できます。",
   keywords: [
-    "棚 レイアウト シミュレーション 無料",
-    "棚 設計 ツール",
-    "DIY 棚 サイズ 計算",
-    "ディアウォール 棚 設計",
-    "ラブリコ 棚 シミュレーター",
+    "DIY 棚 設計",
+    "つっぱり棚 DIY",
+    "ラブリコ 棚 作り方",
+    "ディアウォール 棚",
+    "壁面収納 DIY",
+    "賃貸 壁面収納",
+    "棚 設計 シミュレーション",
+    "DIY 棚 木材 カット 計算",
+    "棚 レイアウト ツール",
     "2×4 棚 計算",
-    "賃貸 棚 DIY",
-    "壁面収納 設計",
-    "棚 設計図 自動生成",
-    "木材 カット 寸法 計算",
   ],
   openGraph: {
-    title: "棚レイアウト シミュレーション 無料 | DIY棚設計ツール",
+    title: "DIY棚設計シミュレーター【無料】つっぱり棚の設計図・部材リストを自動作成",
     description:
-      "天井高入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応の無料棚設計ツール。",
+      "ラブリコ・ディアウォールを使ったDIY棚の設計ツール。天井高を入力するだけで木材カット寸法、必要な部材リスト、費用概算を自動計算。賃貸OKの壁面収納を無料で設計できます。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com",
@@ -134,9 +134,9 @@ export default function Home() {
       <section className="max-w-5xl mx-auto mb-10">
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 sm:p-8 border border-amber-100">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 leading-tight">
-            棚レイアウト シミュレーション
+            DIY棚設計シミュレーター
             <br className="sm:hidden" />
-            <span className="text-amber-600">無料</span>DIY棚設計ツール
+            — つっぱり棚の設計図を<span className="text-amber-600">無料</span>で作成
           </h1>
           <p className="mt-3 text-gray-600 leading-relaxed max-w-2xl">
             天井高を入力するだけで、ディアウォール・ラブリコの

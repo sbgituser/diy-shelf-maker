@@ -3,7 +3,7 @@ import type { ShelfTemplate } from "@/types";
 export const SHELF_TEMPLATES: ShelfTemplate[] = [
   {
     id: "bookshelf",
-    name: "本棚",
+    name: "本棚・コミック収納テンプレート",
     icon: "📚",
     description:
       "短辺壁側で柱間に棚板を渡す定番構成。漫画・文庫の収納に。",
@@ -23,7 +23,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "wall-shelf",
-    name: "壁掛け棚",
+    name: "壁掛けディスプレイ棚テンプレート",
     icon: "🪝",
     description:
       "長辺壁側で柱スリム。ブラケットで棚板を手前に張り出す構成。",
@@ -43,7 +43,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "labrico-wall-storage",
-    name: "ラブリコ壁面棚",
+    name: "ラブリコ壁面収納テンプレート",
     icon: "🏠",
     description:
       "ラブリコを使った壁面収納。リビングや寝室の壁一面を有効活用する大容量タイプ。",
@@ -68,7 +68,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "diawall-bookshelf",
-    name: "ディアウォール本棚",
+    name: "ディアウォール本棚テンプレート",
     icon: "📖",
     description:
       "ディアウォールで作る定番の本棚。バネ式で設置が簡単。初心者におすすめ。",
@@ -93,7 +93,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "2x4-basic-shelf",
-    name: "2×4材で作る棚",
+    name: "2×4材で作る基本棚テンプレート",
     icon: "🪵",
     description:
       "ホームセンターで手に入る2×4材を使った基本の棚。コスパ最強の定番構成。",
@@ -118,7 +118,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "rental-kitchen-rack",
-    name: "賃貸キッチン棚",
+    name: "賃貸キッチン調味料棚テンプレート",
     icon: "🍳",
     description:
       "賃貸キッチンの限られたスペースに。調味料や食器を整理する省スペース棚。",
@@ -143,7 +143,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "shoe-rack",
-    name: "靴棚・シューズラック",
+    name: "玄関シューズラックテンプレート",
     icon: "👟",
     description:
       "玄関の狭いスペースに。靴を効率的に収納する薄型シューズラック。",
@@ -168,7 +168,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "desk-shelf",
-    name: "デスク上棚",
+    name: "デスク周り収納棚テンプレート",
     icon: "🖥️",
     description:
       "デスク上のスペースを活用する棚。モニター上や壁面にディスプレイ・収納スペースを確保。",
@@ -193,7 +193,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "wallist-heavy-shelf",
-    name: "ウォリスト大型棚",
+    name: "ウォリスト大型壁面棚テンプレート",
     icon: "🔩",
     description:
       "ウォリストの高耐荷重を活かした大型壁面棚。重い本や家電も安心して置ける。",
@@ -218,7 +218,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "sunoko-shelf",
-    name: "すのこ風カフェ棚",
+    name: "カフェ風おしゃれ飾り棚テンプレート",
     icon: "☕",
     description:
       "すのこテイストのおしゃれなカフェ風棚。観葉植物や雑貨のディスプレイに最適。",
@@ -243,7 +243,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "closet-shelf",
-    name: "押入れ・クローゼット棚",
+    name: "押入れ・クローゼット収納棚テンプレート",
     icon: "👕",
     description:
       "押入れやクローゼット内部のデッドスペースを有効活用。収納力を2倍に。",
@@ -269,7 +269,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
   },
   {
     id: "laundry-shelf",
-    name: "洗濯機上ラック",
+    name: "洗濯機上ランドリーラックテンプレート",
     icon: "🧺",
     description:
       "洗濯機上のデッドスペースに棚を設置。洗剤やタオルの収納に。賃貸でも安心。",

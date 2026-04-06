@@ -20,8 +20,8 @@ export async function generateMetadata({
   const part = PARTS_DICTIONARY_MAP[id];
   if (!part) return {};
 
-  const title = `${part.name}の特徴・選び方・使い方｜DIYパーツ辞典`;
-  const description = `${part.name}（${part.nameEn}）の特徴・スペック・使い方を徹底解説。${part.description}`;
+  const title = `${part.name}｜仕様・耐荷重・価格｜DIY棚パーツ辞典`;
+  const description = `${part.name}（${part.nameEn}）の仕様・耐荷重・価格を徹底解説。${part.description} DIY棚の部材選びの参考に。`;
 
   return {
     title,

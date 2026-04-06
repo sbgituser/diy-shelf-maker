@@ -4,9 +4,9 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ShelfPlannerQuizClient from "@/components/tools/ShelfPlannerQuizClient";
 
 export const metadata: Metadata = {
-  title: "DIY棚プランナー診断 | 5つの質問であなたにピッタリの棚を提案",
+  title: "DIY棚設計診断 | あなたに最適な棚レイアウトを提案",
   description:
-    "設置場所・収納物・予算・スキルレベルの5問に答えるだけで、あなたに最適なDIY棚の設計プラン・材料リスト・費用目安を提案します。",
+    "設置場所・収納物・予算・スキルの5問に答えるだけで、最適なDIY棚の設計プラン・材料リスト・費用目安を提案。棚設計シミュレーターと連携してすぐに設計を始められます。",
   keywords: [
     "DIY 棚 おすすめ",
     "DIY 棚 診断",
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "賃貸 DIY 棚 おすすめ",
   ],
   openGraph: {
-    title: "DIY棚プランナー診断 | 5つの質問であなたにピッタリの棚を提案",
+    title: "DIY棚設計診断 | あなたに最適な棚レイアウトを提案",
     description:
-      "設置場所・収納物・予算・スキルレベルの5問に答えるだけで最適なDIY棚を診断。材料リスト・費用目安付き。",
+      "設置場所・収納物・予算・スキルの5問に答えるだけで、最適なDIY棚の設計プラン・材料リスト・費用目安を提案。棚設計シミュレーターと連携してすぐに設計を始められます。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/shelf-planner-quiz",

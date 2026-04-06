@@ -18,8 +18,8 @@ export async function generateMetadata({
   const cat = PART_CATEGORIES.find((c) => c.slug === slug);
   if (!cat) return {};
 
-  const title = `${cat.name}の種類と選び方｜DIYパーツ辞典`;
-  const description = `${cat.name}（${cat.nameEn}）の種類と選び方を徹底解説。${cat.description}`;
+  const title = `${cat.name}の種類と選び方｜DIY棚パーツ辞典`;
+  const description = `${cat.name}（${cat.nameEn}）の種類・価格・選び方をDIY初心者向けに解説。${cat.description}`;
 
   return {
     title,

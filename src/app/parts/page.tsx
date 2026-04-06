@@ -5,9 +5,9 @@ import { PART_CATEGORIES } from "@/data/part-categories";
 import { PARTS_DICTIONARY, PARTS_BY_CATEGORY } from "@/data/parts-dictionary";
 
 export const metadata: Metadata = {
-  title: "DIYパーツ辞典｜突っ張り棚の材料・金具・工具を徹底解説",
+  title: "DIYパーツ辞典｜ラブリコ・ディアウォール等つっぱり棚の材料・金具を解説",
   description:
-    "突っ張り棚DIYに使うパーツを徹底解説。ラブリコ・ディアウォール等のアジャスター、SPF材、棚板、棚受け金具、ネジ、塗料、工具まで8カテゴリ37パーツをわかりやすく紹介します。",
+    "ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具、ネジ、塗料、工具まで8カテゴリ37パーツを解説。DIY棚の部材選びに迷ったらこの辞典をチェック。",
   keywords: [
     "DIY パーツ 辞典",
     "突っ張り棚 材料",
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "木材 塗装 ワトコオイル",
   ],
   openGraph: {
-    title: "DIYパーツ辞典｜突っ張り棚の材料・金具・工具を徹底解説",
+    title: "DIYパーツ辞典｜ラブリコ・ディアウォール等つっぱり棚の材料・金具を解説",
     description:
-      "突っ張り棚DIYに使うパーツを8カテゴリ37パーツで徹底解説。選び方・使い方・FAQ付き。",
+      "ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具、ネジ、塗料、工具まで8カテゴリ37パーツを解説。DIY棚の部材選びに迷ったらこの辞典をチェック。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/parts",

@@ -5,9 +5,9 @@ import SupportSystemPickerClient from "@/components/tools/SupportSystemPickerCli
 
 export const metadata: Metadata = {
   title:
-    "支柱システム比較ツール | ディアウォール・ラブリコ・ウォリスト徹底比較",
+    "支柱タイプ診断 | ラブリコ・ディアウォール・PILLAR BRACKETどれを選ぶ？",
   description:
-    "DIY棚の支柱システムを条件別に比較。ディアウォール・ラブリコ・ウォリストの耐荷重・価格・設置難易度を一覧比較。あなたに最適なシステムを診断します。",
+    "ラブリコ・ディアウォール・ウォリストの違いを耐荷重・価格・設置難易度で比較診断。賃貸の壁面収納に最適な突っ張り支柱タイプがすぐ分かる無料ツールです。",
   keywords: [
     "ディアウォール ラブリコ 比較",
     "突っ張り棚 おすすめ",
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title:
-      "支柱システム比較ツール | ディアウォール・ラブリコ・ウォリスト徹底比較",
+      "支柱タイプ診断 | ラブリコ・ディアウォール・PILLAR BRACKETどれを選ぶ？",
     description:
-      "DIY棚の支柱システム5方式を条件別に比較。耐荷重・価格・設置難易度を一覧比較し、最適なシステムを診断。",
+      "ラブリコ・ディアウォール・ウォリストの違いを耐荷重・価格・設置難易度で比較診断。賃貸の壁面収納に最適な突っ張り支柱タイプがすぐ分かる無料ツールです。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/support-system-picker",

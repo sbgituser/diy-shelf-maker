@@ -4,9 +4,9 @@ import FaqAccordion from "@/components/FaqAccordion";
 import MaterialCostEstimatorClient from "@/components/tools/MaterialCostEstimatorClient";
 
 export const metadata: Metadata = {
-  title: "DIY棚 木材費用見積もりツール | 材料リストと概算費用を自動計算",
+  title: "DIY棚の費用計算ツール【無料】部材費用を自動見積もり",
   description:
-    "DIY棚の材料費を自動見積もり。棚の寸法と材質を入力するだけで、必要な木材・金具・ネジのリストと参考費用を算出。ホームセンターでの買い物リストとしても使えます。",
+    "DIY棚の材料費を無料で自動見積もり。棚の寸法と材質を入力するだけで、木材・金具・ネジの費用を一括算出。ホームセンターでの買い物リストとしても使えます。",
   keywords: [
     "DIY 棚 費用",
     "棚 材料費 見積もり",
@@ -18,9 +18,9 @@ export const metadata: Metadata = {
     "ホームセンター 木材 価格",
   ],
   openGraph: {
-    title: "DIY棚 木材費用見積もりツール | 材料リストと概算費用を自動計算",
+    title: "DIY棚の費用計算ツール【無料】部材費用を自動見積もり",
     description:
-      "棚の寸法と材質を入力するだけで必要な材料リストと参考費用を自動算出。買い物リストとしても使えます。",
+      "DIY棚の材料費を無料で自動見積もり。棚の寸法と材質を入力するだけで、木材・金具・ネジの費用を一括算出。ホームセンターでの買い物リストとしても使えます。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/material-cost-estimator",

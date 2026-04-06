@@ -21,8 +21,8 @@ export async function generateMetadata({
   const template = SHELF_TEMPLATES.find((t) => t.id === id);
   if (!template) return {};
 
-  const title = `${template.name}の設計図・材料リスト`;
-  const description = `${template.name}をDIYで作る方法。${template.description} 天井高を入力するだけで木材カット寸法・必要な部材リスト・設計図を自動生成。無料の棚設計ツール。`;
+  const title = `${template.name} | ${template.defaults.pillarCount}柱${template.defaults.shelfCount}段の設計図・費用目安`;
+  const description = `${template.name}のDIY設計図を無料で作成。${template.description} ${template.defaults.pillarCount}本柱・${template.defaults.shelfCount}段構成で木材カット寸法・部材リスト・費用概算を自動計算します。`;
 
   return {
     title,
