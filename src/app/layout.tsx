@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { Noto_Sans_JP } from "next/font/google";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import DesktopNav from "@/components/DesktopNav";
 import MobileMenu from "@/components/MobileMenu";
 import ToastContainer from "@/components/Toast";
 import "./globals.css";
+
+const notoSansJP = Noto_Sans_JP({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +68,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" className={notoSansJP.className}>
+      <head>
+        <link rel="dns-prefetch" href="https://www.amazon.co.jp" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+      </head>
       <body className="bg-gray-50 text-gray-900 antialiased">
         <GoogleAnalytics />
         <script

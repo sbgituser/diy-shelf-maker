@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import type {
   GridDesign,
@@ -18,7 +19,7 @@ import { calculateGridParts } from "@/lib/grid-calculator";
 import { exportDesignPdf } from "@/lib/pdf-export";
 import PartsListTable from "../PartsListTable";
 import RecommendedTools from "../RecommendedTools";
-import ShareButtons from "../ShareButtons";
+const ShareButtons = dynamic(() => import("../ShareButtons"), { ssr: false });
 import FloatingCTA from "../FloatingCTA";
 import CompletionModal from "../CompletionModal";
 

@@ -56,3 +56,15 @@
 .animate-spin {
   animation: spin 1s linear infinite;
 }
+
+/* prefers-reduced-motion: アニメーション無効化 */
+@media (prefers-reduced-motion: reduce) {
+  .animate-slide-in,
+  .animate-fade-in,
+  .animate-slide-out,
+  .animate-skeleton,
+  .animate-spin {
+    animation: none !important;
+    transition: none !important;
+  }
+}
