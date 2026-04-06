@@ -281,30 +281,49 @@ export default async function HowtoArticlePage({
         </section>
       </article>
 
-      {/* Amazonアフィリエイトリンク */}
+      {/* この記事で紹介した商品 */}
       {article.amazonLinks && article.amazonLinks.length > 0 && (
-        <div className="mt-10 bg-amber-50 border border-amber-200 rounded-xl p-6">
-          <h2 className="text-base font-bold text-gray-800 mb-4">
-            🛒 この記事で紹介した材料・工具をAmazonで見る
-          </h2>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {article.amazonLinks.map((link) => (
-              <a
-                key={link.keyword}
-                href={buildAmazonUrl(link.keyword)}
-                target="_blank"
-                rel="noopener noreferrer nofollow sponsored"
-                className="flex items-center gap-2 bg-white border border-amber-200 rounded-lg px-4 py-2.5 text-sm text-amber-800 hover:bg-amber-100 hover:border-amber-400 transition-all"
-              >
-                <span className="flex-shrink-0">🔗</span>
-                <span className="flex-1">{link.label}</span>
-                <svg className="w-3 h-3 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            ))}
+        <div className="mt-10 bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="px-6 py-4 bg-gradient-to-r from-amber-50 to-orange-50 border-b border-amber-200">
+            <h2 className="text-lg font-bold text-gray-800">
+              🛒 この記事で紹介した商品
+            </h2>
+            <p className="text-sm text-gray-600 mt-1">
+              記事内で紹介した材料・工具をAmazonで購入できます
+            </p>
           </div>
-          <p className="mt-3 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th scope="col" className="px-4 py-3 text-left text-gray-600 font-medium">商品</th>
+                  <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-28">参考価格</th>
+                  <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-32">リンク</th>
+                </tr>
+              </thead>
+              <tbody>
+                {article.amazonLinks.map((link) => (
+                  <tr key={link.keyword} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 font-bold text-gray-900">{link.label}</td>
+                    <td className="px-4 py-3 text-right text-gray-600 font-mono">¥1,000〜</td>
+                    <td className="px-4 py-3 text-center">
+                      <a
+                        href={buildAmazonUrl(link.keyword)}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow sponsored"
+                        className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
+                      >
+                        🛒 Amazonで見る
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+            <p className="text-xs text-gray-400">※ 価格は参考値です。Amazonアソシエイト・プログラムのリンクです。</p>
+          </div>
         </div>
       )}
 

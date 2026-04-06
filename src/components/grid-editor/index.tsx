@@ -19,6 +19,8 @@ import { exportDesignPdf } from "@/lib/pdf-export";
 import PartsListTable from "../PartsListTable";
 import RecommendedTools from "../RecommendedTools";
 import ShareButtons from "../ShareButtons";
+import FloatingCTA from "../FloatingCTA";
+import CompletionModal from "../CompletionModal";
 
 import { showToast } from "../Toast";
 import { SNAP, SVG_W, SVG_H, M, DW, DH, DRAG_THRESHOLD } from "@/constants/grid";
@@ -558,6 +560,43 @@ export default function GridEditor() {
         />
       </div>
 
+      {/* 購入ガイド */}
+      {result.partsList.length > 0 && (
+        <section className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200 p-5 sm:p-6">
+          <h2 className="text-lg font-bold text-gray-800 mb-2">
+            設計した棚の部材をまとめて購入
+          </h2>
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">
+            設計が完了しました！以下の部材リストで必要なアイテムを確認し、Amazonでまとめて購入できます。
+          </p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-700">
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-green-600">✅</span>
+              概算費用: <strong className="text-amber-700 font-mono">¥{result.totalEstimate.toLocaleString()}</strong>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-green-600">✅</span>
+              必要部材数: <strong>{result.partsList.length}点</strong>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="text-green-600">✅</span>
+              すべてAmazonプライム対応商品を優先表示
+            </span>
+          </div>
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                document.getElementById("parts-list")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg transition-colors text-sm"
+            >
+              📋 部材リストを確認する ↓
+            </button>
+          </div>
+        </section>
+      )}
+
       {/* 部材リスト */}
       {result.partsList.length > 0 && (
         <section className="mt-8">
@@ -631,6 +670,36 @@ export default function GridEditor() {
         onSelect={changeBracket}
         onBulkApply={bulkChangeBracket}
         currentBracketId={bracketTargetShelfId ? (design.shelves.find((s) => s.id === bracketTargetShelfId)?.bracketId ?? design.defaultBracketId) : design.defaultBracketId}
+      />
+
+      {/* フローティングCTA */}
+      <FloatingCTA
+        total={result.totalEstimate}
+        visible={design.pillars.length >= 1 && result.partsList.length > 0}
+      />
+
+      {/* 設計完了モーダル */}
+      <CompletionModal
+        total={result.totalEstimate}
+        partsCount={result.partsList.length}
+        pillarsCount={design.pillars.length}
+        shelvesCount={design.shelves.length}
+        onViewParts={() => {
+          document.getElementById("parts-list")?.scrollIntoView({ behavior: "smooth" });
+        }}
+        onExportPdf={async () => {
+          setPdfExporting(true);
+          try {
+            await exportDesignPdf(design);
+            showToast("success", "PDFをダウンロードしました");
+          } catch (err) {
+            console.error("PDF export failed:", err);
+            const msg = err instanceof Error ? err.message : "PDF出力に失敗しました。もう一度お試しください。";
+            showToast("error", msg);
+          } finally {
+            setPdfExporting(false);
+          }
+        }}
       />
     </div>
   );

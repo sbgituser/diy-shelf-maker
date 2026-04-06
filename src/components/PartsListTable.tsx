@@ -17,7 +17,7 @@ const CATEGORY_LABELS: Record<string, { label: string; icon: string }> = {
 
 export default function PartsListTable({ parts, total }: Props) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div id="parts-list" className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
       {/* テーブル */}
       <div className="overflow-x-auto" role="region" aria-label="必要な部材リスト" tabIndex={0}>
         <table className="w-full text-sm">
@@ -36,7 +36,7 @@ export default function PartsListTable({ parts, total }: Props) {
               <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
                 小計
               </th>
-              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-20">
+              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-28">
                 購入
               </th>
             </tr>
@@ -56,7 +56,7 @@ export default function PartsListTable({ parts, total }: Props) {
                     <div className="flex items-start gap-2">
                       <span className="text-base">{cat.icon}</span>
                       <div>
-                        <div className="font-medium text-gray-800">
+                        <div className="font-bold text-gray-900">
                           {part.name}
                         </div>
                         {part.note && (
@@ -73,7 +73,7 @@ export default function PartsListTable({ parts, total }: Props) {
                   <td className="px-4 py-3 text-right font-mono text-gray-600">
                     ¥{part.unitPrice.toLocaleString()}
                   </td>
-                  <td className="px-4 py-3 text-right font-mono font-medium text-gray-800">
+                  <td className="px-4 py-3 text-right font-mono font-bold text-gray-900 bg-amber-50/50">
                     ¥{part.subtotal.toLocaleString()}
                   </td>
                   <td className="px-4 py-3 text-center">
@@ -81,22 +81,9 @@ export default function PartsListTable({ parts, total }: Props) {
                       href={part.amazonUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-200 transition-colors"
+                      className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
                     >
-                      Amazon
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
+                      🛒 Amazonで見る
                     </a>
                   </td>
                 </tr>

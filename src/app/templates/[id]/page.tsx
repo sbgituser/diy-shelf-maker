@@ -587,12 +587,9 @@ export default async function TemplatePage({
                             href={buildAmazonUrl(keyword)}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 px-2 py-1 bg-amber-100 text-amber-800 rounded-md text-xs font-medium hover:bg-amber-200 transition-colors"
+                            className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-1 px-2.5 rounded transition-colors"
                           >
-                            Amazon
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
+                            🛒 Amazonで見る
                           </a>
                         )}
                       </div>
@@ -600,6 +597,67 @@ export default async function TemplatePage({
                   );
                 })}
               </ul>
+            </div>
+          </section>
+        )}
+
+        {/* このテンプレートの部材をまとめて購入 */}
+        {details && (
+          <section className="mb-8">
+            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200 p-5 sm:p-6">
+              <h2 className="text-lg font-bold text-gray-800 mb-2">
+                🛒 このテンプレートの部材をまとめて購入
+              </h2>
+              <p className="text-sm text-gray-600 mb-4">
+                {template.name}に必要な材料をAmazonで購入できます。
+              </p>
+              <div className="bg-white rounded-lg border border-amber-200 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th scope="col" className="px-4 py-2 text-left text-gray-600 font-medium">部材</th>
+                      <th scope="col" className="px-4 py-2 text-center text-gray-600 font-medium w-28">購入</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {details.materials.map((m, i) => {
+                      const kw = getAmazonKeyword(m);
+                      return (
+                        <tr key={i} className="border-b border-gray-100 last:border-b-0">
+                          <td className="px-4 py-2.5 font-medium text-gray-800">{m}</td>
+                          <td className="px-4 py-2.5 text-center">
+                            {kw ? (
+                              <a
+                                href={buildAmazonUrl(kw)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold py-1 px-2.5 rounded transition-colors"
+                              >
+                                🛒 Amazonで見る
+                              </a>
+                            ) : (
+                              <span className="text-xs text-gray-400">ホームセンター推奨</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-4 text-center">
+                <a
+                  href={buildAmazonUrl(`DIY 棚 ${template.name} セット`)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-lg transition-colors shadow-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
+                  </svg>
+                  Amazonでまとめて材料を探す
+                </a>
+              </div>
             </div>
           </section>
         )}
