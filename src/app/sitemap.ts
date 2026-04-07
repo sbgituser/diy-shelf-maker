@@ -42,6 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/howto`,
       priority: 0.8,
       changeFrequency: "weekly",
+      lastModified: LATEST_HOWTO_DATE,
+    },
+    {
+      url: `${BASE_URL}/tools`,
+      priority: 0.8,
+      changeFrequency: "monthly",
       lastModified: CONTENT_LAUNCH_DATE,
     },
     {

@@ -103,28 +103,49 @@ export default function RootLayout({
         {/* フッター */}
         <footer className="bg-white border-t border-gray-200 mt-16">
           <div className="max-w-5xl mx-auto px-4 py-8">
-            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-6 text-sm">
-              <a href="/" className="text-gray-600 hover:text-amber-600 transition-colors">設計ツール</a>
-              <a href="/templates" className="text-gray-600 hover:text-amber-600 transition-colors">テンプレート一覧</a>
-              <a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド</a>
-              <a href="/guide" className="text-gray-600 hover:text-amber-600 transition-colors">使い方ガイド</a>
-              <a href="/parts" className="text-gray-600 hover:text-amber-600 transition-colors">パーツ辞典</a>
-              <a href="/tools/shelf-load-calc" className="text-gray-600 hover:text-amber-600 transition-colors">耐荷重計算</a>
-              <a href="/tools/material-cost-estimator" className="text-gray-600 hover:text-amber-600 transition-colors">費用見積もり</a>
-              <a href="/tools/support-system-picker" className="text-gray-600 hover:text-amber-600 transition-colors">支柱比較</a>
-              <a href="/tools/shelf-planner-quiz" className="text-gray-600 hover:text-amber-600 transition-colors">棚診断</a>
+            <nav className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-6 text-sm">
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">設計</h3>
+                <ul className="space-y-1.5">
+                  <li><a href="/" className="text-gray-600 hover:text-amber-600 transition-colors">設計ツール</a></li>
+                  <li><a href="/templates" className="text-gray-600 hover:text-amber-600 transition-colors">テンプレート一覧</a></li>
+                  <li><a href="/guide" className="text-gray-600 hover:text-amber-600 transition-colors">使い方ガイド</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">学ぶ</h3>
+                <ul className="space-y-1.5">
+                  <li><a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド</a></li>
+                  <li><a href="/parts" className="text-gray-600 hover:text-amber-600 transition-colors">パーツ辞典</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">ツール</h3>
+                <ul className="space-y-1.5">
+                  <li><a href="/tools" className="text-gray-600 hover:text-amber-600 transition-colors">ツール一覧</a></li>
+                  <li><a href="/tools/shelf-load-calc" className="text-gray-600 hover:text-amber-600 transition-colors">耐荷重計算</a></li>
+                  <li><a href="/tools/material-cost-estimator" className="text-gray-600 hover:text-amber-600 transition-colors">費用見積もり</a></li>
+                  <li><a href="/tools/support-system-picker" className="text-gray-600 hover:text-amber-600 transition-colors">支柱比較</a></li>
+                  <li><a href="/tools/shelf-planner-quiz" className="text-gray-600 hover:text-amber-600 transition-colors">棚診断</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-2">サイト情報</h3>
+                <ul className="space-y-1.5">
+                  <li>
+                    <a
+                      href="https://kuras-plus.com"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      kuras-plus.com
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </nav>
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-gray-500 border-t border-gray-100 pt-6">
               <p>
                 DIY棚シミュレーター — 賃貸でもOK！ディアウォール・ラブリコ設計ツール
-              </p>
-              <p className="mt-1">
-                <a
-                  href="https://kuras-plus.com"
-                  className="text-amber-600 hover:underline"
-                >
-                  kuras-plus.com
-                </a>
               </p>
               <p className="mt-2 text-xs text-gray-400">
                 ※ 本ツールの計算結果は参考値です。実際の施工は各製品の取扱説明書に従ってください。

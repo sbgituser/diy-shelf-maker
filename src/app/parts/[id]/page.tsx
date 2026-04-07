@@ -6,6 +6,8 @@ import FaqAccordion from "@/components/FaqAccordion";
 import { PART_CATEGORY_MAP } from "@/data/part-categories";
 import { PARTS_DICTIONARY, PARTS_DICTIONARY_MAP } from "@/data/parts-dictionary";
 import { buildAmazonUrl } from "@/data/products";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import { SHELF_TEMPLATES } from "@/data/templates";
 
 export function generateStaticParams() {
   return PARTS_DICTIONARY.map((p) => ({ id: p.id }));
@@ -268,7 +270,71 @@ export default async function PartDetailPage({
           </section>
         )}
 
-        {/* 10. Amazon 検索ボタン */}
+        {/* 10. 関連する作り方ガイド */}
+        {(() => {
+          const partNameLower = part.name.toLowerCase();
+          const relatedHowto = HOWTO_ARTICLES.filter((a) =>
+            a.keywords.some((kw) => partNameLower.includes(kw.toLowerCase()) || kw.toLowerCase().includes(partNameLower))
+            || a.title.includes(part.name)
+          ).slice(0, 3);
+          if (relatedHowto.length === 0) return null;
+          return (
+            <section className="mb-8">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">関連する作り方ガイド</h2>
+              <div className="space-y-3">
+                {relatedHowto.map((a) => (
+                  <Link
+                    key={a.slug}
+                    href={`/howto/${a.slug}`}
+                    className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+                  >
+                    <span className="text-2xl flex-shrink-0">{a.icon}</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">
+                        {a.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-gray-500 leading-relaxed line-clamp-2">
+                        {a.description}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* 10b. このパーツを使うテンプレート */}
+        {(() => {
+          const partNameLower = part.name.toLowerCase();
+          const relatedTpl = SHELF_TEMPLATES.filter((t) =>
+            t.keywords.some((kw) => partNameLower.includes(kw.toLowerCase()))
+            || t.name.includes(part.name)
+            || (part.category === "adjuster" && t.defaults.adjuster?.replace("_", " ").includes(part.id.replace("_", " ")))
+          ).slice(0, 4);
+          if (relatedTpl.length === 0) return null;
+          return (
+            <section className="mb-8">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">このパーツを使うテンプレート</h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {relatedTpl.map((t) => (
+                  <Link
+                    key={t.id}
+                    href={`/templates/${t.id}`}
+                    className="block bg-white rounded-xl border border-gray-200 p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+                  >
+                    <div className="text-2xl mb-1">{t.icon}</div>
+                    <div className="font-medium text-gray-800 text-sm group-hover:text-amber-600 transition-colors">
+                      {t.name}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* 11. Amazon 検索ボタン */}
         <section className="mb-8">
           <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl p-6 sm:p-8 text-white text-center">
             <h2 className="text-lg font-bold mb-2">Amazonで{part.name}を探す</h2>
