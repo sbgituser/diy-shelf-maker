@@ -34,6 +34,7 @@ const TOOLS = [
     name: "棚板耐荷重計算ツール",
     description:
       "棚板の材質・寸法から耐荷重・たわみ量を自動計算。パイン・MDF・合板など7種に対応。",
+    guideHref: "/howto/shelf-load-calculator-guide",
   },
   {
     href: "/tools/material-cost-estimator",
@@ -41,6 +42,7 @@ const TOOLS = [
     name: "費用見積もりツール",
     description:
       "棚の寸法と材質を入力するだけで、木材・金具・ネジの費用を一括算出。買い物リストにも。",
+    guideHref: "/howto/material-cost-estimator-guide",
   },
   {
     href: "/tools/support-system-picker",
@@ -48,6 +50,7 @@ const TOOLS = [
     name: "支柱タイプ比較ツール",
     description:
       "ラブリコ・ディアウォール・ウォリストを耐荷重・価格・設置難易度で比較。最適な支柱がすぐ分かる。",
+    guideHref: "/howto/support-system-picker-guide",
   },
   {
     href: "/tools/shelf-planner-quiz",
@@ -55,6 +58,7 @@ const TOOLS = [
     name: "棚設計診断ツール",
     description:
       "5つの質問に答えるだけで、最適な棚の設計プラン・材料リスト・費用目安を提案します。",
+    guideHref: "/howto/shelf-planner-quiz-guide",
   },
 ];
 
@@ -97,22 +101,32 @@ export default function ToolsPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         {TOOLS.map((tool) => (
-          <Link
+          <div
             key={tool.href}
-            href={tool.href}
-            className="group block bg-white border border-gray-200 rounded-xl p-5 hover:border-amber-300 hover:shadow-md transition-all"
+            className="bg-white border border-gray-200 rounded-xl p-5 hover:border-amber-300 hover:shadow-md transition-all"
           >
             <span className="text-3xl">{tool.icon}</span>
-            <h2 className="mt-3 text-lg font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+            <h2 className="mt-3 text-lg font-bold text-gray-800">
               {tool.name}
             </h2>
             <p className="mt-2 text-sm text-gray-600 leading-relaxed">
               {tool.description}
             </p>
-            <span className="mt-3 inline-block text-sm text-amber-600 font-medium">
-              ツールを使う →
-            </span>
-          </Link>
+            <div className="mt-3 flex items-center gap-4">
+              <Link
+                href={tool.href}
+                className="text-sm text-amber-600 font-medium hover:text-amber-700 transition-colors"
+              >
+                ツールを使う →
+              </Link>
+              <Link
+                href={tool.guideHref}
+                className="text-sm text-gray-500 hover:text-amber-600 transition-colors"
+              >
+                活用ガイド →
+              </Link>
+            </div>
+          </div>
         ))}
       </div>
 
