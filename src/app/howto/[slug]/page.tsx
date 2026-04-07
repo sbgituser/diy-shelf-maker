@@ -131,20 +131,9 @@ export default async function HowtoArticlePage({
     inLanguage: "ja",
   };
 
-  // BreadcrumbList JSON-LD
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://diy-shelf-maker.kuras-plus.com/" },
-      { "@type": "ListItem", position: 2, name: "作り方ガイド", item: "https://diy-shelf-maker.kuras-plus.com/howto" },
-      { "@type": "ListItem", position: 3, name: article.title, item: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}` },
-    ],
-  };
-
   return (
     <div className="max-w-3xl mx-auto">
-      {/* JSON-LD */}
+      {/* JSON-LD（BreadcrumbListはBreadcrumbコンポーネント側で出力するため省略） */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -152,10 +141,6 @@ export default async function HowtoArticlePage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <script
         type="application/ld+json"
@@ -382,7 +367,7 @@ export default async function HowtoArticlePage({
               score: a.keywords.filter((k) => article.keywords.includes(k)).length,
             }))
             .sort((x, y) => y.score - x.score)
-            .slice(0, 4)
+            .slice(0, 5)
             .map(({ article: a }) => (
               <Link
                 key={a.slug}

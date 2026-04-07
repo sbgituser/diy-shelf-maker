@@ -95,19 +95,9 @@ export default async function PartDetailPage({
     })),
   };
 
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://diy-shelf-maker.kuras-plus.com" },
-      { "@type": "ListItem", position: 2, name: "パーツ辞典", item: "https://diy-shelf-maker.kuras-plus.com/parts" },
-      { "@type": "ListItem", position: 3, name: cat?.name ?? part.category, item: `https://diy-shelf-maker.kuras-plus.com/parts/category/${cat?.slug ?? part.category}` },
-      { "@type": "ListItem", position: 4, name: part.name, item: `https://diy-shelf-maker.kuras-plus.com/parts/${part.id}` },
-    ],
-  };
-
   return (
     <>
+      {/* JSON-LD（BreadcrumbListはBreadcrumbコンポーネント側で出力するため省略） */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -115,10 +105,6 @@ export default async function PartDetailPage({
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-3xl mx-auto">

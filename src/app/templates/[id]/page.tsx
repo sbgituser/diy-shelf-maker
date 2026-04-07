@@ -491,19 +491,9 @@ export default async function TemplatePage({
     })),
   } : null;
 
-  // BreadcrumbList JSON-LD
-  const breadcrumbJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://diy-shelf-maker.kuras-plus.com/" },
-      { "@type": "ListItem", position: 2, name: "テンプレート一覧", item: "https://diy-shelf-maker.kuras-plus.com/templates" },
-      { "@type": "ListItem", position: 3, name: `${template.name}の設計図・材料リスト`, item: `https://diy-shelf-maker.kuras-plus.com/templates/${template.id}` },
-    ],
-  };
-
   return (
     <>
+      {/* JSON-LD（BreadcrumbListはBreadcrumbコンポーネント側で出力するため省略） */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -514,10 +504,6 @@ export default async function TemplatePage({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-      />
 
       <article className="max-w-3xl mx-auto">
         {/* パンくずリスト */}
