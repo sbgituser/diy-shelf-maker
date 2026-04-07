@@ -1,5 +1,7 @@
 import DesignForm from "@/components/DesignForm";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -117,6 +119,46 @@ const howToJsonLd = {
   ],
 };
 
+const FEATURED_SLUGS = [
+  "labrico-vs-diawall",
+  "rental-wall-storage-guide",
+  "100yen-shop-shelf-diy",
+  "beginner-diy-shelf-design",
+  "wifi-router-hiding-rack-diy",
+  "beginner-tools-guide",
+] as const;
+
+const featuredArticles = FEATURED_SLUGS.map((slug) =>
+  HOWTO_ARTICLES.find((a) => a.slug === slug)
+).filter((a): a is NonNullable<typeof a> => a != null);
+
+const DIY_TOOLS = [
+  {
+    icon: "🎯",
+    name: "棚選びクイズ",
+    description: "質問に答えるだけで最適な棚が見つかる",
+    href: "/tools/shelf-planner-quiz",
+  },
+  {
+    icon: "💰",
+    name: "材料費計算",
+    description: "木材・金具の費用を自動見積もり",
+    href: "/tools/material-cost-estimator",
+  },
+  {
+    icon: "⚖️",
+    name: "耐荷重計算",
+    description: "棚板の安全な荷重を計算",
+    href: "/tools/shelf-load-calc",
+  },
+  {
+    icon: "🔧",
+    name: "アジャスター比較",
+    description: "ラブリコ・ディアウォールを一目で比較",
+    href: "/tools/support-system-picker",
+  },
+];
+
 export default function Home() {
   return (
     <>
@@ -164,6 +206,62 @@ export default function Home() {
       <ErrorBoundary>
         <DesignForm />
       </ErrorBoundary>
+
+      {/* 人気のDIYガイド記事セクション */}
+      <section className="max-w-5xl mx-auto mt-12">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">人気のDIYガイド</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {featuredArticles.map((article) => (
+            <Link
+              key={article.slug}
+              href={`/howto/${article.slug}`}
+              className="block bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-sm transition-all group"
+            >
+              <div className="flex items-start gap-3">
+                <span className="text-2xl flex-shrink-0">{article.icon}</span>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-gray-800 group-hover:text-amber-600 transition-colors line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1 truncate">
+                    {article.description}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-4 text-right">
+          <Link
+            href="/howto"
+            className="inline-flex items-center text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
+          >
+            もっと見る →
+          </Link>
+        </div>
+      </section>
+
+      {/* 便利ツールセクション */}
+      <section className="max-w-5xl mx-auto mt-12">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">便利なDIYツール</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {DIY_TOOLS.map((tool) => (
+            <Link
+              key={tool.href}
+              href={tool.href}
+              className="block bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100 hover:border-amber-300 hover:shadow-sm transition-all group text-center"
+            >
+              <span className="text-3xl">{tool.icon}</span>
+              <h3 className="text-sm font-bold text-gray-800 mt-2 group-hover:text-amber-600 transition-colors">
+                {tool.name}
+              </h3>
+              <p className="text-xs text-gray-500 mt-1 truncate">
+                {tool.description}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       {/* パーツ辞典へのリンクセクション */}
       <section className="max-w-5xl mx-auto mt-12 mb-4">
