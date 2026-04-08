@@ -378,6 +378,26 @@ export default function GuidePage() {
               <div className="text-xs text-gray-500 mt-0.5">本棚・キッチン棚・シューズラックなど12種</div>
             </div>
           </Link>
+          <Link
+            href="/parts"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🔧</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">パーツ辞典で調べる</div>
+              <div className="text-xs text-gray-500 mt-0.5">アジャスター・木材・金具など37パーツ</div>
+            </div>
+          </Link>
+          <Link
+            href="/tools"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🛠️</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">無料ツールを使う</div>
+              <div className="text-xs text-gray-500 mt-0.5">耐荷重計算・費用見積もり・支柱比較</div>
+            </div>
+          </Link>
         </div>
       </section>
 

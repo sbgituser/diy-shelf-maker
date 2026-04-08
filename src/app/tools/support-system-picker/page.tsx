@@ -99,6 +99,12 @@ const jsonLd = [
         {
           "@type": "ListItem",
           position: 2,
+          name: "ツール一覧",
+          item: "https://diy-shelf-maker.kuras-plus.com/tools",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
           name: "支柱システム比較ツール",
           item: "https://diy-shelf-maker.kuras-plus.com/tools/support-system-picker",
         },
@@ -131,6 +137,7 @@ export default function SupportSystemPickerPage() {
         <Breadcrumb
           items={[
             { name: "ホーム", href: "/" },
+            { name: "ツール一覧", href: "/tools" },
             { name: "支柱システム比較ツール" },
           ]}
         />

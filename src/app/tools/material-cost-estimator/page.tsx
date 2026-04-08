@@ -97,6 +97,12 @@ const jsonLd = [
         {
           "@type": "ListItem",
           position: 2,
+          name: "ツール一覧",
+          item: "https://diy-shelf-maker.kuras-plus.com/tools",
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
           name: "木材費用見積もりツール",
           item: "https://diy-shelf-maker.kuras-plus.com/tools/material-cost-estimator",
         },
@@ -129,6 +135,7 @@ export default function MaterialCostEstimatorPage() {
         <Breadcrumb
           items={[
             { name: "ホーム", href: "/" },
+            { name: "ツール一覧", href: "/tools" },
             { name: "木材費用見積もりツール" },
           ]}
         />

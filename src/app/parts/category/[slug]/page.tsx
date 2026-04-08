@@ -212,7 +212,17 @@ export default async function CategoryPage({
           <h2 className="text-base font-bold text-gray-800 mb-3">
             あわせてチェック
           </h2>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Link
+              href="/howto"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">📖</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">作り方ガイドを読む</div>
+                <div className="text-xs text-gray-500 mt-0.5">ラブリコ比較・賃貸DIY・初心者ガイドなど</div>
+              </div>
+            </Link>
             <Link
               href="/templates"
               className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"

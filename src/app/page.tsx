@@ -318,6 +318,29 @@ export default function Home() {
         </a>
       </section>
 
+      {/* 使い方ガイドへの導線 */}
+      <section className="max-w-5xl mx-auto mt-12 mb-4">
+        <Link
+          href="/guide"
+          className="block bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100 hover:border-blue-300 hover:shadow-sm transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">📖</span>
+            <div>
+              <h2 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors">
+                使い方ガイド
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                天井高の測り方、アジャスターの選び方、木材カットの注意点など、シミュレーターの使い方を4ステップで解説します。
+              </p>
+            </div>
+            <span className="ml-auto text-blue-600 font-medium text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+              見る →
+            </span>
+          </div>
+        </Link>
+      </section>
+
       {/* SEO用テキストコンテンツ */}
       <section className="max-w-3xl mx-auto mt-16 space-y-8 text-gray-700 leading-relaxed text-sm">
         <h2 className="text-xl font-bold text-gray-800">
