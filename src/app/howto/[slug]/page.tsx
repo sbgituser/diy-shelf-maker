@@ -21,18 +21,20 @@ export async function generateMetadata({
   const article = HOWTO_ARTICLES.find((a) => a.slug === slug);
   if (!article) return {};
 
+  const ogTitle = `${article.title} | DIY棚メーカー`;
+
   return {
     title: article.title,
     description: article.description,
     keywords: article.keywords,
     openGraph: {
-      title: article.title,
+      title: ogTitle,
       description: article.description,
       type: "article",
       locale: "ja_JP",
       publishedTime: article.publishedAt,
       url: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
-      siteName: "DIY棚シミュレーター by kuras-plus",
+      siteName: "DIY棚メーカー by kuras-plus",
       images: [{ url: `/ogp/howto/${article.slug}.png`, width: 1200, height: 630 }],
     },
     twitter: {

@@ -4,9 +4,9 @@ import FaqAccordion from "@/components/FaqAccordion";
 import MaterialCostEstimatorClient from "@/components/tools/MaterialCostEstimatorClient";
 
 export const metadata: Metadata = {
-  title: "DIY棚の費用計算ツール【無料】部材費用を自動見積もり",
+  title: "DIY棚の材料費計算ツール【無料】部材費用を自動見積もり",
   description:
-    "DIY棚の材料費を無料で自動見積もり。棚の寸法と材質を入力するだけで、木材・金具・ネジの費用を一括算出。ホームセンターでの買い物リストとしても使えます。",
+    "DIY棚の材料費を無料で自動見積もり。寸法と材質を入力するだけで木材・金具・ネジの費用を一括算出。ホームセンターでの買い物リストとしても活用OK。今すぐ費用を確認しましょう。",
   keywords: [
     "DIY 棚 費用",
     "棚 材料費 見積もり",
@@ -18,13 +18,18 @@ export const metadata: Metadata = {
     "ホームセンター 木材 価格",
   ],
   openGraph: {
-    title: "DIY棚の費用計算ツール【無料】部材費用を自動見積もり",
+    title: "DIY棚の材料費計算ツール【無料】部材費用を自動見積もり | DIY棚メーカー",
     description:
-      "DIY棚の材料費を無料で自動見積もり。棚の寸法と材質を入力するだけで、木材・金具・ネジの費用を一括算出。ホームセンターでの買い物リストとしても使えます。",
+      "DIY棚の材料費を無料で自動見積もり。寸法と材質を入力するだけで木材・金具・ネジの費用を一括算出。買い物リストにも。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/material-cost-estimator",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/default-ogp.png"],
   },
   alternates: {
     canonical:

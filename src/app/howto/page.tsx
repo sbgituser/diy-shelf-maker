@@ -5,22 +5,26 @@ import { buildAmazonUrl } from "@/data/products";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "DIY棚の作り方ガイド一覧",
+  title: "棚DIY作り方ガイド一覧【2026年版】初心者〜上級者向け記事まとめ",
   description:
-    "ラブリコ・ディアウォールの比較、賃貸での壁面収納、2×4材の本棚DIYなど、棚作りに役立つHow-to記事をまとめました。初心者から経験者まで使える実践ガイド。",
+    "DIY棚の作り方をテーマ別に解説する記事一覧。ラブリコ・ディアウォール比較、賃貸OK壁面収納、2×4材の本棚DIYなど。初心者から経験者まで使える実践ガイドで棚づくりを始めましょう。",
   keywords: [
     "DIY 棚 作り方",
+    "棚 DIY 初心者",
     "ラブリコ 使い方",
     "ディアウォール 使い方",
     "壁面収納 DIY",
     "2×4 棚 作り方",
+    "本棚 自作 簡単",
   ],
   openGraph: {
-    title: "DIY棚の作り方ガイド一覧",
+    title: "棚DIY作り方ガイド一覧【2026年版】初心者〜上級者向け記事まとめ | DIY棚メーカー",
     description:
-      "棚作りに役立つHow-to記事まとめ。ラブリコ・ディアウォール比較、賃貸OK壁面収納、木材カット計算方法など。",
+      "DIY棚の作り方をテーマ別に解説。ラブリコ・ディアウォール比較、賃貸OK壁面収納、2×4材の本棚DIYなど実践ガイド。",
     type: "website",
     locale: "ja_JP",
+    url: "https://diy-shelf-maker.kuras-plus.com/howto",
+    siteName: "DIY棚メーカー by kuras-plus",
     images: [{ url: "/ogp/howto-list.png", width: 1200, height: 630 }],
   },
   twitter: {

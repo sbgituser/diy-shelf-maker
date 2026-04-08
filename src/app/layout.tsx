@@ -16,11 +16,11 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   title: {
     default:
-      "DIY棚シミュレーター | 棚レイアウト設計・木材カット寸法を無料で自動計算",
-    template: "%s | DIY棚シミュレーター",
+      "棚の設計シミュレーション【無料】2×4材の設計図・材料費を自動計算 | DIY棚メーカー",
+    template: "%s | DIY棚メーカー",
   },
   description:
-    "棚のレイアウトを無料でシミュレーション。天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、部材リストと設計図を生成。賃貸でも壁を傷つけずにDIY。",
+    "棚の設計シミュレーションが無料でできるDIYツール。天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、部材リストと設計図を生成。賃貸でも壁を傷つけずにDIY棚が作れます。",
   keywords: [
     "棚 レイアウト シミュレーション 無料",
     "棚 設計 ツール",
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     "棚 設計図",
   ],
   openGraph: {
-    title: "DIY棚シミュレーター | 棚レイアウト設計を無料で",
+    title: "棚の設計シミュレーション【無料】DIY棚の設計図を自動作成 | DIY棚メーカー",
     description:
-      "天井高を入力 → 木材カット寸法・部材リスト・設計図を自動生成。ディアウォール/ラブリコ対応の無料ツール。",
+      "棚の設計シミュレーションが無料でできるDIYツール。天井高を入力するだけで木材カット寸法・部材リスト・設計図を自動生成。ラブリコ・ディアウォール対応。",
     type: "website",
     locale: "ja_JP",
     siteName: "DIY棚シミュレーター by kuras-plus",
@@ -44,9 +44,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "DIY棚シミュレーター | 棚設計を無料でシミュレーション",
+    title: "棚の設計シミュレーション【無料】DIY棚の設計図を自動作成",
     description:
-      "天井高入力で木材カット寸法を自動計算。部材リストと設計図も生成。賃貸DIYに。",
+      "棚の設計シミュレーションが無料でできるDIYツール。天井高入力で木材カット寸法を自動計算。賃貸OK。",
     images: ["/ogp/default-ogp.png"],
   },
   metadataBase: new URL("https://diy-shelf-maker.kuras-plus.com"),

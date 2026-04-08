@@ -4,27 +4,32 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ShelfPlannerQuizClient from "@/components/tools/ShelfPlannerQuizClient";
 
 export const metadata: Metadata = {
-  title: "DIY棚設計診断 | あなたに最適な棚レイアウトを提案",
+  title: "棚DIY初心者診断【無料】5問であなたに最適な棚を提案",
   description:
-    "設置場所・収納物・予算・スキルの5問に答えるだけで、最適なDIY棚の設計プラン・材料リスト・費用目安を提案。棚設計シミュレーターと連携してすぐに設計を始められます。",
+    "5つの質問に答えるだけで最適なDIY棚の設計プランを提案。設置場所・収納物・予算・スキルに合わせた材料リスト・費用目安も自動算出。棚設計シミュレーターと連携してすぐ設計を開始できます。",
   keywords: [
     "DIY 棚 おすすめ",
+    "棚 DIY 初心者",
     "DIY 棚 診断",
     "棚 プランナー",
-    "DIY 初心者 棚",
     "棚 何を作る",
     "DIY 棚 材料",
     "棚 費用 目安",
     "賃貸 DIY 棚 おすすめ",
   ],
   openGraph: {
-    title: "DIY棚設計診断 | あなたに最適な棚レイアウトを提案",
+    title: "棚DIY初心者診断【無料】5問であなたに最適な棚を提案 | DIY棚メーカー",
     description:
-      "設置場所・収納物・予算・スキルの5問に答えるだけで、最適なDIY棚の設計プラン・材料リスト・費用目安を提案。棚設計シミュレーターと連携してすぐに設計を始められます。",
+      "5つの質問に答えるだけで最適なDIY棚の設計プランを提案。材料リスト・費用目安も自動算出。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/shelf-planner-quiz",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/default-ogp.png"],
   },
   alternates: {
     canonical:

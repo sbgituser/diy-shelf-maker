@@ -5,28 +5,33 @@ import SupportSystemPickerClient from "@/components/tools/SupportSystemPickerCli
 
 export const metadata: Metadata = {
   title:
-    "支柱タイプ診断 | ラブリコ・ディアウォール・PILLAR BRACKETどれを選ぶ？",
+    "ラブリコ ディアウォール 比較診断【2026年版】最適な支柱を選ぶ",
   description:
-    "ラブリコ・ディアウォール・ウォリストの違いを耐荷重・価格・設置難易度で比較診断。賃貸の壁面収納に最適な突っ張り支柱タイプがすぐ分かる無料ツールです。",
+    "ラブリコとディアウォールの違いを耐荷重・価格・設置難易度で比較。賃貸の壁面収納に最適な突っ張り支柱タイプが3分でわかる無料診断ツール。迷ったらまずこの比較をチェック。",
   keywords: [
-    "ディアウォール ラブリコ 比較",
-    "突っ張り棚 おすすめ",
+    "ラブリコ ディアウォール 違い",
+    "ラブリコ ディアウォール 比較",
     "ディアウォール ラブリコ どっち",
+    "突っ張り棚 おすすめ",
     "ウォリスト 比較",
     "賃貸 壁面収納 突っ張り",
     "2×4 アジャスター 比較",
     "DIY 支柱 選び方",
-    "突っ張り棒 棚 比較",
   ],
   openGraph: {
     title:
-      "支柱タイプ診断 | ラブリコ・ディアウォール・PILLAR BRACKETどれを選ぶ？",
+      "ラブリコ ディアウォール 比較診断【2026年版】最適な支柱を選ぶ | DIY棚メーカー",
     description:
-      "ラブリコ・ディアウォール・ウォリストの違いを耐荷重・価格・設置難易度で比較診断。賃貸の壁面収納に最適な突っ張り支柱タイプがすぐ分かる無料ツールです。",
+      "ラブリコとディアウォールの違いを耐荷重・価格・設置難易度で比較。賃貸に最適な支柱がすぐわかる無料診断ツール。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/support-system-picker",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/default-ogp.png"],
   },
   alternates: {
     canonical:

@@ -6,26 +6,31 @@ import { PARTS_DICTIONARY, PARTS_BY_CATEGORY } from "@/data/parts-dictionary";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const metadata: Metadata = {
-  title: "DIYパーツ辞典｜ラブリコ・ディアウォール等つっぱり棚の材料・金具を解説",
+  title: "DIY棚パーツ辞典【2026年版】材料・金具37種の選び方を徹底解説",
   description:
-    "ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具、ネジ、塗料、工具まで8カテゴリ37パーツを解説。DIY棚の部材選びに迷ったらこの辞典をチェック。",
+    "DIY棚の材料・金具を8カテゴリ37パーツで徹底解説。ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具の選び方がわかるパーツ辞典。部材選びに迷ったらまずチェック。",
   keywords: [
     "DIY パーツ 辞典",
     "突っ張り棚 材料",
     "ラブリコ ディアウォール 違い",
     "2×4材 棚板 種類",
     "棚受け金具 選び方",
-    "DIY 工具 初心者",
+    "DIY 初心者 工具 おすすめ",
     "木材 塗装 ワトコオイル",
   ],
   openGraph: {
-    title: "DIYパーツ辞典｜ラブリコ・ディアウォール等つっぱり棚の材料・金具を解説",
+    title: "DIY棚パーツ辞典【2026年版】材料・金具37種の選び方を徹底解説 | DIY棚メーカー",
     description:
-      "ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具、ネジ、塗料、工具まで8カテゴリ37パーツを解説。DIY棚の部材選びに迷ったらこの辞典をチェック。",
+      "DIY棚の材料・金具を8カテゴリ37パーツで徹底解説。ラブリコ・ディアウォール等のアジャスター、2×4材、棚板、棚受け金具の選び方がわかるパーツ辞典。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/parts",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/default-ogp.png"],
   },
   alternates: {
     canonical: "https://diy-shelf-maker.kuras-plus.com/parts",

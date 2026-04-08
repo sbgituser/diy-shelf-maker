@@ -3,9 +3,9 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "DIY棚づくりツール一覧｜無料で使える設計サポートツール",
+  title: "DIY棚ツール一覧【すべて無料】設計・計算サポート4選",
   description:
-    "DIY棚づくりに役立つ無料ツールを一覧で紹介。耐荷重計算・費用見積もり・支柱比較・棚診断など、棚の設計から材料選びまでサポートします。",
+    "DIY棚づくりに役立つ無料ツール4選。棚板耐荷重計算・材料費見積もり・ラブリコ/ディアウォール比較・棚設計診断で、設計から材料選びまでサポート。すべて無料ですぐに使えます。",
   keywords: [
     "DIY 棚 ツール",
     "棚 耐荷重 計算",
@@ -14,13 +14,18 @@ export const metadata: Metadata = {
     "棚 設計 診断",
   ],
   openGraph: {
-    title: "DIY棚づくりツール一覧｜無料で使える設計サポートツール",
+    title: "DIY棚ツール一覧【すべて無料】設計・計算サポート4選 | DIY棚メーカー",
     description:
-      "耐荷重計算・費用見積もり・支柱比較・棚診断など、DIY棚づくりに役立つ無料ツールをまとめました。",
+      "DIY棚づくりに役立つ無料ツール4選。棚板耐荷重計算・材料費見積もり・支柱比較・棚設計診断をまとめました。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
+    images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/ogp/default-ogp.png"],
   },
   alternates: {
     canonical: "https://diy-shelf-maker.kuras-plus.com/tools",

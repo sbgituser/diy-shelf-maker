@@ -4,8 +4,9 @@ import { buildAmazonUrl } from "@/data/products";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "使い方ガイド",
-  description: "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
+  title: "棚DIYシミュレーターの使い方【初心者向け】4ステップで設計完了",
+  description:
+    "DIY棚の設計ツールの使い方を初心者向けに解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点を4ステップで紹介。初めてのDIY棚づくりでも迷わず設計できます。",
   keywords: [
     "DIY棚 使い方",
     "ディアウォール 使い方",
@@ -16,12 +17,13 @@ export const metadata: Metadata = {
     "2×4 アジャスター 選び方",
   ],
   openGraph: {
-    title: "使い方ガイド",
-    description: "DIY棚シミュレーターの使い方を解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点など。",
+    title: "棚DIYシミュレーターの使い方【初心者向け】4ステップで設計完了 | DIY棚メーカー",
+    description:
+      "DIY棚の設計ツールの使い方を初心者向けに解説。ディアウォール・ラブリコの選び方、天井高の測り方、木材カットの注意点を4ステップで紹介。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/guide",
-    siteName: "DIY棚シミュレーター by kuras-plus",
+    siteName: "DIY棚メーカー by kuras-plus",
     images: [{ url: "/ogp/guide.png", width: 1200, height: 630 }],
   },
   twitter: {

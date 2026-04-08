@@ -21,20 +21,21 @@ export async function generateMetadata({
   const template = SHELF_TEMPLATES.find((t) => t.id === id);
   if (!template) return {};
 
-  const title = `${template.name} | ${template.defaults.pillarCount}柱${template.defaults.shelfCount}段の設計図・費用目安`;
-  const description = `${template.name}のDIY設計図を無料で作成。${template.description} ${template.defaults.pillarCount}本柱・${template.defaults.shelfCount}段構成で木材カット寸法・部材リスト・費用概算を自動計算します。`;
+  const title = `${template.name}の設計図＆材料リスト【無料シミュレーター】`;
+  const description = `${template.name}の設計図を無料で作成。${template.description} 天井高を入力するだけで木材カット寸法・部材リスト・費用概算を自動計算。テンプレートを使って今すぐ設計を始めましょう。`;
+  const ogTitle = `${title} | DIY棚メーカー`;
 
   return {
     title,
     description,
     keywords: template.keywords,
     openGraph: {
-      title,
+      title: ogTitle,
       description,
       type: "website",
       locale: "ja_JP",
       url: `https://diy-shelf-maker.kuras-plus.com/templates/${template.id}`,
-      siteName: "DIY棚シミュレーター by kuras-plus",
+      siteName: "DIY棚メーカー by kuras-plus",
       images: [{ url: `/ogp/templates/${template.id}.png`, width: 1200, height: 630 }],
     },
     twitter: {

@@ -6,23 +6,27 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const metadata: Metadata = {
-  title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
+  title: "棚 設計図テンプレート一覧【無料】人気のDIY棚デザイン12選",
   description:
-    "DIY棚の人気テンプレート12種類を紹介。本棚、壁面収納、キッチン棚、シューズラック、デスク棚など。テンプレートを選ぶだけで設計図と材料リストを自動生成。",
+    "DIY棚の設計図テンプレート12種類を無料で公開。本棚・壁面収納・キッチン棚・シューズラック等、テンプレートを選ぶだけで設計図と材料リストを自動生成。好みのデザインですぐ設計スタート。",
   keywords: [
+    "棚 設計図 無料",
     "DIY 棚 テンプレート",
     "棚 設計図 テンプレート",
     "DIY 棚 デザイン",
     "壁面収納 設計図",
     "本棚 設計図 無料",
+    "本棚 寸法 目安",
+    "2×4 棚 設計図",
   ],
   openGraph: {
-    title: "棚テンプレート一覧 - 人気のDIY棚デザイン12選",
+    title: "棚 設計図テンプレート一覧【無料】人気のDIY棚デザイン12選 | DIY棚メーカー",
     description:
-      "DIY棚の人気テンプレート12種類。テンプレートを選んでシミュレーションするだけ。",
+      "DIY棚の設計図テンプレート12種類を無料で公開。テンプレートを選ぶだけで設計図と材料リストを自動生成。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/templates",
+    siteName: "DIY棚メーカー by kuras-plus",
     images: [{ url: "/ogp/templates-list.png", width: 1200, height: 630 }],
   },
   twitter: {

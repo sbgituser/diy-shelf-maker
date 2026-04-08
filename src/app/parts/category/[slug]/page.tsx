@@ -19,19 +19,25 @@ export async function generateMetadata({
   const cat = PART_CATEGORIES.find((c) => c.slug === slug);
   if (!cat) return {};
 
-  const title = `${cat.name}の種類と選び方｜DIY棚パーツ辞典`;
-  const description = `${cat.name}（${cat.nameEn}）の種類・価格・選び方をDIY初心者向けに解説。${cat.description}`;
+  const title = `${cat.name}の種類と選び方【おすすめ付き】DIY棚パーツ辞典`;
+  const description = `${cat.name}（${cat.nameEn}）の種類・価格・選び方をDIY初心者向けに解説。${cat.description} おすすめパーツの比較と購入ガイド付き。`;
+  const ogTitle = `${title} | DIY棚メーカー`;
 
   return {
     title,
     description,
     openGraph: {
-      title,
+      title: ogTitle,
       description,
       type: "website",
       locale: "ja_JP",
       url: `https://diy-shelf-maker.kuras-plus.com/parts/category/${slug}`,
-      siteName: "DIY棚シミュレーター by kuras-plus",
+      siteName: "DIY棚メーカー by kuras-plus",
+      images: [{ url: "/ogp/default-ogp.png", width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: ["/ogp/default-ogp.png"],
     },
     alternates: {
       canonical: `https://diy-shelf-maker.kuras-plus.com/parts/category/${slug}`,
