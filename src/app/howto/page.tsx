@@ -63,6 +63,25 @@ const CATEGORY_ORDER = [
   "DIYノウハウ",
 ];
 
+const collectionJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "DIY棚の作り方ガイド一覧",
+  description:
+    "ラブリコ・ディアウォールの比較、賃貸での壁面収納、2×4材の本棚DIYなど、棚作りに役立つHow-to記事をまとめました。",
+  url: "https://diy-shelf-maker.kuras-plus.com/howto",
+  isPartOf: {
+    "@type": "WebSite",
+    name: "DIY棚シミュレーター",
+    url: "https://diy-shelf-maker.kuras-plus.com",
+  },
+  hasPart: HOWTO_ARTICLES.map((a) => ({
+    "@type": "Article",
+    name: a.title,
+    url: `https://diy-shelf-maker.kuras-plus.com/howto/${a.slug}`,
+  })),
+};
+
 export default function HowtoListPage() {
   // カテゴリ別グルーピング
   const grouped = new Map<string, HowtoArticle[]>();
@@ -79,6 +98,11 @@ export default function HowtoListPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+      />
+
       {/* パンくずリスト */}
       <Breadcrumb
         items={[
@@ -171,6 +195,45 @@ export default function HowtoListPage() {
         </div>
         <p className="mt-3 text-xs text-gray-400">※ Amazonアソシエイト・プログラムのリンクです</p>
       </div>
+
+      {/* 関連コンテンツへのクロスリンク */}
+      <section className="mt-10 bg-gray-50 rounded-xl border border-gray-200 p-5">
+        <h2 className="text-base font-bold text-gray-800 mb-3">
+          あわせてチェック
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Link
+            href="/templates"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">📐</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">テンプレートから選ぶ</div>
+              <div className="text-xs text-gray-500 mt-0.5">本棚・キッチン棚など12種のテンプレート</div>
+            </div>
+          </Link>
+          <Link
+            href="/parts"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🔧</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">パーツ辞典で調べる</div>
+              <div className="text-xs text-gray-500 mt-0.5">アジャスター・木材・金具など37パーツ</div>
+            </div>
+          </Link>
+          <Link
+            href="/tools"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🛠️</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">無料ツールを使う</div>
+              <div className="text-xs text-gray-500 mt-0.5">耐荷重計算・費用見積もり・支柱比較</div>
+            </div>
+          </Link>
+        </div>
+      </section>
 
       {/* CTA */}
       <div className="mt-8 text-center bg-amber-50 rounded-xl p-8">

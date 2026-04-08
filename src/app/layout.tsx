@@ -62,6 +62,23 @@ const organizationJsonLd = {
   sameAs: [],
 };
 
+// サイト共通 WebSite JSON-LD（Google検索のサイト認識を促進）
+const webSiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "DIY棚シミュレーター",
+  alternateName: "DIY Shelf Maker",
+  url: "https://diy-shelf-maker.kuras-plus.com",
+  description:
+    "天井高を入力するだけでディアウォール・ラブリコの木材カット寸法を自動計算し、部材リストと設計図を生成する無料ツール。",
+  publisher: {
+    "@type": "Organization",
+    name: "kuras-plus",
+    url: "https://kuras-plus.com",
+  },
+  inLanguage: "ja",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -78,6 +95,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
         />
 
         {/* ヘッダー */}
@@ -109,14 +130,22 @@ export default function RootLayout({
                 <ul className="space-y-1.5">
                   <li><a href="/" className="text-gray-600 hover:text-amber-600 transition-colors">設計ツール</a></li>
                   <li><a href="/templates" className="text-gray-600 hover:text-amber-600 transition-colors">テンプレート一覧</a></li>
+                  <li><a href="/templates/bookshelf" className="text-gray-600 hover:text-amber-600 transition-colors">本棚テンプレート</a></li>
+                  <li><a href="/templates/labrico-wall-storage" className="text-gray-600 hover:text-amber-600 transition-colors">壁面収納テンプレート</a></li>
+                  <li><a href="/templates/rental-kitchen-rack" className="text-gray-600 hover:text-amber-600 transition-colors">キッチン棚テンプレート</a></li>
                   <li><a href="/guide" className="text-gray-600 hover:text-amber-600 transition-colors">使い方ガイド</a></li>
                 </ul>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800 mb-2">学ぶ</h3>
                 <ul className="space-y-1.5">
-                  <li><a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド</a></li>
+                  <li><a href="/howto" className="text-gray-600 hover:text-amber-600 transition-colors">作り方ガイド一覧</a></li>
+                  <li><a href="/howto/labrico-vs-diawall" className="text-gray-600 hover:text-amber-600 transition-colors">ラブリコ vs ディアウォール比較</a></li>
+                  <li><a href="/howto/beginner-diy-shelf-design" className="text-gray-600 hover:text-amber-600 transition-colors">初心者向け棚設計ガイド</a></li>
+                  <li><a href="/howto/rental-wall-storage-guide" className="text-gray-600 hover:text-amber-600 transition-colors">賃貸壁面収納ガイド</a></li>
                   <li><a href="/parts" className="text-gray-600 hover:text-amber-600 transition-colors">パーツ辞典</a></li>
+                  <li><a href="/parts/category/adjuster" className="text-gray-600 hover:text-amber-600 transition-colors">アジャスター一覧</a></li>
+                  <li><a href="/parts/category/lumber" className="text-gray-600 hover:text-amber-600 transition-colors">木材一覧</a></li>
                 </ul>
               </div>
               <div>

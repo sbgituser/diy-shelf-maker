@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import { PART_CATEGORIES, PART_CATEGORY_MAP } from "@/data/part-categories";
 import { PARTS_BY_CATEGORY } from "@/data/parts-dictionary";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export function generateStaticParams() {
   return PART_CATEGORIES.map((cat) => ({ slug: cat.slug }));
@@ -169,6 +170,69 @@ export default async function CategoryPage({
                 </p>
               </Link>
             ))}
+          </div>
+        </section>
+
+        {/* 関連する作り方ガイド */}
+        {(() => {
+          const catName = cat.name.toLowerCase();
+          const relatedHowto = HOWTO_ARTICLES.filter((a) =>
+            a.keywords.some((kw) => catName.includes(kw.toLowerCase()) || kw.toLowerCase().includes(catName))
+            || a.title.includes(cat.name)
+          ).slice(0, 3);
+          if (relatedHowto.length === 0) return null;
+          return (
+            <section className="mt-10">
+              <h2 className="text-lg font-bold text-gray-800 mb-4">関連する作り方ガイド</h2>
+              <div className="space-y-3">
+                {relatedHowto.map((a) => (
+                  <Link
+                    key={a.slug}
+                    href={`/howto/${a.slug}`}
+                    className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+                  >
+                    <span className="text-2xl flex-shrink-0">{a.icon}</span>
+                    <div>
+                      <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">
+                        {a.title}
+                      </h3>
+                      <p className="mt-1 text-xs text-gray-500 leading-relaxed line-clamp-2">
+                        {a.description}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
+
+        {/* 関連コンテンツへのクロスリンク */}
+        <section className="mt-10 bg-gray-50 rounded-xl border border-gray-200 p-5">
+          <h2 className="text-base font-bold text-gray-800 mb-3">
+            あわせてチェック
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Link
+              href="/templates"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">📐</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">テンプレートから選ぶ</div>
+                <div className="text-xs text-gray-500 mt-0.5">本棚・キッチン棚など12種のテンプレート</div>
+              </div>
+            </Link>
+            <Link
+              href="/tools"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">🛠️</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">無料ツールを使う</div>
+                <div className="text-xs text-gray-500 mt-0.5">耐荷重計算・費用見積もり・支柱比較</div>
+              </div>
+            </Link>
           </div>
         </section>
 

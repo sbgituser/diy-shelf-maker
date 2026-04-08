@@ -153,6 +153,45 @@ export default function TemplatesPage() {
         </Link>
       </div>
 
+      {/* 関連コンテンツへのクロスリンク */}
+      <section className="mt-10 bg-gray-50 rounded-xl border border-gray-200 p-5">
+        <h2 className="text-base font-bold text-gray-800 mb-3">
+          あわせてチェック
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Link
+            href="/howto"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">📖</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">作り方ガイドを読む</div>
+              <div className="text-xs text-gray-500 mt-0.5">ラブリコ比較・賃貸DIY・初心者ガイドなど</div>
+            </div>
+          </Link>
+          <Link
+            href="/parts"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🔧</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">パーツ辞典で調べる</div>
+              <div className="text-xs text-gray-500 mt-0.5">アジャスター・木材・金具など37パーツ</div>
+            </div>
+          </Link>
+          <Link
+            href="/tools"
+            className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+          >
+            <span className="text-2xl">🛠️</span>
+            <div>
+              <div className="font-semibold text-gray-800 text-sm">無料ツールを使う</div>
+              <div className="text-xs text-gray-500 mt-0.5">耐荷重計算・費用見積もり・支柱比較</div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* Amazon材料リンク */}
       <div className="mt-8 text-center text-sm text-gray-500">
         <p className="mb-2">テンプレートを選んで設計図を生成 → 材料をまとめてAmazonで購入:</p>

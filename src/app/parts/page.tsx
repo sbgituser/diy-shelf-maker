@@ -3,6 +3,7 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 import { PART_CATEGORIES } from "@/data/part-categories";
 import { PARTS_DICTIONARY, PARTS_BY_CATEGORY } from "@/data/parts-dictionary";
+import { HOWTO_ARTICLES } from "@/data/howto-articles";
 
 export const metadata: Metadata = {
   title: "DIYパーツ辞典｜ラブリコ・ディアウォール等つっぱり棚の材料・金具を解説",
@@ -166,6 +167,73 @@ export default function PartsPage() {
                 </div>
               );
             })}
+          </div>
+        </section>
+
+        {/* 関連する作り方ガイド */}
+        <section className="mt-12">
+          <h2 className="text-xl font-bold text-gray-800 mb-5">パーツ選びに役立つガイド</h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {HOWTO_ARTICLES.filter((a) =>
+              a.keywords.some((kw) =>
+                /アジャスター|ラブリコ|ディアウォール|木材|金具|工具|パーツ|材料/.test(kw)
+              )
+            ).slice(0, 4).map((a) => (
+              <Link
+                key={a.slug}
+                href={`/howto/${a.slug}`}
+                className="flex items-start gap-3 bg-white border border-gray-200 rounded-xl p-4 hover:border-amber-300 hover:shadow-sm transition-all group"
+              >
+                <span className="text-2xl flex-shrink-0">{a.icon}</span>
+                <div>
+                  <h3 className="font-semibold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">
+                    {a.title}
+                  </h3>
+                  <p className="mt-1 text-xs text-gray-500 leading-relaxed line-clamp-2">
+                    {a.description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* 関連コンテンツへのクロスリンク */}
+        <section className="mt-10 bg-gray-50 rounded-xl border border-gray-200 p-5">
+          <h2 className="text-base font-bold text-gray-800 mb-3">
+            あわせてチェック
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <Link
+              href="/templates"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">📐</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">テンプレートから選ぶ</div>
+                <div className="text-xs text-gray-500 mt-0.5">本棚・キッチン棚など12種のテンプレート</div>
+              </div>
+            </Link>
+            <Link
+              href="/howto"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">📖</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">作り方ガイドを読む</div>
+                <div className="text-xs text-gray-500 mt-0.5">ラブリコ比較・賃貸DIY・初心者ガイドなど</div>
+              </div>
+            </Link>
+            <Link
+              href="/tools"
+              className="flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-all"
+            >
+              <span className="text-2xl">🛠️</span>
+              <div>
+                <div className="font-semibold text-gray-800 text-sm">無料ツールを使う</div>
+                <div className="text-xs text-gray-500 mt-0.5">耐荷重計算・費用見積もり・支柱比較</div>
+              </div>
+            </Link>
           </div>
         </section>
       </div>

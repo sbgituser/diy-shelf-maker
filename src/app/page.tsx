@@ -1,6 +1,7 @@
 import DesignForm from "@/components/DesignForm";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
+import { SHELF_TEMPLATES } from "@/data/templates";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -237,6 +238,36 @@ export default function Home() {
             className="inline-flex items-center text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
           >
             もっと見る →
+          </Link>
+        </div>
+      </section>
+
+      {/* 人気テンプレートセクション */}
+      <section className="max-w-5xl mx-auto mt-12">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">人気のテンプレート</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+          {SHELF_TEMPLATES.slice(0, 6).map((t) => (
+            <Link
+              key={t.id}
+              href={`/templates/${t.id}`}
+              className="block bg-white rounded-xl border border-gray-200 p-5 hover:border-amber-300 hover:shadow-md transition-all group"
+            >
+              <div className="text-3xl mb-2">{t.icon}</div>
+              <h3 className="font-bold text-gray-800 group-hover:text-amber-600 transition-colors text-sm">
+                {t.name}
+              </h3>
+              <p className="mt-1 text-xs text-gray-500 leading-relaxed">
+                {t.description}
+              </p>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-4 text-right">
+          <Link
+            href="/templates"
+            className="inline-flex items-center text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors"
+          >
+            全{SHELF_TEMPLATES.length}テンプレートを見る →
           </Link>
         </div>
       </section>
