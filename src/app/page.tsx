@@ -71,7 +71,7 @@ const jsonLd = {
     url: "https://kuras-plus.com",
   },
   datePublished: "2026-03-27",
-  dateModified: "2026-04-05",
+  dateModified: "2026-04-09",
   isAccessibleForFree: true,
 };
 
@@ -291,6 +291,60 @@ export default function Home() {
                 {tool.description}
               </p>
             </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* こんな方に使われています（E-E-A-T: Experience） */}
+      <section className="max-w-5xl mx-auto mt-12">
+        <h2 className="text-xl font-bold text-gray-800 mb-6">
+          こんな方に使われています
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              icon: "🏠",
+              title: "賃貸で壁に穴を開けずに棚を作りたい方",
+              desc: "突っ張り式なので原状回復OK。退去時もそのまま取り外せます。",
+            },
+            {
+              icon: "📏",
+              title: "引越し先に合わせて棚のサイズを計算したい方",
+              desc: "天井高を入力するだけで、木材カット寸法と材料リストを自動生成。",
+            },
+            {
+              icon: "🔰",
+              title: "DIY初心者で何を買えばいいかわからない方",
+              desc: "必要な材料・工具が一覧で出るので、ホームセンターで迷いません。",
+            },
+            {
+              icon: "📚",
+              title: "増え続ける本の収納に困っている方",
+              desc: "漫画200冊分の本棚も、テンプレートから5分で設計できます。",
+            },
+            {
+              icon: "💰",
+              title: "既製品の棚が高くてサイズも合わない方",
+              desc: "材料費7,000円〜で、スペースにぴったりの棚が作れます。",
+            },
+            {
+              icon: "🐱",
+              title: "ペット用の壁面キャットウォークを作りたい方",
+              desc: "耐荷重計算付きで、安全な猫用ウォールシェルフを設計できます。",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              className="bg-white rounded-xl border border-gray-200 p-5"
+            >
+              <span className="text-2xl">{item.icon}</span>
+              <h3 className="mt-2 font-bold text-gray-800 text-sm">
+                {item.title}
+              </h3>
+              <p className="mt-1 text-xs text-gray-500 leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
           ))}
         </div>
       </section>

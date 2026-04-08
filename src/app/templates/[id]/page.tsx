@@ -452,15 +452,15 @@ export default async function TemplatePage({
     name: `${template.name}の作り方 - DIY設計ガイド`,
     description: `${template.name}をDIYで作る方法。${template.description}`,
     datePublished: "2026-03-27",
-    dateModified: "2026-04-05",
+    dateModified: "2026-04-09",
     author: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
     },
     step: details?.steps.map((step, i) => ({
@@ -532,6 +532,9 @@ export default async function TemplatePage({
           <p className="text-gray-600 leading-relaxed mt-4">
             {template.description}{" "}
             天井高を入力するだけで木材カット寸法・必要な部材リスト・設計図を自動生成します。
+          </p>
+          <p className="text-xs text-gray-400 mt-2">
+            ※ このテンプレートは2026年4月時点の最新価格で計算しています
           </p>
           <div className="mt-4">
             <Link

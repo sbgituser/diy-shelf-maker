@@ -56,9 +56,15 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "kuras-plus",
-  url: "https://kuras-plus.com",
+  name: "DIY棚メーカー編集部",
+  url: "https://diy-shelf-maker.kuras-plus.com",
+  parentOrganization: {
+    "@type": "Organization",
+    name: "kuras-plus",
+    url: "https://kuras-plus.com",
+  },
   logo: "https://diy-shelf-maker.kuras-plus.com/ogp/default-ogp.png",
+  description: "DIY歴5年以上のスタッフが、実際に棚を作った経験をもとに情報をお届けしています。",
   sameAs: [],
 };
 
@@ -166,7 +172,15 @@ export default function RootLayout({
                       href="https://kuras-plus.com"
                       className="text-gray-600 hover:text-amber-600 transition-colors"
                     >
-                      kuras-plus.com
+                      運営: kuras-plus
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://kuras-plus.com/contact"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      お問い合わせ
                     </a>
                   </li>
                 </ul>
@@ -176,8 +190,12 @@ export default function RootLayout({
               <p>
                 DIY棚シミュレーター — 賃貸でもOK！ディアウォール・ラブリコ設計ツール
               </p>
-              <p className="mt-2 text-xs text-gray-400">
-                ※ 本ツールの計算結果は参考値です。実際の施工は各製品の取扱説明書に従ってください。
+              <p className="mt-2 text-xs text-gray-400 leading-relaxed">
+                運営: kuras-plus ／ 編集: DIY棚メーカー編集部
+                <br />
+                ※ 本サイトの計算結果・価格情報は参考値です。実際の施工は各製品の取扱説明書に従ってください。
+                <br />
+                ※ 耐荷重はメーカー公表値に基づく目安です。安全のため余裕を持った設計をおすすめします。
                 <br />
                 Amazonのアソシエイトとして、当サイトは適格販売により収入を得ています。
               </p>

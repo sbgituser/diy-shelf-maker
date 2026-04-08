@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
+import AuthorBox from "@/components/AuthorBox";
 
 // SSGで全記事ページを事前生成
 export function generateStaticParams() {
@@ -33,6 +34,7 @@ export async function generateMetadata({
       type: "article",
       locale: "ja_JP",
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
       url: `https://diy-shelf-maker.kuras-plus.com/howto/${article.slug}`,
       siteName: "DIY棚メーカー by kuras-plus",
       images: [{ url: `/ogp/howto/${article.slug}.png`, width: 1200, height: 630 }],
@@ -68,15 +70,15 @@ export default async function HowtoArticlePage({
     name: article.title,
     description: article.description,
     datePublished: article.publishedAt,
-    dateModified: article.publishedAt,
+    dateModified: article.updatedAt,
     author: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
     },
     step: article.sections
@@ -110,15 +112,15 @@ export default async function HowtoArticlePage({
     headline: article.title,
     description: article.description,
     datePublished: article.publishedAt,
-    dateModified: article.publishedAt,
+    dateModified: article.updatedAt,
     author: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
     },
     publisher: {
       "@type": "Organization",
-      name: "DIY棚シミュレーター | kuras-plus",
+      name: "DIY棚メーカー編集部",
       url: "https://diy-shelf-maker.kuras-plus.com",
       logo: {
         "@type": "ImageObject",
@@ -167,6 +169,14 @@ export default async function HowtoArticlePage({
           </h1>
         </div>
         <p className="text-gray-600 leading-relaxed">{article.description}</p>
+
+        {/* 著者情報・日付（E-E-A-T） */}
+        <AuthorBox
+          variant="header"
+          publishedAt={article.publishedAt}
+          updatedAt={article.updatedAt}
+        />
+
         <div className="mt-4 flex flex-wrap gap-2">
           {article.keywords.map((kw) => (
             <span
@@ -178,6 +188,26 @@ export default async function HowtoArticlePage({
           ))}
         </div>
       </header>
+
+      {/* この記事のポイント（E-E-A-T: 信頼性サマリー） */}
+      {article.summaryPoints.length > 0 && (
+        <div className="bg-white border border-amber-200 rounded-xl p-5 mb-8">
+          <h2 className="font-bold text-gray-800 text-sm mb-3">
+            📌 この記事のポイント
+          </h2>
+          <ul className="space-y-2">
+            {article.summaryPoints.map((point, i) => (
+              <li
+                key={i}
+                className="flex items-start gap-2 text-sm text-gray-700"
+              >
+                <span className="text-amber-500 mt-0.5 flex-shrink-0">✓</span>
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* 目次 */}
       <nav className="bg-gray-50 rounded-xl p-5 mb-8 border border-gray-200">
@@ -309,10 +339,17 @@ export default async function HowtoArticlePage({
             </table>
           </div>
           <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-            <p className="text-xs text-gray-400">※ 価格は参考値です。Amazonアソシエイト・プログラムのリンクです。</p>
+            <p className="text-xs text-gray-400">※ 価格は2026年4月時点のAmazon販売価格を参考にした目安です。Amazonアソシエイト・プログラムのリンクです。</p>
           </div>
         </div>
       )}
+
+      {/* 監修・執筆セクション（E-E-A-T: 著者の信頼性） */}
+      <AuthorBox
+        variant="footer"
+        publishedAt={article.publishedAt}
+        updatedAt={article.updatedAt}
+      />
 
       {/* メインCTA — 記事の推奨テンプレートでシミュレーターに直結 */}
       <div className="mt-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-8 text-center text-white">
