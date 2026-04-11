@@ -20,6 +20,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       fullHeight: true,
     },
     keywords: ["本棚", "漫画", "コミック", "文庫"],
+    updatedAt: "2026-03-27",
   },
   {
     id: "wall-shelf",
@@ -40,6 +41,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       fullHeight: true,
     },
     keywords: ["壁掛け", "飾り棚", "ディスプレイ"],
+    updatedAt: "2026-03-27",
   },
   {
     id: "labrico-wall-storage",
@@ -65,6 +67,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "ラブリコ 棚 作り方",
       "壁面収納 DIY 賃貸",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "diawall-bookshelf",
@@ -90,6 +93,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "ディアウォール 棚 DIY",
       "ディアウォール 2×4",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "2x4-basic-shelf",
@@ -115,6 +119,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "2×4 棚 DIY",
       "ツーバイフォー 棚 作り方",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "rental-kitchen-rack",
@@ -140,6 +145,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "キッチン 壁面収納 賃貸",
       "調味料棚 DIY",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "shoe-rack",
@@ -165,6 +171,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "玄関 収納 DIY 賃貸",
       "靴収納 壁面",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "desk-shelf",
@@ -190,6 +197,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "在宅ワーク 棚",
       "パソコンデスク 棚 DIY",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "wallist-heavy-shelf",
@@ -215,6 +223,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "大型 壁面収納 DIY",
       "耐荷重 棚 DIY",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "sunoko-shelf",
@@ -240,6 +249,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "飾り棚 DIY おしゃれ",
       "観葉植物 棚 DIY",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "closet-shelf",
@@ -266,6 +276,7 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "押入れ 収納 棚 自作",
       "クローゼット 整理 DIY",
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "laundry-shelf",
@@ -291,5 +302,6 @@ export const SHELF_TEMPLATES: ShelfTemplate[] = [
       "洗面所 収納 DIY 賃貸",
       "洗濯機上 棚 2×4",
     ],
+    updatedAt: "2026-03-27",
   },
 ];

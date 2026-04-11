@@ -20,7 +20,8 @@ export async function generateMetadata({
   if (!cat) return {};
 
   const title = `${cat.name}の種類と選び方【おすすめ付き】DIY棚パーツ辞典`;
-  const description = `${cat.name}（${cat.nameEn}）の種類・価格・選び方をDIY初心者向けに解説。${cat.description} おすすめパーツの比較と購入ガイド付き。`;
+  const fullDesc = `${cat.name}（${cat.nameEn}）の種類・価格・選び方をDIY初心者向けに解説。${cat.description}`;
+  const description = fullDesc.length > 155 ? fullDesc.slice(0, 155) + "…" : fullDesc;
   const ogTitle = `${title} | DIY棚メーカー`;
 
   return {

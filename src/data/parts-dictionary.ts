@@ -42,6 +42,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "1本の柱につき上下1セット（2個）が必要です。上部に1個、下部に1個取り付けます。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "labrico_strong",
@@ -83,6 +84,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "はい、アジャスター1セット（柱1本）あたりの静止荷重です。棚1台に柱2本使う場合は計80kgが上限の目安です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "diawall",
@@ -124,6 +126,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "キャップには柔らかいパッドが付いており、通常の使用では傷がつきにくいです。ただし強い力で押すと凹みができる場合があります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "wallist",
@@ -165,6 +168,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "はい、ジョイントなしで1本の柱として単体使用も可能です。ジョイントは横連結時のオプション部品です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "labrico_1x4",
@@ -206,6 +210,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "混在させることも可能ですが、それぞれに対応したアジャスターを使う必要があります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── lumber（木材）──
@@ -249,6 +254,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "多くのホームセンターで有料カットサービスを提供しています。1カットあたり50〜100円が相場です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "spf_1x4",
@@ -290,6 +296,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "はい、2×4材の柱に1×4材の棚板を組み合わせるのはよく行われる手法です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "spf_2x6",
@@ -331,6 +338,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "構造上問題ありませんが、柱と棚板の接合部の金具サイズを合わせる必要があります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "sugi",
@@ -372,6 +380,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "必須ではありませんが、塗装すると汚れ・傷・水分から守られ長持ちします。ワトコオイルやブライワックスが人気です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "whitewood",
@@ -413,6 +422,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "2×4規格のホワイトウッドであれば、2×4対応のラブリコアジャスターに問題なく使えます。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── board（棚板・パネル材）──
@@ -456,6 +466,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "棚受け間隔が600mm以内であれば書籍程度なら問題ありません。それ以上の重量には24mm厚を選んでください。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "kiri_board",
@@ -497,6 +508,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "塗装可能です。ただし吸い込みが多いため、下地シーラーを塗ってから仕上げ塗料を塗ると均一に仕上がります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "plywood",
@@ -538,6 +550,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "はい、多くのホームセンターで有料カットサービスがあります。直線カットは精度良く仕上がります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "melamine_board",
@@ -579,6 +592,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "表面のメラミン樹脂は塗料が乗りにくいため、塗装には下地処理（ペーパーがけ＋プライマー）が必要です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── bracket（棚受け・金具）──
@@ -622,6 +636,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "木材への固定は木ネジまたはコーススレッドを使います。金具の穴径に合ったサイズ（M4〜M5程度）を選んでください。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "labrico_shelf_single",
@@ -663,6 +678,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "はい、ネジを緩めて位置を変えられます。これが専用品の大きなメリットです。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "labrico_shelf_double",
@@ -704,6 +720,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "商品によって異なります。購入前に対応間隔を確認してください。一般的には600〜900mm対応品が多いです。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "channel_support",
@@ -745,6 +762,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "1枚の棚板に対して左右2本のレールと専用棚受けをセットで使用します。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "iron_bracket",
@@ -786,6 +804,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "ダークブラウン・ウォルナット系の濃い色やペイントしたパイン材との相性が抜群です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── fastener（ネジ・接合具）──
@@ -829,6 +848,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "柔らかいSPF材なら開けなくても締まりますが、硬い木材・端に近い場所・割れを防ぎたい場合は下穴を開けるべきです。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "course_thread",
@@ -870,6 +890,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "SPF材など柔らかい木材なら不要な場合が多いですが、硬い木材や端の近くは割れ防止のため下穴を開けることをおすすめします。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "dowel",
@@ -911,6 +932,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "ダボの直径に合わせてドリルビットを選びます。直径8mmのダボなら8mmのドリルで穴を開けます。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "bolt_nut",
@@ -952,6 +974,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "六角ボルトは電動インパクトドライバーにソケットビットを付けて使えます。手回しスパナより素早く締められます。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── finish（塗装・仕上げ）──
@@ -995,6 +1018,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "オイル系とウレタン系の重ね塗りは推奨されません。どちらかに統一してください。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "briwax",
@@ -1036,6 +1060,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "ワックス面にニスは乗らないためおすすめしません。ニスで仕上げる場合はワックスを使わずワトコオイル後にニスを塗ってください。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "water_paint",
@@ -1077,6 +1102,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "完全乾燥後であれば水性ペンキ同士の重ね塗りは可能です。油性塗料との混在は密着不良の原因になる場合があります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "water_urethane",
@@ -1118,6 +1144,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "2〜3回重ね塗りするのが基本です。各塗布後に軽くヤスリがけすると密着が良くなります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "sandpaper",
@@ -1159,6 +1186,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "研磨後に水で木材表面を濡らして乾燥させることで、微細な毛羽が立つ現象を意図的に起こして、その毛羽を再度ヤスリがけで落とす工程です。これにより最終仕上げの滑らかさが上がります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── tool（工具）──
@@ -1202,6 +1230,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "DIY棚作りなら12V前後のものが扱いやすく軽量です。18Vは力が強い反面重くなります。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "saw",
@@ -1243,6 +1272,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "長い直線カットはホームセンターのサービスが精度・速さ面で有利です。細かい調整カットは自分でのこぎりを使うと効率的です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "square",
@@ -1284,6 +1314,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "精度が低いものが多く、狂いが生じることがあります。正確な線引きが必要なDIYにはJIS規格品の購入をおすすめします。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "measure_tape",
@@ -1325,6 +1356,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "ARメジャーアプリは目安程度の精度です。木材加工では数mm単位の精度が必要なため、物理メジャーの使用をおすすめします。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "clamp",
@@ -1366,6 +1398,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "F型はスライド式で素早く開口幅を変えられるため汎用性が高くDIY初心者に向いています。C型は固定力が強く精度が出しやすいです。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 
   // ── accessory（収納アクセサリー）──
@@ -1409,6 +1442,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "収納する本の高さより若干低いものを選ぶのが一般的です。文庫本なら15cm、単行本なら20〜25cm程度が適切です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "s_hook",
@@ -1450,6 +1484,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "丸棒（直径12〜25mm程度）・角棒・ワイヤーメッシュなどに引っかけられます。フックの内径よりポールが細ければ使えます。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "wire_basket",
@@ -1491,6 +1526,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "製品の耐荷重を確認してください。一般的なワイヤーバスケットは3〜10kg程度が目安です。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
   {
     id: "pegboard",
@@ -1532,6 +1568,7 @@ export const PARTS_DICTIONARY: DictionaryPart[] = [
           "棚の背面フレームにボードを当てて木ネジやステープルで固定します。壁に直接貼る場合は壁材に合った固定方法（ビス・両面テープ等）を選んでください。",
       },
     ],
+    updatedAt: "2026-03-27",
   },
 ];
 

@@ -226,6 +226,8 @@ export interface DictionaryPart {
   priceRange: string;
   difficulty: "beginner" | "intermediate" | "advanced";
   faq: { question: string; answer: string }[];  // 2問
+  /** コンテンツ最終更新日（YYYY-MM-DD） */
+  updatedAt?: string;
 }
 
 export interface PartCategoryInfo {
@@ -235,6 +237,8 @@ export interface PartCategoryInfo {
   description: string;  // 100-200字
   icon: string;
   slug: string;
+  /** コンテンツ最終更新日（YYYY-MM-DD） */
+  updatedAt?: string;
 }
 
 // ── テンプレート ──
@@ -247,4 +251,6 @@ export interface ShelfTemplate {
   defaults: Partial<DesignInput>;
   /** SEO用キーワード */
   keywords: string[];
+  /** コンテンツ最終更新日（YYYY-MM-DD） */
+  updatedAt?: string;
 }
