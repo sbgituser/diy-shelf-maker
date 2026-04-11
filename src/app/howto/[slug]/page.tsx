@@ -22,15 +22,17 @@ export async function generateMetadata({
   const article = HOWTO_ARTICLES.find((a) => a.slug === slug);
   if (!article) return {};
 
-  const ogTitle = `${article.title} | DIY棚メーカー`;
+  const seoTitle = article.metaTitle ?? article.title;
+  const seoDescription = article.metaDescription ?? article.description;
+  const ogTitle = `${seoTitle} | DIY棚メーカー`;
 
   return {
-    title: article.title,
-    description: article.description,
+    title: seoTitle,
+    description: seoDescription,
     keywords: article.keywords,
     openGraph: {
       title: ogTitle,
-      description: article.description,
+      description: seoDescription,
       type: "article",
       locale: "ja_JP",
       publishedTime: article.publishedAt,

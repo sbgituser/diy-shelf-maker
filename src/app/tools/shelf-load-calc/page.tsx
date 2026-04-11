@@ -6,9 +6,9 @@ import { WOOD_MATERIALS } from "@/constants/shelfLoadCalc";
 import { buildAmazonUrl } from "@/data/products";
 
 export const metadata: Metadata = {
-  title: "棚板耐荷重計算ツール【無料】たわみ量も自動算出",
+  title: "DIY棚の耐荷重計算ツール【無料】棚板たわみ量も自動算出",
   description:
-    "棚板の耐荷重を無料で自動計算できるツール。パイン・MDF・合板など7種の板材に対応し、たわみ量と棚受け間隔の推奨値も算出。DIY棚板選びの失敗を防ぐ安全設計ツール。今すぐ計算してみましょう。",
+    "DIY棚の耐荷重を無料で計算できるツール。パイン・MDF・合板など7種の板材に対応し、棚板のたわみ量と棚受け間隔の推奨値も自動算出。棚板選びの失敗を防ぐ安全設計をサポートします。",
   keywords: [
     "棚板 耐荷重 計算",
     "棚板 たわみ 計算",
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     "DIY 棚板 選び方",
   ],
   openGraph: {
-    title: "棚板耐荷重計算ツール【無料】たわみ量も自動算出 | DIY棚メーカー",
+    title: "DIY棚の耐荷重計算ツール【無料】棚板たわみ量も自動算出 | DIY棚メーカー",
     description:
-      "棚板の耐荷重を無料で自動計算。パイン・MDF・合板など7種の板材に対応し、たわみ量と棚受け間隔の推奨値も算出。",
+      "DIY棚の耐荷重を無料で計算。パイン・MDF・合板など7種の板材に対応し、棚板のたわみ量と棚受け間隔の推奨値も自動算出。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/shelf-load-calc",

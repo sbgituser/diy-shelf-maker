@@ -22,8 +22,8 @@ export async function generateMetadata({
   const part = PARTS_DICTIONARY_MAP[id];
   if (!part) return {};
 
-  const title = `${part.name}の選び方・おすすめ｜仕様・価格を解説`;
-  const description = `${part.name}（${part.nameEn}）の仕様・耐荷重・価格をDIY初心者向けに徹底解説。${part.description} 選び方のコツとおすすめ情報もチェック。`;
+  const title = `${part.name}の選び方ガイド｜DIY棚パーツの仕様・価格を解説【2026年版】`;
+  const description = `${part.name}（${part.nameEn}）のDIY棚向け仕様・耐荷重・価格を初心者にもわかりやすく解説。選び方のポイントとおすすめ製品を紹介します。`;
   const ogTitle = `${title} | DIY棚メーカー`;
 
   return {

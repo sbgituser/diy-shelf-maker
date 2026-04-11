@@ -5,9 +5,9 @@ import SupportSystemPickerClient from "@/components/tools/SupportSystemPickerCli
 
 export const metadata: Metadata = {
   title:
-    "ラブリコ ディアウォール 比較診断【2026年版】最適な支柱を選ぶ",
+    "ラブリコ ディアウォール 違い比較ツール【2026年版】最適な支柱を選ぶ",
   description:
-    "ラブリコとディアウォールの違いを耐荷重・価格・設置難易度で比較。賃貸の壁面収納に最適な突っ張り支柱タイプが3分でわかる無料診断ツール。迷ったらまずこの比較をチェック。",
+    "ディアウォールとラブリコの違いを耐荷重・価格・設置難易度で徹底比較。賃貸の壁面収納に最適な突っ張り支柱タイプが3分でわかる無料ツール。どっちがいいか迷ったらまずチェック。",
   keywords: [
     "ラブリコ ディアウォール 違い",
     "ラブリコ ディアウォール 比較",
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title:
-      "ラブリコ ディアウォール 比較診断【2026年版】最適な支柱を選ぶ | DIY棚メーカー",
+      "ラブリコ ディアウォール 違い比較ツール【2026年版】最適な支柱を選ぶ | DIY棚メーカー",
     description:
-      "ラブリコとディアウォールの違いを耐荷重・価格・設置難易度で比較。賃貸に最適な支柱がすぐわかる無料診断ツール。",
+      "ディアウォールとラブリコの違いを耐荷重・価格・設置難易度で徹底比較。賃貸に最適な支柱がすぐわかる無料ツール。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools/support-system-picker",

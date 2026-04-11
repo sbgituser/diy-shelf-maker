@@ -4,7 +4,7 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ShelfPlannerQuizClient from "@/components/tools/ShelfPlannerQuizClient";
 
 export const metadata: Metadata = {
-  title: "棚DIY初心者診断【無料】5問であなたに最適な棚を提案",
+  title: "DIY棚プランナー診断【無料】5問で最適な棚を提案",
   description:
     "5つの質問に答えるだけで最適なDIY棚の設計プランを提案。設置場所・収納物・予算・スキルに合わせた材料リスト・費用目安も自動算出。棚設計シミュレーターと連携してすぐ設計を開始できます。",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "賃貸 DIY 棚 おすすめ",
   ],
   openGraph: {
-    title: "棚DIY初心者診断【無料】5問であなたに最適な棚を提案 | DIY棚メーカー",
+    title: "DIY棚プランナー診断【無料】5問で最適な棚を提案 | DIY棚メーカー",
     description:
       "5つの質問に答えるだけで最適なDIY棚の設計プランを提案。材料リスト・費用目安も自動算出。",
     type: "website",

@@ -11,6 +11,70 @@ export function generateStaticParams() {
   return SHELF_TEMPLATES.map((t) => ({ id: t.id }));
 }
 
+// テンプレートごとのSEOメタ情報
+const TEMPLATE_META: Record<string, { metaTitle: string; metaDescription: string }> = {
+  bookshelf: {
+    metaTitle: "本棚 DIY 2×4材の設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "本棚をDIYで自作したい方へ。2×4材を使った本棚の設計図・木材カット寸法・部材リスト・費用概算を自動計算。天井高を入力するだけで漫画や文庫に合う本棚DIYプランが完成します。",
+  },
+  "wall-shelf": {
+    metaTitle: "壁掛け飾り棚 DIYの設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "壁掛け飾り棚をDIYで作成。ブラケットで張り出す壁掛けディスプレイ棚の設計図・木材カット寸法・費用概算を自動計算。天井高を入力するだけで飾り棚DIYの設計が完成します。",
+  },
+  "labrico-wall-storage": {
+    metaTitle: "ラブリコ壁面収納の設計図｜賃貸OK【無料シミュレーター】",
+    metaDescription:
+      "ラブリコで壁面収納をDIY。賃貸でも壁を傷つけずに設置できるラブリコ壁面収納の設計図・木材カット寸法・費用概算を自動計算。天井高を入力するだけでプランが完成します。",
+  },
+  "diawall-bookshelf": {
+    metaTitle: "ディアウォール本棚 DIYの設計図＆材料リスト【無料】",
+    metaDescription:
+      "ディアウォールで本棚をDIY。バネ式で取り付け簡単なディアウォール本棚の設計図・木材カット寸法・費用概算を自動計算。天井高を入力するだけで初心者でも設計が完成します。",
+  },
+  "2x4-basic-shelf": {
+    metaTitle: "2×4材で棚をDIY｜設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "2×4材で棚をDIYしたい方へ。ホームセンターで手に入る2×4材を使った棚の設計図・カット寸法・部材リスト・費用概算を自動計算。天井高入力だけで設計が完成します。",
+  },
+  "rental-kitchen-rack": {
+    metaTitle: "キッチン棚 DIY 賃貸OK｜設計図＆材料リスト【無料】",
+    metaDescription:
+      "賃貸キッチンに棚をDIYで設置。壁を傷つけないキッチン棚の設計図・木材カット寸法・費用概算を自動計算。限られたスペースで調味料・食器を整理する棚のDIYプランを作成。",
+  },
+  "shoe-rack": {
+    metaTitle: "玄関の靴棚をDIY｜設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "玄関に靴棚をDIYで設置。省スペースな薄型シューズラックの設計図・木材カット寸法・費用概算を自動計算。天井高を入力するだけで玄関にぴったりの靴棚DIYプランが完成。",
+  },
+  "desk-shelf": {
+    metaTitle: "デスク棚 DIYの設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "デスク周りに棚をDIYで追加。モニター上や壁面を活用するデスク棚の設計図・木材カット寸法・費用概算を自動計算。在宅ワーク環境を整えるDIY棚プランを作成できます。",
+  },
+  "wallist-heavy-shelf": {
+    metaTitle: "ウォリスト棚 DIYの設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "ウォリストで棚をDIY。高耐荷重のウォリストを使った壁面棚の設計図・木材カット寸法・費用概算を自動計算。重い本や家電にも対応するウォリスト棚のDIYプランを作成。",
+  },
+  "sunoko-shelf": {
+    metaTitle: "カフェ風おしゃれ棚 DIYの設計図＆材料リスト【無料】",
+    metaDescription:
+      "カフェ風のおしゃれな棚をDIYで作成。観葉植物や雑貨のディスプレイに合うカフェ風棚の設計図・木材カット寸法・費用概算を自動計算。おしゃれなDIY棚プランが完成します。",
+  },
+  "closet-shelf": {
+    metaTitle: "クローゼット棚 DIYの設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "クローゼットに棚をDIYで追加。押入れやクローゼット内部のデッドスペースを活用する棚の設計図・カット寸法・費用概算を自動計算。収納力アップのDIYプランを作成。",
+  },
+  "laundry-shelf": {
+    metaTitle: "洗濯機上ラック DIYの設計図＆材料リスト【無料シミュレーター】",
+    metaDescription:
+      "洗濯機上にラックをDIYで設置。洗剤やタオルを収納するランドリーラックの設計図・木材カット寸法・費用概算を自動計算。賃貸でも安心のDIYラックプランを作成できます。",
+  },
+};
+
 // 動的メタデータ生成
 export async function generateMetadata({
   params,
@@ -21,8 +85,9 @@ export async function generateMetadata({
   const template = SHELF_TEMPLATES.find((t) => t.id === id);
   if (!template) return {};
 
-  const title = `${template.name}の設計図＆材料リスト【無料シミュレーター】`;
-  const description = `${template.name}の設計図を無料で作成。${template.description} 天井高を入力するだけで木材カット寸法・部材リスト・費用概算を自動計算。テンプレートを使って今すぐ設計を始めましょう。`;
+  const meta = TEMPLATE_META[template.id];
+  const title = meta?.metaTitle ?? `${template.name}の設計図＆材料リスト【無料シミュレーター】`;
+  const description = meta?.metaDescription ?? `${template.name}の設計図を無料で作成。${template.description} 天井高を入力するだけで木材カット寸法・部材リスト・費用概算を自動計算。テンプレートを使って今すぐ設計を始めましょう。`;
   const ogTitle = `${title} | DIY棚メーカー`;
 
   return {
