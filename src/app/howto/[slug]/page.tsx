@@ -402,6 +402,15 @@ export default async function HowtoArticlePage({
           あわせて読みたい
         </h2>
         <div className="grid gap-3 sm:grid-cols-2">
+          <Link
+            href="/faq"
+            className="flex items-center gap-3 bg-gradient-to-br from-green-50 to-emerald-50 border border-green-100 rounded-lg p-3 hover:border-green-300 transition-all"
+          >
+            <span className="text-xl flex-shrink-0">❓</span>
+            <span className="text-sm font-medium text-gray-700 hover:text-green-600">
+              DIY棚のよくある質問30選
+            </span>
+          </Link>
           {HOWTO_ARTICLES.filter((a) => a.slug !== article.slug)
             .map((a) => ({
               article: a,

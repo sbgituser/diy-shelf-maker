@@ -7,6 +7,7 @@ const MAIN_LINKS = [
   { href: "/templates", label: "テンプレート" },
   { href: "/howto", label: "作り方ガイド" },
   { href: "/parts", label: "パーツ辞典" },
+  { href: "/faq", label: "よくある質問" },
   { href: "/guide", label: "使い方ガイド" },
 ];
 

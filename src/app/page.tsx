@@ -204,6 +204,29 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FAQ導線 */}
+      <section className="max-w-5xl mx-auto mb-8">
+        <Link
+          href="/faq"
+          className="block bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-100 hover:border-green-300 hover:shadow-sm transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-3xl">❓</span>
+            <div>
+              <h2 className="text-base font-bold text-gray-800 group-hover:text-green-600 transition-colors">
+                DIY棚のよくある質問30選
+              </h2>
+              <p className="text-sm text-gray-600 mt-0.5">
+                初心者の疑問をまとめて解決。ラブリコ・耐荷重・賃貸・費用・トラブル対策まで。
+              </p>
+            </div>
+            <span className="ml-auto text-green-600 font-medium text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+              見る →
+            </span>
+          </div>
+        </Link>
+      </section>
+
       {/* メインツール */}
       <ErrorBoundary>
         <DesignForm />

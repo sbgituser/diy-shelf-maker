@@ -8,6 +8,7 @@ const MAIN_LINKS = [
   { href: "/howto", label: "作り方ガイド" },
   { href: "/guide", label: "使い方ガイド" },
   { href: "/parts", label: "パーツ辞典" },
+  { href: "/faq", label: "よくある質問" },
 ];
 
 const TOOL_LINKS = [

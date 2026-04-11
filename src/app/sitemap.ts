@@ -48,6 +48,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: LATEST_HOWTO_DATE,
     },
     {
+      url: `${BASE_URL}/faq`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: CONTENT_LAUNCH_DATE,
+    },
+    {
       url: `${BASE_URL}/tools`,
       priority: 0.8,
       changeFrequency: "monthly",
