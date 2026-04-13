@@ -3,20 +3,23 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "DIY棚ツール一覧【すべて無料】設計・計算サポート4選",
+  title: "DIY棚ツール一覧【すべて無料】設計・計算サポート7選",
   description:
-    "DIY棚づくりに役立つ無料ツール4選。棚板耐荷重計算・材料費見積もり・ラブリコ/ディアウォール比較・棚設計診断で、設計から材料選びまでサポート。すべて無料ですぐに使えます。",
+    "DIY棚づくりに役立つ無料ツール7選。プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚設計診断で、設計から材料選びまでサポート。",
   keywords: [
     "DIY 棚 ツール",
+    "DIY 棚 設計図",
     "棚 耐荷重 計算",
+    "DIY 木材 計算",
+    "棚板 たわみ 計算",
     "DIY 費用 見積もり",
     "ラブリコ ディアウォール 比較",
     "棚 設計 診断",
   ],
   openGraph: {
-    title: "DIY棚ツール一覧【すべて無料】設計・計算サポート4選 | DIY棚メーカー",
+    title: "DIY棚ツール一覧【すべて無料】設計・計算サポート7選 | DIY棚メーカー",
     description:
-      "DIY棚づくりに役立つ無料ツール4選。棚板耐荷重計算・材料費見積もり・支柱比較・棚設計診断をまとめました。",
+      "DIY棚づくりに役立つ無料ツール7選。プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚設計診断をまとめました。",
     type: "website",
     locale: "ja_JP",
     url: "https://diy-shelf-maker.kuras-plus.com/tools",
@@ -33,6 +36,30 @@ export const metadata: Metadata = {
 };
 
 const TOOLS = [
+  {
+    href: "/tools/projects",
+    icon: "📦",
+    name: "DIY棚プロジェクトDB",
+    description:
+      "50件以上のDIY棚プロジェクトを部屋タイプ×難易度×予算で検索。設計図・材料リスト・工程を掲載。",
+    guideHref: "/tools/projects",
+  },
+  {
+    href: "/tools/material-calculator",
+    icon: "🧮",
+    name: "材料計算シミュレーター",
+    description:
+      "棚の寸法を入力するだけで、必要な木材・金具・工具リストと概算費用を自動計算。Amazonリンク付き。",
+    guideHref: "/tools/material-calculator",
+  },
+  {
+    href: "/tools/strength-checker",
+    icon: "🔬",
+    name: "棚板強度チェッカー",
+    description:
+      "木材の種類と寸法、載せる物の重さを入力すると、たわみ量を計算し安全性を判定。改善提案も表示。",
+    guideHref: "/tools/strength-checker",
+  },
   {
     href: "/tools/shelf-load-calc",
     icon: "⚖️",
@@ -72,7 +99,7 @@ const collectionJsonLd = {
   "@type": "CollectionPage",
   name: "DIY棚づくりツール一覧",
   description:
-    "DIY棚づくりに役立つ無料ツールを一覧で紹介。耐荷重計算・費用見積もり・支柱比較・棚診断。",
+    "DIY棚づくりに役立つ無料ツールを一覧で紹介。プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚診断。",
   url: "https://diy-shelf-maker.kuras-plus.com/tools",
   hasPart: TOOLS.map((tool) => ({
     "@type": "WebApplication",

@@ -241,6 +241,77 @@ export interface PartCategoryInfo {
   updatedAt?: string;
 }
 
+// ── DIYプロジェクトデータベース ──
+export type RoomType =
+  | "1r" | "1k" | "1ldk" | "family" | "kids"
+  | "kitchen" | "entrance" | "workspace";
+
+export interface ProjectMaterial {
+  name: string;
+  spec: string;
+  quantity: number;
+  unitPrice: number;
+  amazonAsin?: string;
+}
+
+export interface ProjectTool {
+  name: string;
+  optional?: boolean;
+  amazonKeyword?: string;
+}
+
+export interface ProjectStep {
+  title: string;
+  description: string;
+}
+
+export interface ProjectAmazonProduct {
+  name: string;
+  asin: string;
+  price: number;
+  description: string;
+}
+
+export interface DIYProject {
+  id: string;
+  title: string;
+  description: string;
+  roomType: RoomType;
+  difficulty: 1 | 2 | 3 | 4 | 5;
+  estimatedCost: number;
+  estimatedTime: string;
+  dimensions: { w: number; h: number; d: number };
+  materials: ProjectMaterial[];
+  tools: ProjectTool[];
+  steps: ProjectStep[];
+  tags: string[];
+  amazonProducts: ProjectAmazonProduct[];
+  seoKeywords: string[];
+  updatedAt?: string;
+}
+
+export const ROOM_TYPE_LABELS: Record<RoomType, string> = {
+  "1r": "1R",
+  "1k": "1K",
+  "1ldk": "1LDK",
+  family: "ファミリー",
+  kids: "子供部屋",
+  kitchen: "キッチン",
+  entrance: "玄関",
+  workspace: "ワークスペース",
+};
+
+export const ROOM_TYPE_DESCRIPTIONS: Record<RoomType, string> = {
+  "1r": "限られたスペースを有効活用する一人暮らし向けの棚。省スペース＆賃貸OKの設計が中心です。",
+  "1k": "キッチンとリビングが分かれた1K向け。コンパクトながら機能的な収納棚をご紹介。",
+  "1ldk": "リビングダイニングのある間取り向け。見せる収納やインテリアとしても映える棚が揃います。",
+  family: "ファミリー向けの大容量収納棚。リビングや寝室の壁面を最大限に活用する設計です。",
+  kids: "子供部屋向けの安全で使いやすい棚。成長に合わせて高さや段数を調整できる設計です。",
+  kitchen: "キッチンの限られたスペースを活用する収納棚。調味料ラック・食器棚・レンジ台など。",
+  entrance: "玄関の省スペース収納。靴棚・傘立て・鍵掛けなど、帰宅動線を整える棚の設計です。",
+  workspace: "デスク周りの生産性を高める収納棚。モニター上・デスクサイドの収納を充実させます。",
+};
+
 // ── テンプレート ──
 export interface ShelfTemplate {
   id: string;

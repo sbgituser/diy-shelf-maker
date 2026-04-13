@@ -3,6 +3,8 @@ import { SHELF_TEMPLATES } from "@/data/templates";
 import { HOWTO_ARTICLES } from "@/data/howto-articles";
 import { PART_CATEGORIES } from "@/data/part-categories";
 import { PARTS_DICTIONARY } from "@/data/parts-dictionary";
+import { DIY_PROJECTS, ALL_TAGS } from "@/data/projects";
+import type { RoomType } from "@/types";
 
 export const dynamic = "force-static";
 
@@ -83,6 +85,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       lastModified: CONTENT_LAUNCH_DATE,
     },
+    {
+      url: `${BASE_URL}/tools/projects`,
+      priority: 0.9,
+      changeFrequency: "weekly",
+      lastModified: new Date("2026-04-13"),
+    },
+    {
+      url: `${BASE_URL}/tools/material-calculator`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: new Date("2026-04-13"),
+    },
+    {
+      url: `${BASE_URL}/tools/strength-checker`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: new Date("2026-04-13"),
+    },
   ];
 
   // テンプレート個別ページ（updatedAtがあればそちらを使用）
@@ -127,6 +147,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: p.updatedAt ? new Date(p.updatedAt) : CONTENT_LAUNCH_DATE,
   }));
 
+  // DIYプロジェクト個別ページ
+  const projectPages: MetadataRoute.Sitemap = DIY_PROJECTS.map((p) => ({
+    url: `${BASE_URL}/tools/projects/${p.id}`,
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+    lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date("2026-04-13"),
+  }));
+
+  // プロジェクト部屋タイプ別ページ
+  const ROOM_TYPES: RoomType[] = ["1r", "1k", "1ldk", "family", "kids", "kitchen", "entrance", "workspace"];
+  const projectRoomPages: MetadataRoute.Sitemap = ROOM_TYPES.map((rt) => ({
+    url: `${BASE_URL}/tools/projects/room/${rt}`,
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+    lastModified: new Date("2026-04-13"),
+  }));
+
+  // プロジェクトタグ別ページ
+  const projectTagPages: MetadataRoute.Sitemap = ALL_TAGS.map((tag) => ({
+    url: `${BASE_URL}/tools/projects/tag/${encodeURIComponent(tag)}`,
+    priority: 0.6,
+    changeFrequency: "monthly" as const,
+    lastModified: new Date("2026-04-13"),
+  }));
+
   return [
     ...staticPages,
     ...templatePages,
@@ -134,5 +179,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...partsTopPage,
     ...partsCategoryPages,
     ...partsDetailPages,
+    ...projectPages,
+    ...projectRoomPages,
+    ...projectTagPages,
   ];
 }
