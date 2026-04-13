@@ -37,3 +37,9 @@ next-env.d.ts
 
 # OGP生成用フォントキャッシュ
 /scripts/fonts/
+
+# audit reports
+audit/
+
+# git log dump
+git-log.txt
