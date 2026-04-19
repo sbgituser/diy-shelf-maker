@@ -13,6 +13,9 @@ const BASE_URL = "https://diy-shelf-maker.kuras-plus.com";
 // コンテンツ初回公開日（テンプレート・パーツ辞典は日付フィールド未保持のためサイト開設日を使用）
 const CONTENT_LAUNCH_DATE = new Date("2026-03-27");
 
+// サイト全体の最終更新日（内部リンク・コンテンツ拡充を反映）
+const SITE_LAST_UPDATED = new Date("2026-04-19");
+
 // How-to記事の最終更新日（トップページのlastmodに使用。updatedAtを優先）
 const LATEST_HOWTO_DATE = HOWTO_ARTICLES.reduce(
   (max, a) => {
@@ -35,13 +38,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/guide`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/templates`,
       priority: 0.8,
       changeFrequency: "weekly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/howto`,
@@ -53,37 +56,37 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/faq`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools/shelf-load-calc`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools/material-cost-estimator`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools/support-system-picker`,
       priority: 0.8,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools/shelf-planner-quiz`,
       priority: 0.9,
       changeFrequency: "monthly",
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
     {
       url: `${BASE_URL}/tools/projects`,
@@ -102,6 +105,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
       changeFrequency: "monthly",
       lastModified: new Date("2026-04-13"),
+    },
+    {
+      url: `${BASE_URL}/tools/wood-cut-calculator`,
+      priority: 0.8,
+      changeFrequency: "monthly",
+      lastModified: new Date("2026-04-19"),
     },
   ];
 
@@ -127,7 +136,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE_URL}/parts`,
       priority: 0.8,
       changeFrequency: "monthly" as const,
-      lastModified: CONTENT_LAUNCH_DATE,
+      lastModified: SITE_LAST_UPDATED,
     },
   ];
 

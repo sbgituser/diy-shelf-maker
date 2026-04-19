@@ -16,6 +16,10 @@ const TOOL_LINKS = [
   { href: "/tools/material-cost-estimator", label: "💰 費用見積もり" },
   { href: "/tools/support-system-picker", label: "🔧 支柱比較" },
   { href: "/tools/shelf-planner-quiz", label: "🧩 棚診断" },
+  { href: "/tools/wood-cut-calculator", label: "🪚 木材カット計算" },
+  { href: "/tools/material-calculator", label: "📋 材料計算" },
+  { href: "/tools/strength-checker", label: "💪 棚板強度チェック" },
+  { href: "/tools/projects", label: "📂 プロジェクトDB" },
 ];
 
 export default function MobileMenu() {

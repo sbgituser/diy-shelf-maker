@@ -159,6 +159,30 @@ const DIY_TOOLS = [
     description: "ラブリコ・ディアウォールを一目で比較",
     href: "/tools/support-system-picker",
   },
+  {
+    icon: "🪚",
+    name: "木材カット計算",
+    description: "天井高から木材カット寸法を自動算出",
+    href: "/tools/wood-cut-calculator",
+  },
+  {
+    icon: "📋",
+    name: "材料計算シミュレーター",
+    description: "必要な木材・金具の数量を自動計算",
+    href: "/tools/material-calculator",
+  },
+  {
+    icon: "💪",
+    name: "棚板強度チェック",
+    description: "棚板のたわみ・耐荷重を検証",
+    href: "/tools/strength-checker",
+  },
+  {
+    icon: "📂",
+    name: "DIYプロジェクトDB",
+    description: "部屋別・目的別のDIY棚プラン50件",
+    href: "/tools/projects",
+  },
 ];
 
 export default function Home() {
@@ -173,6 +197,32 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
+
+      {/* GW特集バナー */}
+      <section className="max-w-5xl mx-auto mb-6">
+        <Link
+          href="/howto"
+          className="block bg-gradient-to-r from-yellow-50 via-amber-50 to-orange-50 rounded-2xl p-5 border border-yellow-200 hover:border-yellow-400 hover:shadow-md transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <span className="text-3xl sm:text-4xl flex-shrink-0">🎌</span>
+            <div className="min-w-0">
+              <p className="text-xs font-bold text-amber-600 tracking-wider">
+                GW特集 2026
+              </p>
+              <h2 className="text-base sm:text-lg font-bold text-gray-800 group-hover:text-amber-600 transition-colors">
+                ゴールデンウィークに作れるDIY棚10本のガイド公開中
+              </h2>
+              <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                100均棚・折りたたみ棚・親子DIY・1日完成棚など、GWにぴったりの記事をまとめました
+              </p>
+            </div>
+            <span className="ml-auto text-amber-600 font-medium text-sm flex-shrink-0 group-hover:translate-x-1 transition-transform">
+              見る →
+            </span>
+          </div>
+        </Link>
+      </section>
 
       {/* ヒーローセクション */}
       <section className="max-w-5xl mx-auto mb-10">

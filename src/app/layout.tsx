@@ -162,11 +162,16 @@ export default function RootLayout({
                   <li><a href="/tools/material-cost-estimator" className="text-gray-600 hover:text-amber-600 transition-colors">費用見積もり</a></li>
                   <li><a href="/tools/support-system-picker" className="text-gray-600 hover:text-amber-600 transition-colors">支柱比較</a></li>
                   <li><a href="/tools/shelf-planner-quiz" className="text-gray-600 hover:text-amber-600 transition-colors">棚診断</a></li>
+                  <li><a href="/tools/wood-cut-calculator" className="text-gray-600 hover:text-amber-600 transition-colors">木材カット計算</a></li>
+                  <li><a href="/tools/material-calculator" className="text-gray-600 hover:text-amber-600 transition-colors">材料計算</a></li>
+                  <li><a href="/tools/strength-checker" className="text-gray-600 hover:text-amber-600 transition-colors">棚板強度チェック</a></li>
+                  <li><a href="/tools/projects" className="text-gray-600 hover:text-amber-600 transition-colors">プロジェクトDB</a></li>
                 </ul>
               </div>
               <div>
                 <h3 className="font-semibold text-gray-800 mb-2">サイト情報</h3>
                 <ul className="space-y-1.5">
+                  <li><a href="/faq" className="text-gray-600 hover:text-amber-600 transition-colors">よくある質問</a></li>
                   <li>
                     <a
                       href="https://kuras-plus.com"
