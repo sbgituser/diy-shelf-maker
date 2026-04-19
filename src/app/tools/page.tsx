@@ -3,9 +3,9 @@ import Link from "next/link";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "DIY棚ツール一覧【すべて無料】設計・計算サポート7選",
+  title: "DIY棚ツール一覧【すべて無料】��計・計算サポート9選",
   description:
-    "DIY棚づくりに役立つ無料ツール7選。プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚設計診断で、設計から材料選びまでサポート。",
+    "DIY棚づくりに役立つ無料ツール9選。木材カット計算・プロジ���クトDB・材料計算・強度チェック・耐荷重計算・費用見積��り・支柱比較・棚設計診断で、設計から材料選びまでサポート。",
   keywords: [
     "DIY 棚 ツール",
     "DIY 棚 設計図",
@@ -36,6 +36,14 @@ export const metadata: Metadata = {
 };
 
 const TOOLS = [
+  {
+    href: "/tools/wood-cut-calculator",
+    icon: "🪚",
+    name: "木材カット計算ツール",
+    description:
+      "天井高とアジャスターを選ぶだけで柱・棚板のカット寸法を自動算出。ホームセンター注文メモ付き。",
+    guideHref: "/howto/shelf-wood-cutting-calculator",
+  },
   {
     href: "/tools/projects",
     icon: "📦",
@@ -92,6 +100,14 @@ const TOOLS = [
       "5つの質問に答えるだけで、最適な棚の設計プラン・材料リスト・費用目安を提案します。",
     guideHref: "/howto/shelf-planner-quiz-guide",
   },
+  {
+    href: "/tools/smart-home-power-calc",
+    icon: "⚡",
+    name: "スマートホーム電気代計算機",
+    description:
+      "スマートプラグ・照明・カメラなどIoTデバイスの電気代を自動計算。DIY棚×スマートホームの運用コスト試算に。",
+    guideHref: "/tools/smart-home-power-calc",
+  },
 ];
 
 const collectionJsonLd = {
@@ -99,7 +115,7 @@ const collectionJsonLd = {
   "@type": "CollectionPage",
   name: "DIY棚づくりツール一覧",
   description:
-    "DIY棚づくりに役立つ無料ツールを一覧で紹介。プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚診断。",
+    "DIY棚づくりに役立つ無料ツールを一覧で紹介。木材カット計算・プロジェクトDB・材料計算・強度チェック・耐荷重計算・費用見積もり・支柱比較・棚診断。",
   url: "https://diy-shelf-maker.kuras-plus.com/tools",
   hasPart: TOOLS.map((tool) => ({
     "@type": "WebApplication",
