@@ -164,6 +164,8 @@ export interface PartItem {
   subtotal: number;
   amazonUrl: string;
   note?: string;
+  /** カット割付の最適化結果。定尺材から複数部材を切り出す場合のみ設定 */
+  cutPlan?: import("@/lib/cut-optimizer").CutPlan;
 }
 
 // ── グリッドエディタ型 ──

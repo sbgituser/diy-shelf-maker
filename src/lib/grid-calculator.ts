@@ -7,16 +7,38 @@ import {
   ACCESSORY_MAP,
   BRACKET_MAP,
 } from "@/data/products";
+import { optimizeCutPlan, type CutPieceGroup } from "./cut-optimizer";
+import { STANDARD_LENGTHS, CUT_FEE_PER_CUT, KERF_WIDTH_MM } from "@/constants/woodCutCalculator";
 
 // resolveAdj は src/lib/resolvers.ts に統合済み
 import { resolveAdjuster as resolveAdj } from "./resolvers";
 
-/** 木材サイズ選定 */
-function lumberSize(mm: number) {
-  const v = Number(mm) || 0;
-  if (v <= 1820) return { label: "6ft (1820mm)", mult: 1.0 };
-  if (v <= 2438) return { label: "8ft (2438mm)", mult: 1.4 };
-  return { label: "10ft (3050mm)", mult: 1.8 };
+/** 定尺材の候補長さそれぞれについて、価格倍率を加味した1本あたり価格を返す */
+function barPricesForCandidates(pricePerUnit: number): { lengthMm: number; barPriceYen: number }[] {
+  return STANDARD_LENGTHS.map((s) => ({
+    lengthMm: s.value,
+    barPriceYen: Math.round(pricePerUnit * s.priceMult),
+  }));
+}
+
+/**
+ * 複数の定尺材長さ候補それぞれで最適化を試し、総コストが最小の結果を返す。
+ * (定尺材ごとに単価が異なるため、cut-optimizer側のoptimizeCutPlanAcrossLengthsを
+ *  そのまま使わず、候補ごとにbarPriceYenを差し替えて呼び出す)
+ */
+function optimizeAcrossPricedLengths(groups: CutPieceGroup[], pricePerUnit: number) {
+  const candidates = barPricesForCandidates(pricePerUnit);
+  const plans = candidates
+    .map((c) =>
+      optimizeCutPlan(groups, c.lengthMm, {
+        kerfMm: KERF_WIDTH_MM,
+        cutFeePerCut: CUT_FEE_PER_CUT,
+        barPriceYen: c.barPriceYen,
+      }),
+    )
+    .filter((p) => p.barsNeeded > 0);
+  if (plans.length === 0) return null;
+  return plans.reduce((best, p) => (p.totalCost < best.totalCost ? p : best));
 }
 
 /**
@@ -66,14 +88,11 @@ export function calculateGridParts(design: GridDesign): {
     });
   }
 
-  // ── 柱用木材 (lumber+cutLength でグルーピング) ──
-  const lumGroups = new Map<
+  // ── 柱用木材 (材質ごとにグルーピングし、必要な長さをまとめて定尺材から
+  //    最適に切り出す購入本数を算出する) ──
+  const pillarLumberGroups = new Map<
     string,
-    {
-      spec: (typeof LUMBER_SPECS)["2x4"];
-      count: number;
-      cutLen: number;
-    }
+    { spec: (typeof LUMBER_SPECS)["2x4"]; cutLens: Map<number, number> }
   >();
   for (const p of design.pillars) {
     const spec = LUMBER_SPECS[p.lumber] ?? LUMBER_SPECS["2x4"];
@@ -81,22 +100,33 @@ export function calculateGridParts(design: GridDesign): {
     const cut = adj
       ? Math.max(0, ceilingHeight - adj.cutOffset)
       : ceilingHeight;
-    const k = `${p.lumber}-${cut}`;
-    const g = lumGroups.get(k);
-    if (g) g.count++;
-    else lumGroups.set(k, { spec, count: 1, cutLen: cut });
+    let g = pillarLumberGroups.get(p.lumber);
+    if (!g) {
+      g = { spec, cutLens: new Map() };
+      pillarLumberGroups.set(p.lumber, g);
+    }
+    g.cutLens.set(cut, (g.cutLens.get(cut) ?? 0) + 1);
   }
-  for (const [, g] of lumGroups) {
-    const sz = lumberSize(g.cutLen);
-    const price = Math.round(g.spec.pricePerUnit * sz.mult);
+  for (const [, g] of pillarLumberGroups) {
+    const cutGroups: CutPieceGroup[] = [...g.cutLens.entries()].map(([lengthMm, quantity]) => ({
+      lengthMm,
+      quantity,
+    }));
+    const plan = optimizeAcrossPricedLengths(cutGroups, g.spec.pricePerUnit);
+    if (!plan) continue;
+    const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
+    const lengthsNote = [...g.cutLens.entries()]
+      .map(([len, qty]) => `${len}mm×${qty}本`)
+      .join("、");
     parts.push({
       category: "lumber",
-      name: `${g.spec.name} ${sz.label}【柱用】`,
-      quantity: g.count,
-      unitPrice: price,
-      subtotal: price * g.count,
+      name: `${g.spec.name} ${stdLabel}【柱用】`,
+      quantity: plan.barsNeeded,
+      unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
+      subtotal: plan.totalCost,
       amazonUrl: buildAmazonUrl(g.spec.amazonKeyword),
-      note: `${g.cutLen}mmにカット`,
+      note: `${lengthsNote}を切り出し（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
+      cutPlan: plan,
     });
   }
 
@@ -132,16 +162,31 @@ export function calculateGridParts(design: GridDesign): {
         LUMBER_SPECS[g.board.id === "2x4-shelf" ? "2x4" : "1x4"]?.widthMm ??
         89;
       const perShelf = Math.max(1, Math.ceil(g.depth / bw));
-      const qty = g.count * perShelf;
-      parts.push({
-        category: "shelf",
-        name: `${g.board.name}【棚板用】`,
-        quantity: qty,
-        unitPrice: g.board.pricePerUnit,
-        subtotal: g.board.pricePerUnit * qty,
-        amazonUrl: buildAmazonUrl(g.board.amazonKeyword),
-        note: `${g.count}枚 × ${perShelf}本並べ`,
-      });
+
+      // 各棚(幅がバラバラ)からperShelf本ずつ、定尺材から切り出す必要がある
+      const widthTally = new Map<number, number>();
+      for (const w of g.widths) {
+        widthTally.set(w, (widthTally.get(w) ?? 0) + perShelf);
+      }
+      const cutGroups: CutPieceGroup[] = [...widthTally.entries()].map(([lengthMm, quantity]) => ({
+        lengthMm,
+        quantity,
+      }));
+      const plan = optimizeAcrossPricedLengths(cutGroups, g.board.pricePerUnit);
+
+      if (plan) {
+        const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
+        parts.push({
+          category: "shelf",
+          name: `${g.board.name} ${stdLabel}【棚板用】`,
+          quantity: plan.barsNeeded,
+          unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
+          subtotal: plan.totalCost,
+          amazonUrl: buildAmazonUrl(g.board.amazonKeyword),
+          note: `${g.count}枚 × ${perShelf}本並べ（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
+          cutPlan: plan,
+        });
+      }
     } else {
       let sub = 0;
       for (const w of g.widths) {
