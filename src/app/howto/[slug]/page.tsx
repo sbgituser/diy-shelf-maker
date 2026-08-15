@@ -6,6 +6,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import AuthorBox from "@/components/AuthorBox";
+import { GwViewTracker, GwAmazonLink } from "@/components/GwTracker";
 
 // SSGで全記事ページを事前生成
 export function generateStaticParams() {
@@ -152,6 +153,9 @@ export default async function HowtoArticlePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+
+      {/* GWコンテンツ計測 */}
+      {slug.startsWith("gw-") && <GwViewTracker slug={slug} />}
 
       {/* パンくずリスト */}
       <Breadcrumb
@@ -326,14 +330,24 @@ export default async function HowtoArticlePage({
                     <td className="px-4 py-3 font-bold text-gray-900">{link.label}</td>
                     <td className="px-4 py-3 text-right text-gray-600 font-mono">¥1,000〜</td>
                     <td className="px-4 py-3 text-center">
-                      <a
-                        href={buildAmazonUrl(link.keyword)}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow sponsored"
-                        className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
-                      >
-                        🛒 Amazonで見る
-                      </a>
+                      {slug.startsWith("gw-") ? (
+                        <GwAmazonLink
+                          slug={slug}
+                          label={link.label}
+                          href={buildAmazonUrl(link.keyword)}
+                        >
+                          🛒 Amazonで見る
+                        </GwAmazonLink>
+                      ) : (
+                        <a
+                          href={buildAmazonUrl(link.keyword)}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow sponsored"
+                          className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
+                        >
+                          🛒 Amazonで見る
+                        </a>
+                      )}
                     </td>
                   </tr>
                 ))}
