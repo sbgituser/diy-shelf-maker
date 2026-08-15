@@ -21,7 +21,6 @@ import PartsListTable from "../PartsListTable";
 import RecommendedTools from "../RecommendedTools";
 const ShareButtons = dynamic(() => import("../ShareButtons"), { ssr: false });
 import FloatingCTA from "../FloatingCTA";
-import CompletionModal from "../CompletionModal";
 
 import { showToast } from "../Toast";
 import { SNAP, SVG_W, SVG_H, M, DW, DH, DRAG_THRESHOLD } from "@/constants/grid";
@@ -679,29 +678,6 @@ export default function GridEditor() {
         visible={design.pillars.length >= 1 && result.partsList.length > 0}
       />
 
-      {/* 設計完了モーダル */}
-      <CompletionModal
-        total={result.totalEstimate}
-        partsCount={result.partsList.length}
-        pillarsCount={design.pillars.length}
-        shelvesCount={design.shelves.length}
-        onViewParts={() => {
-          document.getElementById("parts-list")?.scrollIntoView({ behavior: "smooth" });
-        }}
-        onExportPdf={async () => {
-          setPdfExporting(true);
-          try {
-            await exportDesignPdf(design);
-            showToast("success", "PDFをダウンロードしました");
-          } catch (err) {
-            console.error("PDF export failed:", err);
-            const msg = err instanceof Error ? err.message : "PDF出力に失敗しました。もう一度お試しください。";
-            showToast("error", msg);
-          } finally {
-            setPdfExporting(false);
-          }
-        }}
-      />
     </div>
   );
 }
