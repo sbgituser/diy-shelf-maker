@@ -189,6 +189,19 @@ export default function RootLayout({
                     </a>
                   </li>
                 </ul>
+                <h3 className="font-semibold text-gray-800 mb-2 mt-4">運営者の他のサイト</h3>
+                <ul className="space-y-1.5">
+                  <li>
+                    <a
+                      href="https://books.kuras-plus.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-600 hover:text-amber-600 transition-colors"
+                    >
+                      Books Tools — 気分から漫画・小説を探せる発見サイト
+                    </a>
+                  </li>
+                </ul>
               </div>
             </nav>
             <div className="text-center text-sm text-gray-500 border-t border-gray-100 pt-6">
