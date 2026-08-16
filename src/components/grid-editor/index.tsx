@@ -46,6 +46,33 @@ const INITIAL: GridDesign = {
   defaultBracketId: "shelf-support",
 };
 
+// ── 設計データの永続化(localStorage) ──
+// パーツ辞典など別ページへ遷移して戻ってきても、編集中の設計が
+// 消えないようにする。テンプレート指定URLで来た場合はテンプレートを優先する。
+const DESIGN_STORAGE_KEY = "diy-shelf-maker:design";
+
+function loadSavedDesign(): GridDesign | null {
+  try {
+    const raw = localStorage.getItem(DESIGN_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && Array.isArray(parsed.pillars) && Array.isArray(parsed.shelves)) {
+      return parsed as GridDesign;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function saveDesign(design: GridDesign) {
+  try {
+    localStorage.setItem(DESIGN_STORAGE_KEY, JSON.stringify(design));
+  } catch {
+    // プライベートブラウジング等でlocalStorageが使えない場合は何もしない
+  }
+}
+
 /** テンプレートのdefaultsからGridDesignを生成 */
 function templateToGridDesign(defaults: Partial<DesignInput>): GridDesign {
   const ceilingHeight = defaults.fullHeight !== false ? 2400 : (defaults.unitHeight ?? 1800);
@@ -125,6 +152,28 @@ export default function GridEditor() {
   const [isDragging, setIsDragging] = useState(false);
   const dragPosRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const rafIdRef = useRef<number>(0);
+  /** 保存用useEffectの初回発火(復元前のINITIALでの上書き)をスキップするためのフラグ */
+  const isFirstSaveRef = useRef(true);
+
+  // 保存済みの設計を復元(テンプレート指定URLの場合はそちらを優先するのでスキップ)
+  useEffect(() => {
+    if (searchParams.get("template")) return;
+    const saved = loadSavedDesign();
+    if (saved) {
+      setDesign(saved);
+      nextId.current = saved.pillars.length + saved.shelves.length + 10;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 設計が変わるたびに保存する(初回マウント時のINITIALでの上書きは除く)
+  useEffect(() => {
+    if (isFirstSaveRef.current) {
+      isFirstSaveRef.current = false;
+      return;
+    }
+    saveDesign(design);
+  }, [design]);
 
   // テンプレートのクエリパラメータを読み取り
   useEffect(() => {

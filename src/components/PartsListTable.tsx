@@ -118,6 +118,14 @@ function PartsTable({ parts, ariaLabel }: { parts: PartItem[]; ariaLabel: string
                       {part.note && (
                         <div className="text-xs text-gray-500 mt-0.5">{part.note}</div>
                       )}
+                      {part.dictionaryId && (
+                        <Link
+                          href={`/parts/${part.dictionaryId}`}
+                          className="inline-block mt-1 text-xs font-medium text-amber-700 hover:text-amber-800 underline underline-offset-2"
+                        >
+                          このパーツの詳細を見る →
+                        </Link>
+                      )}
                       <CutPlanDetail part={part} />
                     </div>
                   </div>

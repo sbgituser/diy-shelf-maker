@@ -9,6 +9,7 @@ import {
 } from "@/data/products";
 import { optimizeMixedCutPlan, formatBarsByLength, type CutPieceGroup, type StockCandidate } from "./cut-optimizer";
 import { STANDARD_LENGTHS, CUT_FEE_PER_CUT, KERF_WIDTH_MM } from "@/constants/woodCutCalculator";
+import { findDictionaryEntryByProductId } from "@/data/parts-dictionary";
 
 // resolveAdj は src/lib/resolvers.ts に統合済み
 import { resolveAdjuster as resolveAdj } from "./resolvers";
@@ -55,7 +56,7 @@ export function calculateGridParts(design: GridDesign): {
   // ── アジャスター (brand+lumber でグルーピング) ──
   const adjGroups = new Map<
     string,
-    { name: string; count: number; price: number; kw: string; offset: number }
+    { name: string; count: number; price: number; kw: string; offset: number; productId: string }
   >();
   for (const p of design.pillars) {
     if (!p.adjuster) continue;
@@ -70,6 +71,7 @@ export function calculateGridParts(design: GridDesign): {
         price: a.priceYen,
         kw: a.amazonKeyword,
         offset: a.cutOffset,
+        productId: a.id,
       });
   }
   for (const [, g] of adjGroups) {
@@ -81,6 +83,7 @@ export function calculateGridParts(design: GridDesign): {
       subtotal: g.price * g.count,
       amazonUrl: buildAmazonUrl(g.kw),
       note: `天井高から−${g.offset}mmでカット`,
+      dictionaryId: findDictionaryEntryByProductId(g.productId)?.id,
     });
   }
 
@@ -243,6 +246,7 @@ export function calculateGridParts(design: GridDesign): {
         subtotal: g.bracket.pricePerPair * g.count,
         amazonUrl: buildAmazonUrl(g.bracket.amazonKeyword),
         note: `棚板${g.count}枚分`,
+        dictionaryId: findDictionaryEntryByProductId(g.bracket.id)?.id,
       });
     }
 
@@ -255,6 +259,7 @@ export function calculateGridParts(design: GridDesign): {
       subtotal: 400,
       amazonUrl: buildAmazonUrl("木ネジ 3.8×32 ステンレス"),
       note: `約${screws}本使用`,
+      dictionaryId: findDictionaryEntryByProductId("wood_screw")?.id,
     });
   }
 
@@ -276,6 +281,7 @@ export function calculateGridParts(design: GridDesign): {
         unitPrice: g.product.priceYen,
         subtotal: g.product.priceYen * g.count,
         amazonUrl: buildAmazonUrl(g.product.amazonKeyword),
+        dictionaryId: findDictionaryEntryByProductId(g.product.id)?.id,
       });
     }
   }

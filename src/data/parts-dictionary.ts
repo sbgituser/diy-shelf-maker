@@ -1577,6 +1577,22 @@ export const PARTS_DICTIONARY_MAP = Object.fromEntries(
   PARTS_DICTIONARY.map((p) => [p.id, p])
 ) as Record<string, DictionaryPart>;
 
+/**
+ * 商品ID(products.tsのADJUSTERS/BRACKETS/ACCESSORIES等のid)から、
+ * 対応するパーツ辞典のエントリを安全に探す。
+ *
+ * products.ts と parts-dictionary.ts は別々に管理されているデータセットで、
+ * idの命名がハイフン/アンダースコアなどで揺れている場合がある
+ * (例: "l-bracket" ⇔ "l_bracket")。完全一致・正規化一致のいずれでも
+ * 見つからなければ確実に null を返す(誤ったリンク先を推測で作らないため)。
+ */
+export function findDictionaryEntryByProductId(productId: string): DictionaryPart | null {
+  if (PARTS_DICTIONARY_MAP[productId]) return PARTS_DICTIONARY_MAP[productId];
+  const normalized = productId.replace(/-/g, "_");
+  if (PARTS_DICTIONARY_MAP[normalized]) return PARTS_DICTIONARY_MAP[normalized];
+  return null;
+}
+
 /** カテゴリ別にパーツをグループ化 */
 export const PARTS_BY_CATEGORY = PARTS_DICTIONARY.reduce<
   Record<string, DictionaryPart[]>
