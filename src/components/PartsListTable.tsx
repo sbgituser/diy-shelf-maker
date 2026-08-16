@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import type { PartItem } from "@/types";
 import { formatCutPlanLines, formatCutPlanText } from "@/lib/cut-optimizer";
 
@@ -168,9 +169,17 @@ export default function PartsListTable({ parts, total }: Props) {
 
       {accessoryParts.length > 0 && (
         <div className={materialParts.length > 0 ? "border-t border-gray-200" : ""}>
-          <h3 className="px-4 pt-4 pb-2 text-sm font-bold text-gray-700">
-            🔧 アジャスター・棚受け金具・装飾品
-          </h3>
+          <div className="flex items-center justify-between gap-3 px-4 pt-4 pb-2">
+            <h3 className="text-sm font-bold text-gray-700">
+              🔧 アジャスター・棚受け金具・装飾品
+            </h3>
+            <Link
+              href="/parts"
+              className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 hover:text-amber-800 underline underline-offset-2 whitespace-nowrap"
+            >
+              📖 パーツ辞典で選び方を見る →
+            </Link>
+          </div>
           <PartsTable parts={accessoryParts} ariaLabel="アジャスター・棚受け金具・装飾品の部材リスト" />
         </div>
       )}
