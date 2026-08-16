@@ -152,6 +152,52 @@ function packMixed(
   return { bars, unfit };
 }
 
+/**
+ * バーの統合による改善を探す後処理。
+ *
+ * packMixed()は「新しいバーを開く瞬間、その1部材だけを見て最も安い候補を
+ * 選ぶ」貪欲法のため、例えば600mm材が3本収まる6ft材(端材少)と、
+ * 4本目だけが乗った別の6ft材(端材大)、という組み合わせを作ってしまうことが
+ * ある。本来は4本まとめて8ft材1本にする方が安い場合でも、貪欲法単体では
+ * 見つけられない。
+ *
+ * ここでは総当たりで2本のバーの組み合わせを調べ、その中身を1本の
+ * (現状より安い、または同額で本数が減る)定尺材にまとめられるなら統合する。
+ * 改善が見つからなくなるまで繰り返す。
+ */
+function consolidateBars(bars: OpenBar[], candidates: StockCandidate[], kerfMm: number): OpenBar[] {
+  const sortedCandidates = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  let current = [...bars];
+
+  let improved = true;
+  while (improved) {
+    improved = false;
+    for (let i = 0; i < current.length && !improved; i++) {
+      for (let j = i + 1; j < current.length && !improved; j++) {
+        const combinedCuts = [...current[i].cuts, ...current[j].cuts];
+        const neededLength = combinedCuts.reduce((sum, c) => sum + c.lengthMm + kerfMm, 0);
+        const currentCost = current[i].barPriceYen + current[j].barPriceYen;
+
+        const candidate = sortedCandidates.find(
+          (c) => neededLength <= c.lengthMm && c.barPriceYen < currentCost,
+        );
+        if (!candidate) continue;
+
+        const merged: OpenBar = {
+          lengthMm: candidate.lengthMm,
+          barPriceYen: candidate.barPriceYen,
+          remaining: candidate.lengthMm - neededLength,
+          cuts: combinedCuts,
+        };
+        current = [...current.filter((_, idx) => idx !== i && idx !== j), merged];
+        improved = true;
+      }
+    }
+  }
+
+  return current;
+}
+
 function toLayouts(bars: OpenBar[]): BarLayout[] {
   return bars.map((b, i) => ({
     barIndex: i + 1,
@@ -229,6 +275,9 @@ export function optimizeMixedCutPlan(
       bestCost = cost;
     }
   }
+
+  // 貪欲法の結果に対し、バー統合でさらに安くならないか後処理で確認する
+  best = consolidateBars(best, candidates, kerfMm);
 
   return buildPlan(best, bestUnfit, cutFeePerCut);
 }
