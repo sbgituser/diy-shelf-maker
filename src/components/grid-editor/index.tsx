@@ -112,6 +112,11 @@ export default function GridEditor() {
   const [bracketTargetShelfId, setBracketTargetShelfId] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const nextId = useRef(10);
+  /** mousedown時点で「既に選択済みだったか」を記録する。
+   *  click(トグル解除)がmousedown(選択)直後に同じ要素で発火するため、
+   *  現在のselectedIdと比較すると常に一致してしまい、選択した瞬間に
+   *  解除されるバグになる。mousedown"前"の状態を別途保持して判定する */
+  const wasAlreadySelectedRef = useRef(false);
   const templateApplied = useRef(false);
 
   // ── パフォーマンス最適化: ドラッグ中のビジュアル位置をRefで管理 ──
@@ -460,18 +465,22 @@ export default function GridEditor() {
       if (mode !== "select") return;
       e.stopPropagation();
       e.preventDefault();
+      wasAlreadySelectedRef.current = selectedId === id;
       setSelectedId(id);
       const { sx, sy } = toSvgCoord(e.clientX, e.clientY);
       dragRef.current = { id, type, startSvgX: sx, startSvgY: sy, active: false };
     },
-    [mode, toSvgCoord],
+    [mode, toSvgCoord, selectedId],
   );
 
   const handleElementClick = useCallback(
     (id: string, e: React.MouseEvent) => {
       e.stopPropagation();
       if (isDraggingRef.current) return;
-      if (mode === "select") setSelectedId((prev) => (prev === id ? null : id));
+      // 既に選択済みの要素をもう一度クリックした場合のみ選択解除する。
+      // (mousedownで選択した直後にこのclickが発火するため、現在のselectedIdと
+      //  比較すると常に一致してしまう。mousedown前の状態と比較する)
+      if (mode === "select" && wasAlreadySelectedRef.current) setSelectedId(null);
     },
     [mode],
   );

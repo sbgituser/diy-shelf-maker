@@ -15,7 +15,11 @@ const CATEGORY_LABELS: Record<string, { label: string; icon: string }> = {
   shelf: { label: "棚板", icon: "📏" },
   bracket: { label: "棚受け金具", icon: "🔩" },
   screw: { label: "ネジ類", icon: "📌" },
+  accessory: { label: "装飾品", icon: "✨" },
 };
+
+/** 柱・棚板(木材)のカテゴリ。定尺材から切り出す「必要な部材」の本体 */
+const MATERIAL_CATEGORIES = new Set(["lumber", "shelf"]);
 
 /** カット割付の詳細(ホームセンター持参用メモ)。展開・コピーができる */
 function CutPlanDetail({ part }: { part: PartItem }) {
@@ -71,84 +75,105 @@ function CutPlanDetail({ part }: { part: PartItem }) {
   );
 }
 
+/** 部材テーブル本体(見出し行+部材行)。柱・棚板テーブルとアジャスター等テーブルで共用 */
+function PartsTable({ parts, ariaLabel }: { parts: PartItem[]; ariaLabel: string }) {
+  if (parts.length === 0) return null;
+  return (
+    <div className="overflow-x-auto" role="region" aria-label={ariaLabel} tabIndex={0}>
+      <table className="w-full text-sm">
+        <caption className="sr-only">{ariaLabel}（部材名・数量・単価・小計・購入リンク）</caption>
+        <thead>
+          <tr className="bg-gray-50 border-b border-gray-200">
+            <th scope="col" className="px-4 py-3 text-left text-gray-600 font-medium">
+              部材
+            </th>
+            <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-16">
+              数量
+            </th>
+            <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
+              単価
+            </th>
+            <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
+              小計
+            </th>
+            <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-28">
+              購入
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.map((part, i) => {
+            const cat = CATEGORY_LABELS[part.category] ?? {
+              label: part.category,
+              icon: "📦",
+            };
+            return (
+              <tr key={i} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td className="px-4 py-3">
+                  <div className="flex items-start gap-2">
+                    <span className="text-base">{cat.icon}</span>
+                    <div>
+                      <div className="font-bold text-gray-900">{part.name}</div>
+                      {part.note && (
+                        <div className="text-xs text-gray-500 mt-0.5">{part.note}</div>
+                      )}
+                      <CutPlanDetail part={part} />
+                    </div>
+                  </div>
+                </td>
+                <td className="px-4 py-3 text-center font-mono text-gray-700">
+                  {part.quantity}
+                </td>
+                <td className="px-4 py-3 text-right font-mono text-gray-600">
+                  ¥{part.unitPrice.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-right font-mono font-bold text-gray-900 bg-amber-50/50">
+                  ¥{part.subtotal.toLocaleString()}
+                </td>
+                <td className="px-4 py-3 text-center">
+                  <a
+                    href={part.amazonUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
+                  >
+                    🛒 Amazonで見る
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function PartsListTable({ parts, total }: Props) {
+  // 柱・棚板(定尺材からカットする本体の部材)と、
+  // アジャスター・棚受け金具・ネジ・装飾品(付属品)を分けて表示する
+  const materialParts = parts.filter((p) => MATERIAL_CATEGORIES.has(p.category));
+  const accessoryParts = parts.filter((p) => !MATERIAL_CATEGORIES.has(p.category));
+
   return (
     <div id="parts-list" className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-      {/* テーブル */}
-      <div className="overflow-x-auto" role="region" aria-label="必要な部材リスト" tabIndex={0}>
-        <table className="w-full text-sm">
-          <caption className="sr-only">棚設計に必要な部材リスト（部材名・数量・単価・小計・購入リンク）</caption>
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th scope="col" className="px-4 py-3 text-left text-gray-600 font-medium">
-                部材
-              </th>
-              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-16">
-                数量
-              </th>
-              <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
-                単価
-              </th>
-              <th scope="col" className="px-4 py-3 text-right text-gray-600 font-medium w-24">
-                小計
-              </th>
-              <th scope="col" className="px-4 py-3 text-center text-gray-600 font-medium w-28">
-                購入
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {parts.map((part, i) => {
-              const cat = CATEGORY_LABELS[part.category] ?? {
-                label: part.category,
-                icon: "📦",
-              };
-              return (
-                <tr
-                  key={i}
-                  className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-4 py-3">
-                    <div className="flex items-start gap-2">
-                      <span className="text-base">{cat.icon}</span>
-                      <div>
-                        <div className="font-bold text-gray-900">
-                          {part.name}
-                        </div>
-                        {part.note && (
-                          <div className="text-xs text-gray-500 mt-0.5">
-                            {part.note}
-                          </div>
-                        )}
-                        <CutPlanDetail part={part} />
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-center font-mono text-gray-700">
-                    {part.quantity}
-                  </td>
-                  <td className="px-4 py-3 text-right font-mono text-gray-600">
-                    ¥{part.unitPrice.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-right font-mono font-bold text-gray-900 bg-amber-50/50">
-                    ¥{part.subtotal.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <a
-                      href={part.amazonUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3 rounded transition-colors"
-                    >
-                      🛒 Amazonで見る
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      {materialParts.length > 0 && (
+        <div>
+          <h3 className="px-4 pt-4 pb-2 text-sm font-bold text-gray-700">
+            🪵 柱・棚板(カットする木材)
+          </h3>
+          <PartsTable parts={materialParts} ariaLabel="柱・棚板の部材リスト" />
+        </div>
+      )}
+
+      {accessoryParts.length > 0 && (
+        <div className={materialParts.length > 0 ? "border-t border-gray-200" : ""}>
+          <h3 className="px-4 pt-4 pb-2 text-sm font-bold text-gray-700">
+            🔧 アジャスター・棚受け金具・装飾品
+          </h3>
+          <PartsTable parts={accessoryParts} ariaLabel="アジャスター・棚受け金具・装飾品の部材リスト" />
+        </div>
+      )}
 
       {/* 合計 */}
       <div className="flex items-center justify-between px-4 py-4 bg-amber-50 border-t border-amber-200">
