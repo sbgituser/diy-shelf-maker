@@ -5,6 +5,11 @@
  * 1次元カッティングストック問題として扱い、First-Fit Decreasing + 複数試行の
  * ヒューリスティックで解く(部材点数が数十点程度のDIY用途では十分な精度)。
  *
+ * 定尺材の長さは6ft/8ft/10ft/12ftのように複数候補があり、長い部材は長い定尺材、
+ * 短い部材は安い短めの定尺材、というように「候補ごとに使い分ける」方が
+ * 単一の長さに揃えるより総コストが安くなることが多い。そのため
+ * optimizeMixedCutPlan() は1回の最適化の中で複数の定尺材長を混在させる。
+ *
  * 参考: https://www.creativity-ape.com/entry/2019/05/28/204818
  *   （ビンパッキングによる木材カット最適化の考え方）
  */
@@ -23,16 +28,23 @@ export interface CutPieceGroup {
   label?: string;
 }
 
+/** 定尺材の候補(長さと単価) */
+export interface StockCandidate {
+  lengthMm: number;
+  barPriceYen: number;
+}
+
 /** 1本のバーへの割付結果 */
 export interface BarLayout {
   barIndex: number;
+  /** このバーに使った定尺材の長さ(mm) */
+  barLengthMm: number;
   cuts: CutPiece[];
   wasteMm: number;
 }
 
 /** 最適化結果 */
 export interface CutPlan {
-  barLengthMm: number;
   barsNeeded: number;
   layouts: BarLayout[];
   totalCutCount: number;
@@ -40,6 +52,10 @@ export interface CutPlan {
   materialCost: number;
   cutCost: number;
   totalCost: number;
+  /** 定尺材の長さ(mm) → 購入本数。複数長さが混在する場合の内訳 */
+  barsByLength: Record<number, number>;
+  /** どの候補にも収まらず、カットできなかった部材(想定外の長さがあれば入る) */
+  unfitPieces: CutPiece[];
 }
 
 export interface CutOptimizerOptions {
@@ -49,13 +65,23 @@ export interface CutOptimizerOptions {
   cutFeePerCut?: number;
   /** ランダム試行回数(多いほど精度が上がるが計算時間が増える) */
   trials?: number;
-  /** 定尺材1本あたりの価格(円)。合計コスト算出に使う。省略時は0 */
-  barPriceYen?: number;
 }
 
 const DEFAULT_KERF_MM = 3;
 const DEFAULT_CUT_FEE = 50;
-const DEFAULT_TRIALS = 30;
+const DEFAULT_TRIALS = 40;
+
+const EMPTY_PLAN: CutPlan = {
+  barsNeeded: 0,
+  layouts: [],
+  totalCutCount: 0,
+  totalWasteMm: 0,
+  materialCost: 0,
+  cutCost: 0,
+  totalCost: 0,
+  barsByLength: {},
+  unfitPieces: [],
+};
 
 function expandGroups(groups: CutPieceGroup[]): CutPiece[] {
   const pieces: CutPiece[] = [];
@@ -77,151 +103,174 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+type OpenBar = { lengthMm: number; barPriceYen: number; remaining: number; cuts: CutPiece[] };
+
 /**
- * First-Fit: 与えられた順序で、各部材を「入る最初のバー」に詰める。
- * 入らなければ新しいバーを開く。
+ * 与えられた順序で各部材を詰める。
+ * - 既存バーに入るものがあれば、最も無駄が出ないバー(Best-Fit)に入れる
+ * - 入らなければ、その部材が収まる候補の中で最も安い定尺材で新しいバーを開く
+ * 複数の定尺材長を候補として渡すことで、長い部材には長い(高い)バーを、
+ * 短い部材には安いバーを、と自然に使い分けた結果になる。
  */
-function firstFit(pieces: CutPiece[], barLengthMm: number, kerfMm: number): BarLayout[] {
-  const bars: { remaining: number; cuts: CutPiece[] }[] = [];
+function packMixed(
+  pieces: CutPiece[],
+  candidates: StockCandidate[],
+  kerfMm: number,
+): { bars: OpenBar[]; unfit: CutPiece[] } {
+  const sortedCandidates = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  const bars: OpenBar[] = [];
+  const unfit: CutPiece[] = [];
 
   for (const piece of pieces) {
     const needed = piece.lengthMm + kerfMm;
-    if (needed > barLengthMm) {
-      // 定尺材1本に収まらない部材はスキップ(呼び出し側でチェック済み想定)
+
+    let bestBar: OpenBar | null = null;
+    for (const bar of bars) {
+      if (bar.remaining >= needed && (!bestBar || bar.remaining < bestBar.remaining)) {
+        bestBar = bar;
+      }
+    }
+    if (bestBar) {
+      bestBar.remaining -= needed;
+      bestBar.cuts.push(piece);
       continue;
     }
-    const bar = bars.find((b) => b.remaining >= needed);
-    if (bar) {
-      bar.remaining -= needed;
-      bar.cuts.push(piece);
-    } else {
-      bars.push({ remaining: barLengthMm - needed, cuts: [piece] });
+
+    const candidate = sortedCandidates.find((c) => needed <= c.lengthMm);
+    if (!candidate) {
+      unfit.push(piece);
+      continue;
     }
+    bars.push({
+      lengthMm: candidate.lengthMm,
+      barPriceYen: candidate.barPriceYen,
+      remaining: candidate.lengthMm - needed,
+      cuts: [piece],
+    });
   }
 
+  return { bars, unfit };
+}
+
+function toLayouts(bars: OpenBar[]): BarLayout[] {
   return bars.map((b, i) => ({
     barIndex: i + 1,
+    barLengthMm: b.lengthMm,
     cuts: b.cuts,
     wasteMm: Math.max(0, b.remaining),
   }));
 }
 
 function evaluateCost(
-  layouts: BarLayout[],
-  opts: Required<Pick<CutOptimizerOptions, "cutFeePerCut" | "barPriceYen">>,
+  bars: OpenBar[],
+  cutFeePerCut: number,
 ): { totalCutCount: number; materialCost: number; cutCost: number; totalCost: number } {
-  const totalCutCount = layouts.reduce((sum, l) => sum + l.cuts.length, 0);
-  const materialCost = layouts.length * opts.barPriceYen;
-  const cutCost = totalCutCount * opts.cutFeePerCut;
+  const totalCutCount = bars.reduce((sum, b) => sum + b.cuts.length, 0);
+  const materialCost = bars.reduce((sum, b) => sum + b.barPriceYen, 0);
+  const cutCost = totalCutCount * cutFeePerCut;
   return { totalCutCount, materialCost, cutCost, totalCost: materialCost + cutCost };
 }
 
-/**
- * 指定した定尺材の長さで、部材グループを最適に割り付ける。
- * 部材の並び順を複数パターン試行し、総コストが最小の結果を返す。
- */
-export function optimizeCutPlan(
-  groups: CutPieceGroup[],
-  barLengthMm: number,
-  options: CutOptimizerOptions = {},
-): CutPlan {
-  const kerfMm = options.kerfMm ?? DEFAULT_KERF_MM;
-  const cutFeePerCut = options.cutFeePerCut ?? DEFAULT_CUT_FEE;
-  const barPriceYen = options.barPriceYen ?? 0;
-  const trials = options.trials ?? DEFAULT_TRIALS;
-
-  const allPieces = expandGroups(groups);
-  const fittablePieces = allPieces.filter((p) => p.lengthMm + kerfMm <= barLengthMm);
-
-  // 1本でも定尺材に収まらない部材があれば、この長さの定尺材では
-  // 全部材をカットしきれないため「解なし」として扱う。
-  // (収まる部材だけで組んだ「部分的な」プランを返すと、本来必要な
-  //  長い部材が購入計画から静かに消えてしまう危険な不具合になるため)
-  if (fittablePieces.length === 0 || fittablePieces.length < allPieces.length) {
-    return {
-      barLengthMm,
-      barsNeeded: 0,
-      layouts: [],
-      totalCutCount: 0,
-      totalWasteMm: 0,
-      materialCost: 0,
-      cutCost: 0,
-      totalCost: 0,
-    };
-  }
-
-  // 試行1: 長さ降順(First-Fit Decreasing。単体でも良好な結果が出やすい)
-  const descending = [...fittablePieces].sort((a, b) => b.lengthMm - a.lengthMm);
-  let best = firstFit(descending, barLengthMm, kerfMm);
-  let bestCost = evaluateCost(best, { cutFeePerCut, barPriceYen }).totalCost;
-
-  // 試行2以降: 降順をベースにランダムシャッフルして探索
-  for (let t = 0; t < trials; t++) {
-    const candidateOrder = shuffle(descending);
-    const candidate = firstFit(candidateOrder, barLengthMm, kerfMm);
-    const cost = evaluateCost(candidate, { cutFeePerCut, barPriceYen }).totalCost;
-    if (
-      cost < bestCost ||
-      (cost === bestCost && candidate.length < best.length)
-    ) {
-      best = candidate;
-      bestCost = cost;
-    }
-  }
-
-  const { totalCutCount, materialCost, cutCost, totalCost } = evaluateCost(best, {
-    cutFeePerCut,
-    barPriceYen,
-  });
-  const totalWasteMm = best.reduce((sum, l) => sum + l.wasteMm, 0);
+function buildPlan(bars: OpenBar[], unfit: CutPiece[], cutFeePerCut: number): CutPlan {
+  const { totalCutCount, materialCost, cutCost, totalCost } = evaluateCost(bars, cutFeePerCut);
+  const totalWasteMm = bars.reduce((sum, b) => sum + Math.max(0, b.remaining), 0);
+  const barsByLength: Record<number, number> = {};
+  for (const b of bars) barsByLength[b.lengthMm] = (barsByLength[b.lengthMm] ?? 0) + 1;
 
   return {
-    barLengthMm,
-    barsNeeded: best.length,
-    layouts: best,
+    barsNeeded: bars.length,
+    layouts: toLayouts(bars),
     totalCutCount,
     totalWasteMm,
     materialCost,
     cutCost,
     totalCost,
+    barsByLength,
+    unfitPieces: unfit,
   };
 }
 
 /**
- * 複数の定尺材候補の中から、総コストが最小になる長さを自動選択する。
+ * 複数の定尺材長さを組み合わせて、部材グループを最適に割り付ける。
+ * (例: 長い柱は8ftバー、短い棚板は6ftバー、というように使い分けられる)
+ * 部材の並び順を複数パターン試行し、総コストが最小の結果を返す。
+ *
+ * 1本でも部材がどの候補にも収まらない場合は plan.unfitPieces に入る
+ * (呼び出し側で必ずチェックすること。黙って購入計画から消してはいけない)。
  */
-export function optimizeCutPlanAcrossLengths(
+export function optimizeMixedCutPlan(
   groups: CutPieceGroup[],
-  barLengthCandidates: number[],
+  candidates: StockCandidate[],
   options: CutOptimizerOptions = {},
 ): CutPlan {
-  const plans = barLengthCandidates
-    .map((len) => optimizeCutPlan(groups, len, options))
-    .filter((p) => p.barsNeeded > 0);
+  const kerfMm = options.kerfMm ?? DEFAULT_KERF_MM;
+  const cutFeePerCut = options.cutFeePerCut ?? DEFAULT_CUT_FEE;
+  const trials = options.trials ?? DEFAULT_TRIALS;
 
-  if (plans.length === 0) {
-    return optimizeCutPlan(groups, barLengthCandidates[0] ?? 0, options);
+  const allPieces = expandGroups(groups);
+  if (allPieces.length === 0 || candidates.length === 0) return EMPTY_PLAN;
+
+  const descending = [...allPieces].sort((a, b) => b.lengthMm - a.lengthMm);
+
+  const first = packMixed(descending, candidates, kerfMm);
+  let best = first.bars;
+  let bestUnfit = first.unfit;
+  let bestCost = evaluateCost(best, cutFeePerCut).totalCost;
+
+  for (let t = 0; t < trials; t++) {
+    const order = shuffle(descending);
+    const { bars, unfit } = packMixed(order, candidates, kerfMm);
+    // 収まらない部材が少ない案を優先し、同数ならコストで比較する
+    if (unfit.length > bestUnfit.length) continue;
+    const cost = evaluateCost(bars, cutFeePerCut).totalCost;
+    if (unfit.length < bestUnfit.length || cost < bestCost) {
+      best = bars;
+      bestUnfit = unfit;
+      bestCost = cost;
+    }
   }
 
-  return plans.reduce((bestPlan, p) => (p.totalCost < bestPlan.totalCost ? p : bestPlan));
+  return buildPlan(best, bestUnfit, cutFeePerCut);
 }
 
 /**
- * カット割付を「No.1 部材計:1280mm 内訳:[1280] 端材:537mm」形式の
+ * 単一の定尺材長さのみで割り付ける(混在させたくない場合向け)。
+ */
+export function optimizeCutPlan(
+  groups: CutPieceGroup[],
+  barLengthMm: number,
+  barPriceYen: number,
+  options: CutOptimizerOptions = {},
+): CutPlan {
+  return optimizeMixedCutPlan(groups, [{ lengthMm: barLengthMm, barPriceYen }], options);
+}
+
+/**
+ * カット割付を「No.：1【8ft】部材計：1280mm 内訳：[1280] 端材：537mm」形式の
  * 行リストに整形する。ホームセンターへの持参用メモとして使う想定。
  */
 export function formatCutPlanLines(plan: CutPlan): string[] {
   return plan.layouts.map((l) => {
     const partsSum = l.cuts.reduce((sum, c) => sum + c.lengthMm, 0);
     const breakdown = l.cuts.map((c) => c.lengthMm).join(", ");
-    return `No.：${l.barIndex} 部材計：${partsSum}mm 内訳：[${breakdown}] 端材：${l.wasteMm}mm`;
+    return `No.：${l.barIndex}【${l.barLengthMm}mm材】部材計：${partsSum}mm 内訳：[${breakdown}] 端材：${l.wasteMm}mm`;
   });
+}
+
+/** 長さ別の購入本数を「8ft(2438mm)×2本、6ft(1820mm)×1本」のように整形する */
+export function formatBarsByLength(
+  plan: CutPlan,
+  lengthLabels: Record<number, string> = {},
+): string {
+  return Object.entries(plan.barsByLength)
+    .sort(([a], [b]) => Number(b) - Number(a))
+    .map(([len, count]) => `${lengthLabels[Number(len)] ?? `${len}mm`}×${count}本`)
+    .join("、");
 }
 
 /** formatCutPlanLines の結果を改行区切りの1テキストにまとめる(コピー用) */
 export function formatCutPlanText(plan: CutPlan, headerLabel?: string): string {
-  const header = headerLabel
-    ? `【${headerLabel}】定尺${plan.barLengthMm}mm × ${plan.barsNeeded}本\n`
-    : `定尺${plan.barLengthMm}mm × ${plan.barsNeeded}本\n`;
+  const summary = formatBarsByLength(plan);
+  const header = headerLabel ? `【${headerLabel}】${summary}\n` : `${summary}\n`;
   return header + formatCutPlanLines(plan).join("\n");
 }

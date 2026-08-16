@@ -10,7 +10,7 @@ import {
   STANDARD_LENGTHS,
   type CutItem,
 } from "@/constants/woodCutCalculator";
-import { optimizeCutPlan } from "@/lib/cut-optimizer";
+import { optimizeMixedCutPlan } from "@/lib/cut-optimizer";
 
 // ── アジャスター選択肢（柱用のみ抽出） ──
 const ADJUSTER_OPTIONS = [
@@ -80,21 +80,26 @@ export default function WoodCutCalculatorClient() {
     }
 
     // 費用計算
-    // 柱: 定尺材の候補ごとに最適な切り出し方を試し、総コスト最小の案を採用
-    const pillarPlans = STANDARD_LENGTHS.map((s) =>
-      optimizeCutPlan([{ lengthMm: pillarLength, quantity: pillarCount }], s.value, {
-        kerfMm: KERF_WIDTH_MM,
-        cutFeePerCut: CUT_FEE_PER_CUT,
-        barPriceYen: Math.round(pillarLumber.pricePerUnit * s.priceMult),
-      }),
-    ).filter((p) => p.barsNeeded > 0);
-    const pillarPlan =
-      pillarPlans.length > 0
-        ? pillarPlans.reduce((best, p) => (p.totalCost < best.totalCost ? p : best))
-        : null;
-    const pillarStdLength = STANDARD_LENGTHS.find((s) => s.value === pillarPlan?.barLengthMm);
+    // 柱: 複数の定尺材長を組み合わせて最適な切り出し方を求める
+    const pillarCandidates = STANDARD_LENGTHS.map((s) => ({
+      lengthMm: s.value,
+      barPriceYen: Math.round(pillarLumber.pricePerUnit * s.priceMult),
+    }));
+    const pillarPlanRaw = optimizeMixedCutPlan(
+      [{ lengthMm: pillarLength, quantity: pillarCount }],
+      pillarCandidates,
+      { kerfMm: KERF_WIDTH_MM, cutFeePerCut: CUT_FEE_PER_CUT },
+    );
+    const pillarPlan = pillarPlanRaw.barsNeeded > 0 ? pillarPlanRaw : null;
+    // 柱は全て同じ長さなので、使われた定尺材長は基本的に1種類のみ
+    const pillarUsedLengthMm = pillarPlan
+      ? Number(Object.keys(pillarPlan.barsByLength)[0])
+      : undefined;
+    const pillarStdLength = STANDARD_LENGTHS.find((s) => s.value === pillarUsedLengthMm);
     const pillarBarsNeeded = pillarPlan?.barsNeeded ?? pillarCount;
     const pillarTotalPrice = pillarPlan?.materialCost ?? pillarLumber.pricePerUnit * pillarCount;
+    // 最長12ft(3650mm)材にも収まらない長さの場合は計算が破綻するため警告する
+    const pillarExceedsMaxStock = pillarPlanRaw.unfitPieces.length > 0;
 
     // 棚板費用
     const shelfPricePerUnit = Math.ceil(
@@ -165,6 +170,7 @@ export default function WoodCutCalculatorClient() {
       totalPrice,
       pillarStdLength,
       pillarBarsNeeded,
+      pillarExceedsMaxStock,
     };
   }, [
     ceilingHeight,
@@ -508,6 +514,14 @@ export default function WoodCutCalculatorClient() {
               {result.pillarBarsNeeded < pillarCount
                 ? `（1本の定尺材から複数本切り出せるため、${pillarCount}本分が${result.pillarBarsNeeded}本の購入で済みます）`
                 : "。"}
+            </p>
+          </div>
+        )}
+        {result.pillarExceedsMaxStock && (
+          <div className="mt-3 bg-red-50 border border-red-200 rounded-xl p-4">
+            <p className="text-sm text-red-700">
+              ⚠️ 柱の長さ{result.pillarLength.toLocaleString()}mmは、市販の定尺材(最長12ft/3,650mm)には収まりません。
+              特注または木材の継ぎ足しをご検討ください。
             </p>
           </div>
         )}

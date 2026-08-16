@@ -7,14 +7,18 @@ import {
   ACCESSORY_MAP,
   BRACKET_MAP,
 } from "@/data/products";
-import { optimizeCutPlan, type CutPieceGroup } from "./cut-optimizer";
+import { optimizeMixedCutPlan, formatBarsByLength, type CutPieceGroup, type StockCandidate } from "./cut-optimizer";
 import { STANDARD_LENGTHS, CUT_FEE_PER_CUT, KERF_WIDTH_MM } from "@/constants/woodCutCalculator";
 
 // resolveAdj は src/lib/resolvers.ts に統合済み
 import { resolveAdjuster as resolveAdj } from "./resolvers";
 
+const STOCK_LENGTH_LABELS: Record<number, string> = Object.fromEntries(
+  STANDARD_LENGTHS.map((s) => [s.value, s.label]),
+);
+
 /** 定尺材の候補長さそれぞれについて、価格倍率を加味した1本あたり価格を返す */
-function barPricesForCandidates(pricePerUnit: number): { lengthMm: number; barPriceYen: number }[] {
+function stockCandidatesFor(pricePerUnit: number): StockCandidate[] {
   return STANDARD_LENGTHS.map((s) => ({
     lengthMm: s.value,
     barPriceYen: Math.round(pricePerUnit * s.priceMult),
@@ -22,23 +26,15 @@ function barPricesForCandidates(pricePerUnit: number): { lengthMm: number; barPr
 }
 
 /**
- * 複数の定尺材長さ候補それぞれで最適化を試し、総コストが最小の結果を返す。
- * (定尺材ごとに単価が異なるため、cut-optimizer側のoptimizeCutPlanAcrossLengthsを
- *  そのまま使わず、候補ごとにbarPriceYenを差し替えて呼び出す)
+ * 複数の定尺材長さを組み合わせて最適化する。
+ * (長い部材には長いバー、短い部材には安いバー、というように混在させられる)
  */
-function optimizeAcrossPricedLengths(groups: CutPieceGroup[], pricePerUnit: number) {
-  const candidates = barPricesForCandidates(pricePerUnit);
-  const plans = candidates
-    .map((c) =>
-      optimizeCutPlan(groups, c.lengthMm, {
-        kerfMm: KERF_WIDTH_MM,
-        cutFeePerCut: CUT_FEE_PER_CUT,
-        barPriceYen: c.barPriceYen,
-      }),
-    )
-    .filter((p) => p.barsNeeded > 0);
-  if (plans.length === 0) return null;
-  return plans.reduce((best, p) => (p.totalCost < best.totalCost ? p : best));
+function optimizeWithStandardLengths(groups: CutPieceGroup[], pricePerUnit: number) {
+  const plan = optimizeMixedCutPlan(groups, stockCandidatesFor(pricePerUnit), {
+    kerfMm: KERF_WIDTH_MM,
+    cutFeePerCut: CUT_FEE_PER_CUT,
+  });
+  return plan.barsNeeded > 0 ? plan : null;
 }
 
 /**
@@ -196,10 +192,10 @@ export function calculateGridParts(design: GridDesign): {
   // ── 統合した柱用・棚板用木材を最適化して部材リストに追加 ──
   for (const [lumberKey, g] of combinedLumberGroups) {
     if (g.cutGroups.length === 0) continue;
-    const plan = optimizeAcrossPricedLengths(g.cutGroups, g.spec.pricePerUnit);
+    const plan = optimizeWithStandardLengths(g.cutGroups, g.spec.pricePerUnit);
     if (!plan) continue;
 
-    const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
+    const lengthSummary = formatBarsByLength(plan, STOCK_LENGTH_LABELS);
     const pillarQty = pillarCutTally.get(lumberKey);
     const pillarNote = pillarQty
       ? `柱${[...pillarQty.values()].reduce((a, b) => a + b, 0)}本`
@@ -208,14 +204,21 @@ export function calculateGridParts(design: GridDesign): {
     const usageNote = [pillarNote, shelfNote].filter(Boolean).join("＋");
     const suffix = pillarNote && shelfNote ? "【柱・棚板共用】" : pillarNote ? "【柱用】" : "【棚板用】";
 
+    // 最長の定尺材(12ft)にも収まらない部材がある場合、静かに購入計画から
+    // 消してはいけないため、警告として明示する(特注・継ぎ足しが必要になる)
+    const unfitWarning =
+      plan.unfitPieces.length > 0
+        ? `⚠️ ${plan.unfitPieces.map((p) => `${p.lengthMm}mm(${p.label ?? "部材"})`).join("・")}は最長の定尺材にも収まりません。特注または継ぎ足しをご検討ください。`
+        : "";
+
     parts.push({
       category: "lumber",
-      name: `${g.spec.name} ${stdLabel}${suffix}`,
+      name: `${g.spec.name}${suffix}`,
       quantity: plan.barsNeeded,
       unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
       subtotal: plan.totalCost,
       amazonUrl: buildAmazonUrl(g.spec.amazonKeyword),
-      note: `${usageNote}をまとめてカット（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
+      note: `${lengthSummary}／${usageNote}をまとめてカット（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）${unfitWarning}`,
       cutPlan: plan,
     });
   }
