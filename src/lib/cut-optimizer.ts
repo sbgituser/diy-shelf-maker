@@ -133,7 +133,11 @@ export function optimizeCutPlan(
   const allPieces = expandGroups(groups);
   const fittablePieces = allPieces.filter((p) => p.lengthMm + kerfMm <= barLengthMm);
 
-  if (fittablePieces.length === 0) {
+  // 1本でも定尺材に収まらない部材があれば、この長さの定尺材では
+  // 全部材をカットしきれないため「解なし」として扱う。
+  // (収まる部材だけで組んだ「部分的な」プランを返すと、本来必要な
+  //  長い部材が購入計画から静かに消えてしまう危険な不具合になるため)
+  if (fittablePieces.length === 0 || fittablePieces.length < allPieces.length) {
     return {
       barLengthMm,
       barsNeeded: 0,
