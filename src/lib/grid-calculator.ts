@@ -23,6 +23,7 @@ function stockCandidatesFor(pricePerUnit: number): StockCandidate[] {
   return STANDARD_LENGTHS.map((s) => ({
     lengthMm: s.value,
     barPriceYen: Math.round(pricePerUnit * s.priceMult),
+    limitedAvailability: s.limitedAvailability,
   }));
 }
 

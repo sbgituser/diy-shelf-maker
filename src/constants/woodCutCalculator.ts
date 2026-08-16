@@ -8,12 +8,16 @@ export interface CutItem {
   note: string;
 }
 
-/** 標準木材長さ（フィート → mm）。priceMultは6ft(1820mm)を1.0とした価格倍率の目安 */
+/**
+ * 標準木材長さ（フィート → mm）。priceMultは6ft(1820mm)を1.0とした価格倍率の目安。
+ * limitedAvailability: 10ft・12ft材は取扱店が限られるため、単体の部材の長さが
+ * 8ft(2,438mm)に収まらない場合にのみ採用する(複数の短い部材をまとめる目的では使わない)。
+ */
 export const STANDARD_LENGTHS = [
   { label: "6フィート (1,820mm)", value: 1820, priceMult: 1.0 },
   { label: "8フィート (2,438mm)", value: 2438, priceMult: 1.4 },
-  { label: "10フィート (3,050mm)", value: 3050, priceMult: 1.8 },
-  { label: "12フィート (3,650mm)", value: 3650, priceMult: 2.2 },
+  { label: "10フィート (3,050mm)", value: 3050, priceMult: 1.8, limitedAvailability: true },
+  { label: "12フィート (3,650mm)", value: 3650, priceMult: 2.2, limitedAvailability: true },
 ];
 
 /** ホームセンターカット料金の目安 */

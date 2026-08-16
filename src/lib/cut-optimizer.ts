@@ -32,6 +32,12 @@ export interface CutPieceGroup {
 export interface StockCandidate {
   lengthMm: number;
   barPriceYen: number;
+  /**
+   * 取扱店が限られるなど、積極的には使いたくない定尺材の場合はtrue。
+   * この候補は「単体の部材の長さがこれより短い候補には収まらない」
+   * 場合にのみ採用され、複数の短い部材をまとめるためだけには使われない。
+   */
+  limitedAvailability?: boolean;
 }
 
 /** 1本のバーへの割付結果 */
@@ -117,7 +123,8 @@ function packMixed(
   candidates: StockCandidate[],
   kerfMm: number,
 ): { bars: OpenBar[]; unfit: CutPiece[] } {
-  const sortedCandidates = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  const sortedAll = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  const sortedNonLimited = sortedAll.filter((c) => !c.limitedAvailability);
   const bars: OpenBar[] = [];
   const unfit: CutPiece[] = [];
 
@@ -136,7 +143,10 @@ function packMixed(
       continue;
     }
 
-    const candidate = sortedCandidates.find((c) => needed <= c.lengthMm);
+    // まず取扱いやすい(limitedAvailabilityでない)候補から探す。
+    // その部材単体がどれにも収まらない場合のみ、取扱いの限られる候補を許可する
+    const candidate =
+      sortedNonLimited.find((c) => needed <= c.lengthMm) ?? sortedAll.find((c) => needed <= c.lengthMm);
     if (!candidate) {
       unfit.push(piece);
       continue;
@@ -166,7 +176,10 @@ function packMixed(
  * 改善が見つからなくなるまで繰り返す。
  */
 function consolidateBars(bars: OpenBar[], candidates: StockCandidate[], kerfMm: number): OpenBar[] {
-  const sortedCandidates = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  const sortedAll = [...candidates].sort((a, b) => a.barPriceYen - b.barPriceYen);
+  const sortedNonLimited = sortedAll.filter((c) => !c.limitedAvailability);
+  const maxNonLimitedLength =
+    sortedNonLimited.length > 0 ? Math.max(...sortedNonLimited.map((c) => c.lengthMm)) : 0;
   let current = [...bars];
 
   let improved = true;
@@ -178,7 +191,13 @@ function consolidateBars(bars: OpenBar[], candidates: StockCandidate[], kerfMm: 
         const neededLength = combinedCuts.reduce((sum, c) => sum + c.lengthMm + kerfMm, 0);
         const currentCost = current[i].barPriceYen + current[j].barPriceYen;
 
-        const candidate = sortedCandidates.find(
+        // 統合後のバーに、単体で取扱いやすい候補の最大長を超える部材が
+        // 含まれる場合のみ、取扱いの限られる候補での統合を許可する
+        // (短い部材同士をまとめるためだけに10ft材等を持ち出さない)
+        const requiresLimited = combinedCuts.some((c) => c.lengthMm + kerfMm > maxNonLimitedLength);
+        const searchPool = requiresLimited ? sortedAll : sortedNonLimited;
+
+        const candidate = searchPool.find(
           (c) => neededLength <= c.lengthMm && c.barPriceYen < currentCost,
         );
         if (!candidate) continue;

@@ -84,6 +84,7 @@ export default function WoodCutCalculatorClient() {
     const pillarCandidates = STANDARD_LENGTHS.map((s) => ({
       lengthMm: s.value,
       barPriceYen: Math.round(pillarLumber.pricePerUnit * s.priceMult),
+      limitedAvailability: s.limitedAvailability,
     }));
     const pillarPlanRaw = optimizeMixedCutPlan(
       [{ lengthMm: pillarLength, quantity: pillarCount }],
