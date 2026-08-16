@@ -15,6 +15,7 @@ interface GridToolbarProps {
   onClearAll: () => void;
   onSetCeilingHeight: (h: number) => void;
   onBulkChangeShelfMaterial: (materialId: string) => void;
+  onOpenBracketModalBulk: () => void;
   onSetHoverMm: (mm: null) => void;
   onDismissTemplate: () => void;
 }
@@ -22,7 +23,7 @@ interface GridToolbarProps {
 export default function GridToolbar({
   design, mode, selectedId, templateName,
   onSetMode, onDeleteSelected, onClearAll,
-  onSetCeilingHeight, onBulkChangeShelfMaterial,
+  onSetCeilingHeight, onBulkChangeShelfMaterial, onOpenBracketModalBulk,
   onSetHoverMm, onDismissTemplate,
 }: GridToolbarProps) {
   const [ceilingError, setCeilingError] = useState<string | null>(null);
@@ -144,6 +145,13 @@ export default function GridToolbar({
                 ))}
               </select>
             </div>
+
+            <button
+              onClick={onOpenBracketModalBulk}
+              className="px-3 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all whitespace-nowrap"
+            >
+              🔩 棚受け金具を一括変更
+            </button>
           </>
         )}
 

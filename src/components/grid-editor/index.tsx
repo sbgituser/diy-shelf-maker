@@ -560,6 +560,10 @@ export default function GridEditor() {
         onClearAll={clearAll}
         onSetCeilingHeight={(h) => setDesign((prev) => ({ ...prev, ceilingHeight: h }))}
         onBulkChangeShelfMaterial={bulkChangeShelfMaterial}
+        onOpenBracketModalBulk={() => {
+          setBracketTargetShelfId(null);
+          setBracketModalOpen(true);
+        }}
         onSetHoverMm={() => setHoverMm(null)}
         onDismissTemplate={() => setTemplateName(null)}
       />
@@ -728,6 +732,7 @@ export default function GridEditor() {
         onSelect={changeBracket}
         onBulkApply={bulkChangeBracket}
         currentBracketId={bracketTargetShelfId ? (design.shelves.find((s) => s.id === bracketTargetShelfId)?.bracketId ?? design.defaultBracketId) : design.defaultBracketId}
+        bulkOnly={!bracketTargetShelfId}
       />
 
       {/* フローティングCTA */}

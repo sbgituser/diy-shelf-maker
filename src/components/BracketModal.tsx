@@ -14,6 +14,9 @@ interface Props {
   onBulkApply: (bracket: BracketType) => void;
   /** 現在選択中の棚受けID */
   currentBracketId?: string;
+  /** true の場合、個別棚板への適用ボタンを隠し一括適用のみを提示する
+   *  (ツールバーから対象棚板を指定せず開いた場合など) */
+  bulkOnly?: boolean;
 }
 
 export default function BracketModal({
@@ -22,6 +25,7 @@ export default function BracketModal({
   onSelect,
   onBulkApply,
   currentBracketId,
+  bulkOnly = false,
 }: Props) {
   const focusTrapRef = useFocusTrap(open);
 
@@ -56,7 +60,9 @@ export default function BracketModal({
       <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[85vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-          <h2 id="bracket-modal-title" className="text-lg font-bold text-gray-800">棚受け金具を選択</h2>
+          <h2 id="bracket-modal-title" className="text-lg font-bold text-gray-800">
+            {bulkOnly ? "棚受け金具を一括変更" : "棚受け金具を選択"}
+          </h2>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
@@ -107,23 +113,29 @@ export default function BracketModal({
 
                 {/* Action buttons */}
                 <div className="flex gap-2 mt-3 ml-9">
-                  <button
-                    onClick={() => {
-                      onSelect(bracket);
-                      onClose();
-                    }}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500 text-white hover:bg-amber-600 transition-colors"
-                  >
-                    この棚板に適用
-                  </button>
+                  {!bulkOnly && (
+                    <button
+                      onClick={() => {
+                        onSelect(bracket);
+                        onClose();
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500 text-white hover:bg-amber-600 transition-colors"
+                    >
+                      この棚板に適用
+                    </button>
+                  )}
                   <button
                     onClick={() => {
                       onBulkApply(bracket);
                       onClose();
                     }}
-                    className="px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                      bulkOnly
+                        ? "bg-amber-500 text-white hover:bg-amber-600"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                   >
-                    全棚板に一括適用
+                    {bulkOnly ? "全棚板に適用" : "全棚板に一括適用"}
                   </button>
                 </div>
               </div>
