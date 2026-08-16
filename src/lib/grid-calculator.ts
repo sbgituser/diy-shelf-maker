@@ -88,46 +88,45 @@ export function calculateGridParts(design: GridDesign): {
     });
   }
 
-  // ── 柱用木材 (材質ごとにグルーピングし、必要な長さをまとめて定尺材から
-  //    最適に切り出す購入本数を算出する) ──
-  const pillarLumberGroups = new Map<
+  // ── 柱用木材・棚板用木材(2×4/1×4材)をまとめて最適化 ──
+  // 柱と、同じ木材から作る棚板(2x4-shelf/1x4-shelf)は物理的に同じ定尺材から
+  // 切り出せるため、材質(underlying lumber key)が一致する場合は1本の
+  // 定尺材購入計画にまとめる。材質が違う場合(例: 柱2×4材＋棚板1×4材)は
+  // 従来通り別々に最適化する。
+  const combinedLumberGroups = new Map<
     string,
-    { spec: (typeof LUMBER_SPECS)["2x4"]; cutLens: Map<number, number> }
+    { spec: (typeof LUMBER_SPECS)["2x4"]; cutGroups: CutPieceGroup[] }
   >();
+  function addLumberPieces(materialKey: string, spec: (typeof LUMBER_SPECS)["2x4"], entries: CutPieceGroup[]) {
+    let g = combinedLumberGroups.get(materialKey);
+    if (!g) {
+      g = { spec, cutGroups: [] };
+      combinedLumberGroups.set(materialKey, g);
+    }
+    g.cutGroups.push(...entries);
+  }
+
+  // 柱
+  const pillarCutTally = new Map<string, Map<number, number>>();
   for (const p of design.pillars) {
-    const spec = LUMBER_SPECS[p.lumber] ?? LUMBER_SPECS["2x4"];
     const adj = p.adjuster ? resolveAdj(p.adjuster, p.lumber) : null;
     const cut = adj
       ? Math.max(0, ceilingHeight - adj.cutOffset)
       : ceilingHeight;
-    let g = pillarLumberGroups.get(p.lumber);
-    if (!g) {
-      g = { spec, cutLens: new Map() };
-      pillarLumberGroups.set(p.lumber, g);
+    let tally = pillarCutTally.get(p.lumber);
+    if (!tally) {
+      tally = new Map();
+      pillarCutTally.set(p.lumber, tally);
     }
-    g.cutLens.set(cut, (g.cutLens.get(cut) ?? 0) + 1);
+    tally.set(cut, (tally.get(cut) ?? 0) + 1);
   }
-  for (const [, g] of pillarLumberGroups) {
-    const cutGroups: CutPieceGroup[] = [...g.cutLens.entries()].map(([lengthMm, quantity]) => ({
-      lengthMm,
-      quantity,
-    }));
-    const plan = optimizeAcrossPricedLengths(cutGroups, g.spec.pricePerUnit);
-    if (!plan) continue;
-    const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
-    const lengthsNote = [...g.cutLens.entries()]
-      .map(([len, qty]) => `${len}mm×${qty}本`)
-      .join("、");
-    parts.push({
-      category: "lumber",
-      name: `${g.spec.name} ${stdLabel}【柱用】`,
-      quantity: plan.barsNeeded,
-      unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
-      subtotal: plan.totalCost,
-      amazonUrl: buildAmazonUrl(g.spec.amazonKeyword),
-      note: `${lengthsNote}を切り出し（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
-      cutPlan: plan,
-    });
+  for (const [lumberKey, tally] of pillarCutTally) {
+    const spec = LUMBER_SPECS[lumberKey] ?? LUMBER_SPECS["2x4"];
+    addLumberPieces(
+      lumberKey,
+      spec,
+      [...tally.entries()].map(([lengthMm, quantity]) => ({ lengthMm, quantity, label: "柱" })),
+    );
   }
 
   // ── 棚板 (material+depth でグルーピング) ──
@@ -156,11 +155,12 @@ export function calculateGridParts(design: GridDesign): {
       shelfGroups.set(k, { board, count: 1, widths: [w], depth });
     }
   }
+  const shelfBoardNoteByMaterial = new Map<string, string>();
   for (const [, g] of shelfGroups) {
     if (g.board.id === "2x4-shelf" || g.board.id === "1x4-shelf") {
-      const bw =
-        LUMBER_SPECS[g.board.id === "2x4-shelf" ? "2x4" : "1x4"]?.widthMm ??
-        89;
+      const lumberKey = g.board.id === "2x4-shelf" ? "2x4" : "1x4";
+      const spec = LUMBER_SPECS[lumberKey];
+      const bw = spec?.widthMm ?? 89;
       const perShelf = Math.max(1, Math.ceil(g.depth / bw));
 
       // 各棚(幅がバラバラ)からperShelf本ずつ、定尺材から切り出す必要がある
@@ -168,25 +168,12 @@ export function calculateGridParts(design: GridDesign): {
       for (const w of g.widths) {
         widthTally.set(w, (widthTally.get(w) ?? 0) + perShelf);
       }
-      const cutGroups: CutPieceGroup[] = [...widthTally.entries()].map(([lengthMm, quantity]) => ({
-        lengthMm,
-        quantity,
-      }));
-      const plan = optimizeAcrossPricedLengths(cutGroups, g.board.pricePerUnit);
-
-      if (plan) {
-        const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
-        parts.push({
-          category: "shelf",
-          name: `${g.board.name} ${stdLabel}【棚板用】`,
-          quantity: plan.barsNeeded,
-          unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
-          subtotal: plan.totalCost,
-          amazonUrl: buildAmazonUrl(g.board.amazonKeyword),
-          note: `${g.count}枚 × ${perShelf}本並べ（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
-          cutPlan: plan,
-        });
-      }
+      addLumberPieces(
+        lumberKey,
+        spec,
+        [...widthTally.entries()].map(([lengthMm, quantity]) => ({ lengthMm, quantity, label: "棚板" })),
+      );
+      shelfBoardNoteByMaterial.set(lumberKey, `棚板${g.count}枚 × ${perShelf}本並べ`);
     } else {
       let sub = 0;
       for (const w of g.widths) {
@@ -204,6 +191,33 @@ export function calculateGridParts(design: GridDesign): {
         note: `奥行${g.depth}mm × 厚さ${g.board.thicknessMm}mm`,
       });
     }
+  }
+
+  // ── 統合した柱用・棚板用木材を最適化して部材リストに追加 ──
+  for (const [lumberKey, g] of combinedLumberGroups) {
+    if (g.cutGroups.length === 0) continue;
+    const plan = optimizeAcrossPricedLengths(g.cutGroups, g.spec.pricePerUnit);
+    if (!plan) continue;
+
+    const stdLabel = STANDARD_LENGTHS.find((s) => s.value === plan.barLengthMm)?.label ?? `${plan.barLengthMm}mm`;
+    const pillarQty = pillarCutTally.get(lumberKey);
+    const pillarNote = pillarQty
+      ? `柱${[...pillarQty.values()].reduce((a, b) => a + b, 0)}本`
+      : null;
+    const shelfNote = shelfBoardNoteByMaterial.get(lumberKey) ?? null;
+    const usageNote = [pillarNote, shelfNote].filter(Boolean).join("＋");
+    const suffix = pillarNote && shelfNote ? "【柱・棚板共用】" : pillarNote ? "【柱用】" : "【棚板用】";
+
+    parts.push({
+      category: "lumber",
+      name: `${g.spec.name} ${stdLabel}${suffix}`,
+      quantity: plan.barsNeeded,
+      unitPrice: Math.round(plan.totalCost / plan.barsNeeded),
+      subtotal: plan.totalCost,
+      amazonUrl: buildAmazonUrl(g.spec.amazonKeyword),
+      note: `${usageNote}をまとめてカット（カット${plan.totalCutCount}回・端材計${plan.totalWasteMm}mm）`,
+      cutPlan: plan,
+    });
   }
 
   // ── 棚受け金具 + ネジ ──

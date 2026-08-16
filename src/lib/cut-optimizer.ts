@@ -201,3 +201,23 @@ export function optimizeCutPlanAcrossLengths(
 
   return plans.reduce((bestPlan, p) => (p.totalCost < bestPlan.totalCost ? p : bestPlan));
 }
+
+/**
+ * カット割付を「No.1 部材計:1280mm 内訳:[1280] 端材:537mm」形式の
+ * 行リストに整形する。ホームセンターへの持参用メモとして使う想定。
+ */
+export function formatCutPlanLines(plan: CutPlan): string[] {
+  return plan.layouts.map((l) => {
+    const partsSum = l.cuts.reduce((sum, c) => sum + c.lengthMm, 0);
+    const breakdown = l.cuts.map((c) => c.lengthMm).join(", ");
+    return `No.：${l.barIndex} 部材計：${partsSum}mm 内訳：[${breakdown}] 端材：${l.wasteMm}mm`;
+  });
+}
+
+/** formatCutPlanLines の結果を改行区切りの1テキストにまとめる(コピー用) */
+export function formatCutPlanText(plan: CutPlan, headerLabel?: string): string {
+  const header = headerLabel
+    ? `【${headerLabel}】定尺${plan.barLengthMm}mm × ${plan.barsNeeded}本\n`
+    : `定尺${plan.barLengthMm}mm × ${plan.barsNeeded}本\n`;
+  return header + formatCutPlanLines(plan).join("\n");
+}

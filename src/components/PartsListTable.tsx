@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import type { PartItem } from "@/types";
+import { formatCutPlanLines, formatCutPlanText } from "@/lib/cut-optimizer";
 
 interface Props {
   parts: PartItem[];
@@ -14,6 +16,60 @@ const CATEGORY_LABELS: Record<string, { label: string; icon: string }> = {
   bracket: { label: "棚受け金具", icon: "🔩" },
   screw: { label: "ネジ類", icon: "📌" },
 };
+
+/** カット割付の詳細(ホームセンター持参用メモ)。展開・コピーができる */
+function CutPlanDetail({ part }: { part: PartItem }) {
+  const [expanded, setExpanded] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const plan = part.cutPlan;
+  if (!plan) return null;
+
+  const handleCopy = useCallback(async () => {
+    const text = formatCutPlanText(plan, part.name);
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [plan, part.name]);
+
+  return (
+    <div className="mt-1.5">
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        className="text-xs font-medium text-amber-700 hover:text-amber-800 underline underline-offset-2"
+      >
+        {expanded ? "カット割付を閉じる" : `カット割付を見る（${plan.barsNeeded}本分）`}
+      </button>
+      {expanded && (
+        <div className="mt-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <div className="font-mono text-xs text-gray-700 space-y-0.5 whitespace-pre-wrap break-all">
+            {formatCutPlanLines(plan).map((line, i) => (
+              <div key={i}>{line}</div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-white bg-amber-500 hover:bg-amber-600 py-1 px-2.5 rounded transition-colors"
+          >
+            {copied ? "✓ コピーしました" : "📋 このメモをコピー"}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function PartsListTable({ parts, total }: Props) {
   return (
@@ -64,6 +120,7 @@ export default function PartsListTable({ parts, total }: Props) {
                             {part.note}
                           </div>
                         )}
+                        <CutPlanDetail part={part} />
                       </div>
                     </div>
                   </td>
