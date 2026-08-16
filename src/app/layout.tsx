@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import AmazonClickTracker from "@/components/AmazonClickTracker";
 import DesktopNav from "@/components/DesktopNav";
 import MobileMenu from "@/components/MobileMenu";
 import ToastContainer from "@/components/Toast";
@@ -98,6 +99,7 @@ export default function RootLayout({
       </head>
       <body className="bg-gray-50 text-gray-900 antialiased">
         <GoogleAnalytics />
+        <AmazonClickTracker />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

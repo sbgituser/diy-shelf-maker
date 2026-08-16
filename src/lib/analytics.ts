@@ -23,3 +23,8 @@ export function trackGwContentView(slug: string) {
 export function trackGwAmazonClick(slug: string, label: string) {
   sendEvent("gw_amazon_click", { article_slug: slug, product_label: label });
 }
+
+/** サイト内の任意のAmazonリンククリックイベント(AmazonClickTrackerから使用) */
+export function trackAmazonLinkClick(linkUrl: string, linkText: string, pagePath: string) {
+  sendEvent("amazon_link_click", { link_url: linkUrl, link_text: linkText, page_path: pagePath });
+}
